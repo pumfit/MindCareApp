@@ -22,4 +22,10 @@
         android:name="com.teamopendata.mindcareapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_stting"
+        android:name="com.teamopendata.mindcareapp.ui.setting.SettingFragment"
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>
