@@ -15,11 +15,13 @@ import androidx.lifecycle.ViewModelProviders;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.renderer.YAxisRenderer;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class NotificationsFragment extends Fragment {
         list.add(new Entry(6,75)); //일
 
         //!--1단계
-        LineDataSet linedata = new LineDataSet(list,"to do list 성공률");
+        LineDataSet linedata = new LineDataSet(list,"판단");
         //!--2단계
         List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(linedata);
@@ -80,13 +82,19 @@ public class NotificationsFragment extends Fragment {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+
         xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));
 
+        //!--Y축 control
+        chart.getAxisRight().setDrawGridLines(false);
+        chart.getAxisRight().setDrawLabels(false);
+        chart.getAxisLeft().setAxisMaximum(100);
+        chart.getAxisLeft().setAxisMinimum(0);
 
         //chart set
+        chart.animateX(1000);
         chart.setData(data);
-
-
+        chart.setTouchEnabled(false);
         return fragmentxml;
     }
 
