@@ -11,6 +11,9 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
+    <string name="map_title">"치료 기관을 찾았어요.\n
+방문 후 처방 및 실천 기록을 작성해보세요."</string>
+
     <string name="slide_1_title">"관심 키워드를 설정해주세요!"</string>
     <string name="slide_1_desc">"최대 5개 키워드를 선택할 수 있습니다."</string>
 

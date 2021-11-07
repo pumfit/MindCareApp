@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.teamopendata.mindcareapp.R;
 
 public class SettingFragment extends Fragment {
@@ -24,6 +25,7 @@ public class SettingFragment extends Fragment {
                 ViewModelProviders.of(this).get(SettingViewModel.class);
         View root = inflater.inflate(R.layout.fragment_setting, container, false);
         final TextView textView = root.findViewById(R.id.text_setting);
+
         settingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
