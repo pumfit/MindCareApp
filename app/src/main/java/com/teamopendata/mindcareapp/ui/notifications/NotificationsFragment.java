@@ -38,6 +38,7 @@ public class NotificationsFragment extends Fragment {
         View fragmentxml = inflater.inflate(R.layout.fragment_notifications, container, false);
 
 
+
         //!--차트 넣기
         LineChart chart = fragmentxml.findViewById(R.id.graph);
 
@@ -82,7 +83,7 @@ public class NotificationsFragment extends Fragment {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-
+        chart.getDescription().setText(" ");
         xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));
 
         //!--Y축 control
