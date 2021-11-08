@@ -8,6 +8,14 @@
     android:orientation="vertical"
     android:background="#E3F2FD">
 
+<TextView
+    android:textColor="#0920A1"
+    android:layout_marginTop="10dp"
+    android:textSize="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Keywords"/>
+
     <TextView
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -21,12 +29,40 @@
         />
 
     <TextView
-        android:gravity="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:gravity="right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="당신의 치료를 도와줄 기관을 찾아드릴게요."
         android:layout_marginBottom="20dp"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select"/>
+
+        <TextView
+            android:id="@+id/pick"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="0"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="/4"
+            android:textColor="@android:color/holo_blue_dark" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -321,7 +357,54 @@
             android:textColor="#0D47A1" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:weightSum="4"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp">
 
+        <android.widget.Button
+            android:stateListAnimator="@null"
+            android:textColor="#0D47A1"
+            android:text="성인"
+            android:background="@drawable/button"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"/>
+
+        <android.widget.Button
+            android:stateListAnimator="@null"
+            android:textColor="#0D47A1"
+            android:text="생활"
+            android:background="@drawable/button"
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"/>
+
+        <android.widget.Button
+            android:stateListAnimator="@null"
+            android:textColor="#0D47A1"
+            android:text="직업교육"
+            android:background="@drawable/button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"/>
+
+        <android.widget.Button
+            android:stateListAnimator="@null"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:background="@drawable/button"
+            android:text="입원(입소)"
+            android:textColor="#0D47A1" />
+
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
