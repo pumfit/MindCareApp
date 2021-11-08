@@ -169,10 +169,10 @@ public class SelectActivity extends AppCompatActivity {
                     intent.putExtra("insomnia",insomniabutton.getText().toString());
                 }
                 if(depressed_button_status == 1){
-                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                    intent.putExtra("depressed",depressed_button.getText().toString());
                 }
                 if(anxiety_button_status == 1){
-                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                    intent.putExtra("anxiety",anxiety_button.getText().toString());
                 }
                 if( intent.getExtras() != null){
                     startActivity(intent);

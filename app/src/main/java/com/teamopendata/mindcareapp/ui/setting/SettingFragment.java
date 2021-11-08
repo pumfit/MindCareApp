@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -36,6 +38,8 @@ public class SettingFragment extends Fragment {
     TextView tvToday;
     Calendar current_Time;
     BarChart barchart;
+    ImageButton backPressButton,settingButton;
+
     private SettingViewModel settingViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,15 +48,25 @@ public class SettingFragment extends Fragment {
                 ViewModelProviders.of(this).get(SettingViewModel.class);
         View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
 
-        //!--변수 선언
-        tvToday = GraphView.findViewById(R.id.tvToday);
 
+        backPressButton =GraphView.findViewById(R.id.backPressButton);
+        settingButton = GraphView.findViewById(R.id.settingButton);
+
+
+        //!-- Main화면으로 뒤로가기
+        backPressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               getActivity().onBackPressed();
+            }
+        });
 
         //!--차트 넣기
         barchart = GraphView.findViewById(R.id.graph);
         setChart(barchart);
 
         //!--날짜 넣기
+        tvToday = GraphView.findViewById(R.id.tvToday);
         current_Time = Calendar.getInstance();
 
         String sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -123,10 +137,11 @@ public class SettingFragment extends Fragment {
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setAxisMaximum(100);
         chart.getAxisLeft().setAxisMinimum(0);
-        chart.getAxisLeft().setLabelCount(10);
+        chart.getAxisLeft().setLabelCount(5);
 
         //!--차트 기타 관리
         chart.setTouchEnabled(false);
     }
+
 
 }

@@ -22,7 +22,7 @@ public class HomeFragment extends Fragment {
     android.widget.Button back_select_button;
     TextView tvKeyword;
 
-    String stress,fear, insomnia;
+    String stress,fear, insomnia,depressed,anxiety;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -34,8 +34,12 @@ public class HomeFragment extends Fragment {
         stress = "";
         fear = "";
         insomnia = "";
+        depressed = "";
+        anxiety = "";
+
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getExtras();
+
         if(bundle.getString("stress") != null){
             stress = bundle.getString("stress");
         }
@@ -45,12 +49,16 @@ public class HomeFragment extends Fragment {
         if(bundle.getString("insomnia") != null){
             insomnia = bundle.getString("insomnia");
         }
+        if(bundle.getString("depressed") != null){
+            depressed = bundle.getString("depressed");
+        }
+        if(bundle.getString("anxiety") != null){
+            anxiety = bundle.getString("anxiety");
+        }
 
 
 
-        String keywords = "";
-
-        keywords = "keywords = "+ stress +","+ fear +","+ insomnia;
+        String keywords = "keywords = "+ stress + fear + insomnia + depressed + anxiety;
 
         tvKeyword.setText(keywords);
 
