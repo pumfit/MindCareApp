@@ -141,6 +141,7 @@ public class SelectActivity extends AppCompatActivity {
         fearbutton_status = 0;
         insomniabutton_status = 0;
         sum = 0;
+
         picknum.setText("0"); //초기화
 
     }
