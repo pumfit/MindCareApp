@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.setting;
+package com.teamopendata.mindcareapp.ui.notifications;
 
 import android.view.View;
 import android.view.ViewGroup;
