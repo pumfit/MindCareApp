@@ -28,7 +28,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/questionButton"
                 android:paddingRight="10dp"
                 android:layout_width="10dp"
                 android:layout_height="25dp"

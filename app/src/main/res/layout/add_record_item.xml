@@ -24,8 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:ems="15"
-            android:inputType="textPersonName"
-            android:text="Content" />
+            android:inputType="textPersonName" />
 
     </LinearLayout>
 

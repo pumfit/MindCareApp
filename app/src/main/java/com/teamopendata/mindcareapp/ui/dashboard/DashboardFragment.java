@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ public class DashboardFragment extends Fragment {
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
+        final Button Questionbtn = root.findViewById(R.id.questionButton);
 
         arrayList = new ArrayList<String>();
 
@@ -36,6 +38,15 @@ public class DashboardFragment extends Fragment {
         arrayList.add("노원 아이 정신과 의원");
         adapter = new MapListAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+
+        Questionbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 커스텀 다이얼로그를 생성한다. 사용자가 만든 클래스이다.
+                CustomDialog customDialog = new CustomDialog(getActivity());
+                customDialog.callFunction();
+            }
+        });
 
         return root;
     }

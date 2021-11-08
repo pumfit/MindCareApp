@@ -17,16 +17,38 @@ public class RecordAddListAdapter extends RecyclerView.Adapter<RecordAddListAdap
 
     private ArrayList<String> arrayList;
 
-    public RecordAddListAdapter() {  }
+    public RecordAddListAdapter(ArrayList<String> list) { arrayList = list; }
 
     @Override
     public RecordAddListAdapter.RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view  = inflater.inflate(R.layout.add_record_item,parent,false);
-        RecordAddListAdapter.RecordViewHolder recordViewHolder = new RecordAddListAdapter.RecordViewHolder(view);
-
+        View view;
+        RecordAddListAdapter.RecordViewHolder recordViewHolder;
+        switch (viewType)
+        {
+            case 0 :
+                view  = inflater.inflate(R.layout.record_yourlist_add_item,parent,false);
+                recordViewHolder = new RecordAddListAdapter.RecordViewHolder(view);
+                return recordViewHolder;
+            case 1:
+                view  = inflater.inflate(R.layout.add_record_item,parent,false);
+                recordViewHolder = new RecordAddListAdapter.RecordViewHolder(view);
+                return recordViewHolder;
+        }
+        view  = inflater.inflate(R.layout.add_record_item,parent,false);
+        recordViewHolder = new RecordAddListAdapter.RecordViewHolder(view);
         return recordViewHolder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position==arrayList.size()-1) {
+            arrayList.add("add");
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @Override
@@ -35,7 +57,7 @@ public class RecordAddListAdapter extends RecyclerView.Adapter<RecordAddListAdap
 
     @Override
     public int getItemCount() {
-        return 1;
+        return arrayList.size();
     }
 
     public class RecordViewHolder extends RecyclerView.ViewHolder {
