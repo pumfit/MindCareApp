@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -16,9 +17,11 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SelectActivity extends AppCompatActivity {
-    private final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = SelectActivity.class.getSimpleName();
 
     android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton;
+    TextView picknum;
+    int  stressbutton_status,fearbutton_status,insomniabutton_status ,sum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +33,28 @@ public class SelectActivity extends AppCompatActivity {
         insomniabutton = findViewById(R.id.insomniabutton);
         completebutton = findViewById(R.id.completebutton);
 
+        picknum = findViewById(R.id.picknum);
+
+        stressbutton_status = 0;
+        fearbutton_status = 0;
+        insomniabutton_status = 0;
+        sum = 0;
+
         stressbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                buttonClick(stressbutton);
+
+                if(stressbutton_status == 0){
+                    buttonClicked(stressbutton);
+                    stressbutton_status = 1;
+                    Log.d(TAG,"클릭시 sum: "+sum);
+                }
+                else if(stressbutton_status == 1){
+                    buttonDefault(stressbutton);
+                    stressbutton_status = 0;
+                    Log.d(TAG,"클릭 다시 sum: "+sum);
+                }
 
             }
         });
@@ -43,7 +63,17 @@ public class SelectActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                buttonClick(fearbutton);
+
+                if(fearbutton_status == 0){
+                    buttonClicked(fearbutton);
+                    fearbutton_status = 1;
+
+                }
+                else if(fearbutton_status == 1){
+                    buttonDefault(fearbutton);
+                    fearbutton_status = 0;
+
+                }
 
             }
         });
@@ -51,32 +81,42 @@ public class SelectActivity extends AppCompatActivity {
         insomniabutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonClick(insomniabutton);
+
+                if(insomniabutton_status == 0){
+                    buttonClicked(insomniabutton);
+                    insomniabutton_status = 1;
+                }
+                else if(insomniabutton_status == 1){
+                    buttonDefault(insomniabutton);
+                    insomniabutton_status = 0;
+                }
+
             }
         });
 
         completebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String choose1 = stressbutton.getText().toString();
-                String choose2 = fearbutton.getText().toString();
-                String choose3 = insomniabutton.getText().toString();
-
-                Log.d(TAG,"선택한 버튼1 내용 = "+ choose1);
-                Log.d(TAG,"선택한 버튼2 내용 = "+ choose2);
-                Log.d(TAG,"선택한 버튼3 내용 = "+ choose3);
-
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
                 startActivity(intent);
-
             }
         });
 
     }
-    private void buttonClick(android.widget.Button button ){
+    private void buttonClicked(android.widget.Button button ) {
 
         button.setBackgroundResource(R.drawable.buttonselected);
-        button.setTextColor(getApplication().getResources().getColor(R.color.white));
-
+        button.setTextColor(getResources().getColor(R.color.white, getTheme()));
+        sum++;
+        picknum.setText(String.valueOf(sum));
     }
+    private  void buttonDefault(android.widget.Button button){
+
+        button.setBackgroundResource(R.drawable.button);
+        button.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+        sum--;
+        picknum.setText(String.valueOf(sum));
+    }
+
+
 }

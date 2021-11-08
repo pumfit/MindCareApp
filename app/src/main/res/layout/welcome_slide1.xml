@@ -8,61 +8,102 @@
     android:orientation="vertical"
     android:background="#E3F2FD">
 
-<TextView
-    android:textColor="#0920A1"
-    android:layout_marginTop="10dp"
-    android:textSize="30dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Keywords"/>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="50dp">
 
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
-        android:textSize="40dp"
-        android:textColor="#0D47A1"
-        android:layout_width="wrap_content"
+  </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="당신의 상태를 선택해 주세요"
-        android:layout_marginBottom="5dp"
-        />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Keywords"
+            android:textColor="#0920A1"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <android.widget.Button
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/buttonselected"
+            android:text="선택해제"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
 
     <TextView
-        android:textColor="@android:color/holo_blue_dark"
+
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/buttonselected"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="당신에게 해당하는 상태를 선택해 주세요"
+        android:textColor="@color/white"
+        android:textSize="22dp" />
+
+    <TextView
+        android:layout_marginRight="30dp"
+        android:textColor="@color/buttonDefaultcolor"
         android:gravity="right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="당신의 치료를 도와줄 기관을 찾아드릴게요."
         android:layout_marginBottom="20dp"
         />
-    <LinearLayout
+    <RelativeLayout
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="5dp">
 
         <TextView
-            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select"/>
+            android:text="Select"
+            android:textColor="#0D47A1"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/pick"
-            android:layout_width="355dp"
+            android:textSize="20dp"
+            android:id="@+id/picknum"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:gravity="right"
             android:text="0"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:textColor="#0D47A1"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:textSize="20dp"
+            android:id="@+id/four"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="/4"
-            android:textColor="@android:color/holo_blue_dark" />
-    </LinearLayout>
+            android:textColor="#0D47A1" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
