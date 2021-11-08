@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class SelectActivity extends AppCompatActivity {
     private final String TAG = SelectActivity.class.getSimpleName();
 
-    android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton;
+    android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton,selectcancelbutton;
     TextView picknum;
     int  stressbutton_status,fearbutton_status,insomniabutton_status ,sum;
 
@@ -28,6 +28,7 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_slide1);
 
+        selectcancelbutton = findViewById(R.id.selectcancelbutton);
         stressbutton = findViewById(R.id.stressbutton);
         fearbutton = findViewById(R.id.fearbutton);
         insomniabutton = findViewById(R.id.insomniabutton);
@@ -39,6 +40,14 @@ public class SelectActivity extends AppCompatActivity {
         fearbutton_status = 0;
         insomniabutton_status = 0;
         sum = 0;
+
+        selectcancelbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonReset(stressbutton,fearbutton,insomniabutton);
+
+            }
+        });
 
         stressbutton.setOnClickListener(new View.OnClickListener() {
 
@@ -118,5 +127,21 @@ public class SelectActivity extends AppCompatActivity {
         picknum.setText(String.valueOf(sum));
     }
 
+    private  void buttonReset(android.widget.Button button1, android.widget.Button button2,android.widget.Button button3 ){
 
+        button1.setBackgroundResource(R.drawable.button);
+        button1.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button2.setBackgroundResource(R.drawable.button);
+        button2.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button3.setBackgroundResource(R.drawable.button);
+        button3.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+        stressbutton_status = 0;
+        fearbutton_status = 0;
+        insomniabutton_status = 0;
+        sum = 0;
+        picknum.setText("0"); //초기화
+
+    }
 }

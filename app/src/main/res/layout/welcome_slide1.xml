@@ -28,11 +28,12 @@
             android:textStyle="bold" />
 
         <android.widget.Button
+            android:id="@+id/selectcancelbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
             android:background="@drawable/buttonselected"
             android:text="선택해제"
             android:textColor="@color/white" />
