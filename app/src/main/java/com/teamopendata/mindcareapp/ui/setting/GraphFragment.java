@@ -1,19 +1,21 @@
 package com.teamopendata.mindcareapp.ui.setting;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -24,7 +26,7 @@ import com.teamopendata.mindcareapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingFragment extends Fragment {
+public class GraphFragment extends Fragment {
 
     private SettingViewModel settingViewModel;
 
@@ -32,35 +34,36 @@ public class SettingFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         settingViewModel =
                 ViewModelProviders.of(this).get(SettingViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_setting, container, false);
+        View root = inflater.inflate(R.layout.fragment_graph, container, false);
 
 
         //!--차트 넣기
-        LineChart chart = root.findViewById(R.id.graph);
-
-
-
-
-
-
-
-        List<Entry> list = new ArrayList<Entry>();
-
-        list.add(new Entry(0,55)); //월
-        list.add(new Entry(1,30)); //화
-        list.add(new Entry(2,20)); //수
-        list.add(new Entry(3,10)); //목
-        list.add(new Entry(4,45)); //금
-        list.add(new Entry(5,55)); //토
-        list.add(new Entry(6,75)); //일
+        BarChart chart = root.findViewById(R.id.graph);
 
         //!--1단계
-        LineDataSet linedata = new LineDataSet(list,"판단");
+        ArrayList<BarEntry> arrayList = new ArrayList<>();
+        arrayList.add(new BarEntry(0,10));
+        arrayList.add(new BarEntry(1,50));
+        arrayList.add(new BarEntry(2,60));
+        arrayList.add(new BarEntry(3,30));
+        arrayList.add(new BarEntry(4,90));
+        arrayList.add(new BarEntry(5,40));
+        arrayList.add(new BarEntry(6,100));
+
         //!--2단계
-        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(linedata);
+        BarDataSet barDataSet = new BarDataSet(arrayList,"실천 점수");
+        barDataSet.setColor(Color.rgb(9,32,161));
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(5F);
+        barDataSet.setDrawValues(false);
+
         //!--3단계
-        LineData data = new LineData(dataSets);
+        BarData barData = new BarData(barDataSet);
+
+        chart.setFitBars(true);
+        chart.setData(barData);
+        chart.getDescription().setText(" ");
+        chart.animateY(1000);
 
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
@@ -74,25 +77,20 @@ public class SettingFragment extends Fragment {
         setDay(label_day,"토요일");
         setDay(label_day,"일요일");
 
-
-        //!--X축 control
+        //!--x축 관리
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-        chart.getDescription().setText(" ");
         xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));
 
-        //!--Y축 control
-        chart.getAxisRight().setDrawGridLines(false);
-        chart.getAxisRight().setDrawLabels(false);
+        //!-- y축 관리
+        chart.getAxisLeft().setEnabled(true); //y축 left 지우기
+        chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setAxisMaximum(100);
         chart.getAxisLeft().setAxisMinimum(0);
 
-        //chart set
-        chart.animateX(1000);
-        chart.setData(data);
+        //!--차트 기타 관리
         chart.setTouchEnabled(false);
-
         return root;
     }
 

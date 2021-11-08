@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_stting"
-        android:name="com.teamopendata.mindcareapp.ui.setting.SettingFragment"
+        android:name="com.teamopendata.mindcareapp.ui.setting.GraphFragment"
         android:label="@string/title_setting"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
