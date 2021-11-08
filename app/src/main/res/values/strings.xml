@@ -30,4 +30,11 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
+    <string name="home_middle_text">꾸준한 케어로 마음을 충전하는 마음백신</string>
+    <string name="map">지도</string>
+    <string name="record">기록</string>
+    <string name="graph">그래프</string>
+    <string name="today_task">Today\'s task</string>
+    <string name="home_something">"오늘 하루도 수고했어요."</string>
 </resources>

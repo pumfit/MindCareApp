@@ -1,39 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_default"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:textColor="#000000"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="설정된 키워드 ▼"/>
 
-        <TextView
-           android:id="@+id/tvKeyword"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="키워드 입력 부분"/>
-        <android.widget.Button
-            android:layout_gravity="center"
-            android:id="@+id/back_select_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:background="@drawable/buttonselected"
-            android:text="키워드 재설정"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/bt_show_map"
+        android:layout_width="@dimen/home_show_button_size"
+        android:layout_height="@dimen/home_show_button_size"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/ripple_home_show_btn"
+        android:contentDescription="@string/map"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_map"
+        app:layout_constraintEnd_toStartOf="@+id/bt_show_record"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_middle_text" />
+
+    <ImageButton
+        android:id="@+id/bt_show_record"
+        android:layout_width="@dimen/home_show_button_size"
+        android:layout_height="@dimen/home_show_button_size"
+        android:background="@drawable/ripple_home_show_btn"
+        android:contentDescription="@string/record"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_record"
+        app:layout_constraintEnd_toStartOf="@+id/bt_show_graph"
+        app:layout_constraintStart_toEndOf="@+id/bt_show_map"
+        app:layout_constraintTop_toTopOf="@+id/bt_show_map" />
 
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/bt_show_graph"
+        android:layout_width="@dimen/home_show_button_size"
+        android:layout_height="@dimen/home_show_button_size"
+        android:background="@drawable/ripple_home_show_btn"
+        android:contentDescription="@string/graph"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_show_record"
+        app:layout_constraintTop_toTopOf="@+id/bt_show_map" />
+
+    <ListView
+        android:id="@+id/lv_keywords"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/home_bottom_view_mg"
+        android:layout_marginBottom="@dimen/home_bottom_view_mg"
+        android:background="@drawable/border_round_rectangle_dark"
+        app:layout_constraintBottom_toTopOf="@+id/tv_something"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_today_task"
+        app:layout_constraintTop_toTopOf="@+id/rv_today_task" />
+
+    <TextView
+        android:id="@+id/tv_home_middle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="@string/home_middle_text"
+        android:textColor="@color/home_dark"
+        android:textSize="@dimen/home_contents_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
+
+    <TextView
+        android:id="@+id/tv_home_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/title_home"
+        android:textColor="@color/home_dark"
+        android:textSize="@dimen/home_title_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/map"
+        android:textColor="@color/home_light"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bt_show_map"
+        app:layout_constraintStart_toStartOf="@+id/bt_show_map"
+        app:layout_constraintTop_toBottomOf="@+id/bt_show_map" />
+
+    <TextView
+        android:id="@+id/tv_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/record"
+        android:textColor="@color/home_light"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bt_show_record"
+        app:layout_constraintStart_toStartOf="@+id/bt_show_record"
+        app:layout_constraintTop_toBottomOf="@+id/bt_show_record" />
+
+    <TextView
+        android:id="@+id/tv_graph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/graph"
+        android:textColor="@color/home_light"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/bt_show_graph"
+        app:layout_constraintStart_toStartOf="@+id/bt_show_graph"
+        app:layout_constraintTop_toBottomOf="@+id/bt_show_graph" />
+
+    <TextView
+        android:id="@+id/tv_today_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/today_task"
+        android:textColor="@color/home_dark"
+        android:textSize="@dimen/home_contents_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_home_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_map" />
+
+    <TextView
+        android:id="@+id/tv_something"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border_round_rectangle_dark"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/home_something"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_today_task"
+        app:layout_constraintEnd_toEndOf="@+id/lv_keywords"
+        app:layout_constraintStart_toStartOf="@+id/lv_keywords"
+        app:layout_constraintTop_toBottomOf="@+id/lv_keywords" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_today_task"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/home_bottom_view_mg"
+        android:background="@drawable/border_round_rectangle_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/bt_show_record"
+        app:layout_constraintStart_toStartOf="@+id/tv_today_task"
+        app:layout_constraintTop_toBottomOf="@+id/tv_today_task" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
