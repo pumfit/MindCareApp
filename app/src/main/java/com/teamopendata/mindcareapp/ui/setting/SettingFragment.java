@@ -2,43 +2,78 @@ package com.teamopendata.mindcareapp.ui.setting;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
+
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
 import com.teamopendata.mindcareapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-public class GraphFragment extends Fragment {
 
+public class SettingFragment extends Fragment {
+    private final String TAG = SettingFragment.class.getSimpleName();
+
+    TextView tvToday;
+    Calendar current_Time;
+    BarChart barchart;
     private SettingViewModel settingViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         settingViewModel =
                 ViewModelProviders.of(this).get(SettingViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_graph, container, false);
+        View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
+
+        //!--변수 선언
+        tvToday = GraphView.findViewById(R.id.tvToday);
 
 
         //!--차트 넣기
-        BarChart chart = root.findViewById(R.id.graph);
+        barchart = GraphView.findViewById(R.id.graph);
+        setChart(barchart);
+
+        //!--날짜 넣기
+        current_Time = Calendar.getInstance();
+
+        String sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String currentDate = String.format(sdf,current_Time);
+
+        tvToday.setText(currentDate);
+        Log.d(TAG,"currentDate"+currentDate);
+
+        return GraphView;
+    }
+
+    //!--라벨  메소드
+    public void setDay(ArrayList<String> a, String day){
+
+        a.add(day);
+
+    }
+
+    //!-- graph 메소드
+    public void setChart(BarChart chart){
+
 
         //!--1단계
         ArrayList<BarEntry> arrayList = new ArrayList<>();
@@ -88,16 +123,10 @@ public class GraphFragment extends Fragment {
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setAxisMaximum(100);
         chart.getAxisLeft().setAxisMinimum(0);
+        chart.getAxisLeft().setLabelCount(10);
 
         //!--차트 기타 관리
         chart.setTouchEnabled(false);
-        return root;
-    }
-
-    public void setDay(ArrayList<String> a, String day){
-
-        a.add(day);
-
     }
 
 }

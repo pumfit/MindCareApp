@@ -22,6 +22,7 @@ public class SelectActivity extends AppCompatActivity {
     android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton,selectcancelbutton;
     TextView picknum;
     int  stressbutton_status,fearbutton_status,insomniabutton_status ,sum;
+    String keyword1,keyword2,keyword3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
+        //!--키워드 클릭
+        //!-- button 클릭인 겅우 status = 1
         stressbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -106,8 +109,22 @@ public class SelectActivity extends AppCompatActivity {
         completebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
-                startActivity(intent);
+
+                if( stressbutton_status == 1){
+                    intent.putExtra("stress",stressbutton.getText().toString());
+                }
+                if(fearbutton_status == 1){
+                    intent.putExtra("fear",fearbutton.getText().toString());
+                }
+                if(insomniabutton_status == 1){
+                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                }
+                if( intent.getExtras() != null){
+                    startActivity(intent);
+                }
+
             }
         });
 
