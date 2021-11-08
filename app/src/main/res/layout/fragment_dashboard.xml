@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="18dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -21,6 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#0920A1"
+                android:textSize="30dp"
+                android:textStyle="bold"
                 android:text="@string/map_title" />
 
             <Button
@@ -35,6 +39,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#0920A1"
             android:text="@string/map_sub_title" />
 
         <ImageView
@@ -47,6 +52,9 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#0920A1"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:text="@string/map_list" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -55,7 +63,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
