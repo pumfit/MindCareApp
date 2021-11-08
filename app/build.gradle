@@ -14,6 +14,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // android 4.0~
+   /* buildFeatures {
+        viewBinding = true
+    }*/
+
+    // android 3.6 ~ 4.0
+    viewBinding {
+        enabled true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
