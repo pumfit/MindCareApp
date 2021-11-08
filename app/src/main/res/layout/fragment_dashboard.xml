@@ -21,22 +21,32 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="10"
+                android:text="@string/map_title"
                 android:textColor="#0920A1"
                 android:textSize="30dp"
-                android:textStyle="bold"
-                android:text="@string/map_title" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:layout_width="10dp"
+                android:layout_height="25dp"
                 android:layout_weight="1"
-                android:text="@string/map_bookmark" />
+                android:background="@drawable/iconquestioni" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="10dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/star"
+                tools:ignore="DuplicateIds" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#0920A1"
@@ -44,12 +54,14 @@
 
         <ImageView
             android:id="@+id/imageView"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="269dp"
             android:src="@drawable/map" />
 
         <TextView
             android:id="@+id/textView5"
+            android:paddingTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#0920A1"
