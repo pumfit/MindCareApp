@@ -1,7 +1,6 @@
 package com.teamopendata.mindcareapp.ui.dashboard;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +28,12 @@ public class DashboardFragment extends Fragment {
         final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
 
         arrayList = new ArrayList<String>();
-        for(int i=1;i<11;i++)
-        {
-            String str = i+"번째 : 내용";
-            arrayList.add(str);
 
-
-        }
-        for (int i = 0;i<10;i++){
-            Log.d("SENTI","array"+arrayList.get(i));
-        }
+        //defalt 기관 정보 이후 DAO 생성하고 변경
+        arrayList.add("노원구 정신건강복지센터");
+        arrayList.add("노원구 중독관리통합지원센터");
+        arrayList.add("노원 아이존");
+        arrayList.add("노원 아이 정신과 의원");
         adapter = new MapListAdapter(arrayList);
         recyclerView.setAdapter(adapter);
 

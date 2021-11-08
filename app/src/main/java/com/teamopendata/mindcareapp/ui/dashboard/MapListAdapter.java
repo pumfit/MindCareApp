@@ -32,7 +32,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String text = arrayList.get(position);
         holder.textView1.setText(text);
-        holder.textView2.setText("None");
     }
 
     @Override
@@ -49,8 +48,8 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(R.id.textView);
-            textView2 = itemView.findViewById(R.id.textView2);
+            textView1 = itemView.findViewById(R.id.textTitle);
+            textView2 = itemView.findViewById(R.id.textType);
         }
 
     }
