@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
 
 
         String keywords = "";
+
         keywords = "keywords = "+ stress +","+ fear +","+ insomnia;
 
         tvKeyword.setText(keywords);
