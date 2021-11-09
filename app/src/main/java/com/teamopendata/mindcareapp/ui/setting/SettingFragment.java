@@ -38,7 +38,6 @@ public class SettingFragment extends Fragment {
     TextView tvToday;
     Calendar current_Time;
     BarChart barchart;
-    ImageButton backPressButton,settingButton;
 
     private SettingViewModel settingViewModel;
 
@@ -47,19 +46,6 @@ public class SettingFragment extends Fragment {
         settingViewModel =
                 ViewModelProviders.of(this).get(SettingViewModel.class);
         View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
-
-
-        backPressButton =GraphView.findViewById(R.id.backPressButton);
-        settingButton = GraphView.findViewById(R.id.settingButton);
-
-
-        //!-- Main화면으로 뒤로가기
-        backPressButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               getActivity().onBackPressed();
-            }
-        });
 
         //!--차트 넣기
         barchart = GraphView.findViewById(R.id.graph);

@@ -1,23 +1,13 @@
 package com.teamopendata.mindcareapp;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-public class SelectActivity extends AppCompatActivity {
+public class SelectActivity extends BaseActivity {
     private final String TAG = SelectActivity.class.getSimpleName();
 
     android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton,selectcancelbutton,depressed_button,anxiety_button;
