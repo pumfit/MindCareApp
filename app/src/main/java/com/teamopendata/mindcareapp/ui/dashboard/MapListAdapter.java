@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +18,9 @@ import java.util.ArrayList;
 public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHolder> {
 
     private ArrayList<String> arrayList;
+    private boolean[] bookmarkStatus;
 
-    public MapListAdapter(ArrayList<String> list) { arrayList = list; }
+    public MapListAdapter(ArrayList<String> list) { arrayList = list; bookmarkStatus = new boolean[list.size()];};
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,9 +32,22 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         return viewHolder;
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         String text = arrayList.get(position);
         holder.textView1.setText(text);
+
+        holder.bookmarkBtn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                if(bookmarkStatus[position] == false){
+                    buttonClicked(holder.bookmarkBtn);
+                    bookmarkStatus[position] = true;
+                }
+                else if(bookmarkStatus[position] == true){
+                    buttonDefault(holder.bookmarkBtn);
+                    bookmarkStatus[position] = false;
+                }
+            }
+        });
     }
 
     @Override
@@ -45,13 +61,27 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
         public TextView textView1;
         public TextView textView2;
+        public ImageButton bookmarkBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.textTitle);
             textView2 = itemView.findViewById(R.id.textType);
+            bookmarkBtn = itemView.findViewById(R.id.imageButton);
         }
 
+    }
+
+    private void buttonClicked(android.widget.ImageButton button ) {
+        //button.setBackgroundResource(R.drawable.buttonselected);
+        //button.setTextColor(getResources().getColor(R.color.white, getTheme()));
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.starfilled));
+    }
+
+    //!--버튼 다시 누를 때 메소드
+    private  void buttonDefault(android.widget.ImageButton button){
+        //button.setBackgroundResource(R.drawable.button);
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.star));
     }
 
 }
