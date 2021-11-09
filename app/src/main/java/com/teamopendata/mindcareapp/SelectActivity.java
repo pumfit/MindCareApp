@@ -47,6 +47,7 @@ public class SelectActivity extends AppCompatActivity {
         selectcancelbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 buttonReset(depressed_button,anxiety_button,stressbutton,fearbutton,insomniabutton);
             }
         });
@@ -156,7 +157,10 @@ public class SelectActivity extends AppCompatActivity {
         completebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(sum == 0){
+                    Toast.makeText(getApplicationContext(),"키워드를 선택해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
 
                 if( stressbutton_status == 1){
@@ -169,10 +173,10 @@ public class SelectActivity extends AppCompatActivity {
                     intent.putExtra("insomnia",insomniabutton.getText().toString());
                 }
                 if(depressed_button_status == 1){
-                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                    intent.putExtra("depressed",depressed_button.getText().toString());
                 }
                 if(anxiety_button_status == 1){
-                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                    intent.putExtra("anxiety",anxiety_button.getText().toString());
                 }
                 if( intent.getExtras() != null){
                     startActivity(intent);
