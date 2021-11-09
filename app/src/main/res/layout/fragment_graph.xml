@@ -54,6 +54,7 @@
 
 
         <TextView
+            android:textColor="@color/buttonDefaultcolor"
             android:id="@+id/tvToday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
@@ -38,13 +39,16 @@ public class SettingFragment extends Fragment {
     private final String TAG = SettingFragment.class.getSimpleName();
 
     TextView tvToday;
-    Calendar current_Time;
+    Date current_Time;
     BarChart barchart;
     ImageButton calenderButton_graph;
     private DatePickerDialog.OnDateSetListener callbackMethod;
-    private CalendarDialog Dialog_Listener;
     private SettingViewModel settingViewModel;
 
+
+    int nYear;
+    int nMonth;
+    int nDay;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         settingViewModel =
@@ -55,28 +59,44 @@ public class SettingFragment extends Fragment {
         tvToday = GraphView.findViewById(R.id.tvToday);
         calenderButton_graph = GraphView.findViewById(R.id.calenderButton_graph);
 
-        //!--현재 default날짜 넣기
+        //!--현재 날짜 넣기
+        current_Time = Calendar.getInstance().getTime();
 
-        current_Time = Calendar.getInstance();
 
-        String sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String currentDate = String.format(sdf,current_Time);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd",Locale.getDefault());
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM",Locale.getDefault());
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
 
-        tvToday.setText("현재날짜: "+ currentDate);
+
+        String year = yearFormat.format(current_Time);
+        String month = monthFormat.format(current_Time);
+        String day = dayFormat.format(current_Time);
+
+        String Date = "현재날짜: "+ year +"."+ month +"."+ day;
+
+        tvToday.setText(Date);
+
         //!--calender 구현
 
         callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvToday.setText("기준 날짜: "+year+"-"+month+"-"+dayOfMonth);
+                Log.d(TAG,"onDateset month: "+month);
+                tvToday.setText("기준 날짜: "+year+"."+(month+1)+"."+dayOfMonth);
             }
         };
+
         calenderButton_graph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Dialog_Listener = new CalendarDialog(getActivity());
-//                Dialog_Listener.show();
-                DatePickerDialog PickerDialog_graph = new DatePickerDialog(v.getContext(),callbackMethod,2021,12,02);
+
+                Calendar cal = new GregorianCalendar(Locale.KOREA);
+                nYear = cal.get(Calendar.YEAR);
+                nMonth = cal.get(Calendar.MONTH);
+                Log.d(TAG,"nMonth: "+nMonth);
+                nDay = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog PickerDialog_graph = new DatePickerDialog(v.getContext(),callbackMethod,nYear,nMonth,nDay);
                 PickerDialog_graph.show();
             }
         });
