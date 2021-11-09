@@ -23,6 +23,7 @@ public class CalendarDialog extends Dialog {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.calender_dialog_graph);
+        cancel_button_graph = findViewById(R.id.cancel_button_graph);
 
         cancel_button_graph.setOnClickListener(new View.OnClickListener() {
             @Override
