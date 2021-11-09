@@ -4,10 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/USER/AppData/Local/Android/Sdk/platforms/android-29/data/res/layout/simple_list_item_1.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/activity_base.xml" value="0.264" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.264" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_keywords.xml" value="0.4" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_today_task.xml" value="0.2" />
-        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/welcome_slide1.xml" value="0.2" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/welcome_slide1.xml" value="0.264" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/menu_base.xml" value="0.1" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/menu_setting.xml" value="0.2" />
+        <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/menu_settings.xml" value="0.4" />
         <entry key="..\:/Users/kimta/.gradle/caches/transforms-2/files-2.1/63dac4b0f8ef13947ce880083f712369/jetified-appcompat-resources-1.2.0/res/drawable/abc_vector_test.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/achievementrate_graph.xml" value="0.1140625" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/border_round_rectangle_dark.xml" value="0.26979166666666665" />

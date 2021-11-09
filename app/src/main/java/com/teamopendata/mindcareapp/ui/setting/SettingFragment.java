@@ -43,6 +43,7 @@ public class SettingFragment extends Fragment {
     BarChart barchart;
     ImageButton calenderButton_graph;
     private DatePickerDialog.OnDateSetListener callbackMethod;
+
     private SettingViewModel settingViewModel;
 
 
@@ -100,7 +101,6 @@ public class SettingFragment extends Fragment {
                 PickerDialog_graph.show();
             }
         });
-
 
         //!--차트 넣기
         barchart = GraphView.findViewById(R.id.graph);
