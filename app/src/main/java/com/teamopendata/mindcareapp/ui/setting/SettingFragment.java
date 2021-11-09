@@ -1,11 +1,13 @@
 package com.teamopendata.mindcareapp.ui.setting;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -39,6 +41,7 @@ public class SettingFragment extends Fragment {
     Calendar current_Time;
     BarChart barchart;
     ImageButton calenderButton_graph;
+    private DatePickerDialog.OnDateSetListener callbackMethod;
     private CalendarDialog Dialog_Listener;
     private SettingViewModel settingViewModel;
 
@@ -48,14 +51,33 @@ public class SettingFragment extends Fragment {
                 ViewModelProviders.of(this).get(SettingViewModel.class);
         View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
 
+        //!--변수
+        tvToday = GraphView.findViewById(R.id.tvToday);
         calenderButton_graph = GraphView.findViewById(R.id.calenderButton_graph);
 
+        //!--현재 default날짜 넣기
+
+        current_Time = Calendar.getInstance();
+
+        String sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String currentDate = String.format(sdf,current_Time);
+
+        tvToday.setText("현재날짜: "+ currentDate);
         //!--calender 구현
+
+        callbackMethod = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                tvToday.setText("기준 날짜: "+year+"-"+month+"-"+dayOfMonth);
+            }
+        };
         calenderButton_graph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog_Listener = new CalendarDialog(getActivity());
-                Dialog_Listener.show();
+//                Dialog_Listener = new CalendarDialog(getActivity());
+//                Dialog_Listener.show();
+                DatePickerDialog PickerDialog_graph = new DatePickerDialog(v.getContext(),callbackMethod,2021,12,02);
+                PickerDialog_graph.show();
             }
         });
 
@@ -64,15 +86,7 @@ public class SettingFragment extends Fragment {
         barchart = GraphView.findViewById(R.id.graph);
         setChart(barchart);
 
-        //!--날짜 넣기
-        tvToday = GraphView.findViewById(R.id.tvToday);
-        current_Time = Calendar.getInstance();
 
-        String sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String currentDate = String.format(sdf,current_Time);
-
-        tvToday.setText(currentDate);
-        Log.d(TAG,"currentDate"+currentDate);
 
         return GraphView;
     }
