@@ -55,10 +55,10 @@
 
         <ImageView
             android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="269dp"
-            android:src="@drawable/map" />
+            android:src="@drawable/mapexample" />
 
         <TextView
             android:id="@+id/textView5"
