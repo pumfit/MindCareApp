@@ -38,8 +38,8 @@ public class SettingFragment extends Fragment {
     TextView tvToday;
     Calendar current_Time;
     BarChart barchart;
-    ImageButton backPressButton,settingButton;
-
+    ImageButton calenderButton_graph;
+    private CalendarDialog Dialog_Listener;
     private SettingViewModel settingViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,7 +48,16 @@ public class SettingFragment extends Fragment {
                 ViewModelProviders.of(this).get(SettingViewModel.class);
         View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
 
+        calenderButton_graph = GraphView.findViewById(R.id.calenderButton_graph);
 
+        //!--calender 구현
+        calenderButton_graph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog_Listener = new CalendarDialog(getActivity());
+                Dialog_Listener.show();
+            }
+        });
 
 
         //!--차트 넣기
@@ -70,9 +79,7 @@ public class SettingFragment extends Fragment {
 
     //!--라벨  메소드
     public void setDay(ArrayList<String> a, String day){
-
         a.add(day);
-
     }
 
     //!-- graph 메소드

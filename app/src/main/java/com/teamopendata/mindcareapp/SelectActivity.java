@@ -185,24 +185,6 @@ public class SelectActivity extends AppCompatActivity {
 
     }
 
-//    //!--버튼  총합 메소드
-//    private void  buttonAllInOne(final android.widget.Button button , final int buttonStatus,final int sum){
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(buttonStatus == 0 && sum < 4){
-//                    buttonClicked(button);
-//                    buttonStatus = 1;
-//                }
-//                else if (buttonStatus == 1){
-//                    buttonDefault(button);
-//                    buttonStatus = 0;
-//                }
-//            }
-//        });
-////    }
-
     private int buttonAllInOne(int status,android.widget.Button button){
         if(status == 0 && sum < 4){
             buttonClicked(button);

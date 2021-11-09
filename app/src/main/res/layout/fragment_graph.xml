@@ -27,16 +27,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <TextView
-
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="1 WEEK"
-            android:textColor="@color/buttonDefaultcolor"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/calenderButton_graph"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ioncalendar" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="WEEK"
+                android:textColor="@color/buttonDefaultcolor"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+
 
 
         <TextView
