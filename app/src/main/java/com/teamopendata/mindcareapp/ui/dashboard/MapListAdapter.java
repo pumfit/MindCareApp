@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
             public void onClick(View v) {
                 if(bookmarkStatus[position] == false){
                     buttonClicked(holder.bookmarkBtn);
+                    Toast.makeText(v.getContext(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                     bookmarkStatus[position] = true;
                 }
                 else if(bookmarkStatus[position] == true){

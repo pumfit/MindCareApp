@@ -2,16 +2,20 @@ package com.teamopendata.mindcareapp.ui.notifications;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
@@ -44,6 +48,20 @@ public class AddRecordActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        Button saveBtn = findViewById(R.id.recordSaveButton);
+        saveBtn.setClickable(true);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(v.getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         //일자 가져오기
         final TextView dateText = findViewById(R.id.dateTextView);
         LinearLayout dateLayout = findViewById(R.id.DateViewLayout);
