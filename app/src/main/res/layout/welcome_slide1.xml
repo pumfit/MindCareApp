@@ -510,7 +510,5 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
         </RelativeLayout>
-
     </LinearLayout>
-
 </ScrollView>
