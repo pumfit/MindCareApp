@@ -7,255 +7,169 @@
     android:orientation="vertical"
     tools:context=".ui.notifications.NotificationsFragment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <TextView
-
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/buttonDefaultcolor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Graph"/>
-    <LinearLayout
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/buttonDefaultcolor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Graph"/>
-    <LinearLayout
-                  
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="Graph"
-        android:textColor="@color/buttonDefaultcolor"
-        android:textSize="30dp"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <LinearLayout
+        <TextView
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/buttonDefaultcolor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Graph"/>
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/calenderButton_graph"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ioncalendar" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="WEEK"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/calenderButton_graph"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ioncalendar" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="WEEK"
+                    android:textColor="@color/buttonDefaultcolor"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+
+
+
+            <TextView
                 android:textColor="@color/buttonDefaultcolor"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical">
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-
-
-        <TextView
-            android:textColor="@color/buttonDefaultcolor"
-            android:id="@+id/tvToday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="오늘날짜" />
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/graph"
-            android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:layout_marginBottom="10dp" />
-
-
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:text="달성도"
-            android:textColor="@color/buttonDefaultcolor"
-            android:textSize="25sp" />
-
-        <RelativeLayout
-           android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@drawable/achievementrate_graph"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ProgressBar
-                android:id="@+id/progressbar"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="15dp"
-                android:indeterminateOnly="false"
-                android:progress="70"
-                android:progressDrawable="@drawable/circlebar" />
-                android:layout_marginLeft="110dp"
-                android:indeterminateOnly="false"
-                android:progress="70"
-                android:progressDrawable="@drawable/circlebar" />
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvToday"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="150dp"
-                android:layout_marginTop="45dp"
-                android:text="60%"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                android:text="오늘날짜"/>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_marginBottom="10dp"/>
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="120dp"
-                android:layout_marginTop="60dp"
-                android:text="70%"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="해커톤"
+                android:text="달성도"
                 android:textColor="@color/buttonDefaultcolor"
-                android:textSize="25sp" />
+                android:textSize="25sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="님"
-                android:textSize="20sp" />
+            <RelativeLayout
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/achievementrate_graph"
+                >
+
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="15dp"
+                    android:indeterminateOnly="false"
+                    android:progress="70"
+                    android:progressDrawable="@drawable/circlebar" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginTop="60dp"
+                    android:text="70%"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
         </LinearLayout>
 
         <LinearLayout
-
-        <LinearLayout
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-
+            android:orientation="vertical"
             >
 
-            <TextView
-                android:layout_marginLeft="30dp"
-               android:layout_marginRight="5dp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:id="@+id/text2"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:gravity="center"
-               />
-            <TextView
+                android:orientation="horizontal"
 
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:text="70"
-                android:layout_marginRight="5dp"
-                android:gravity="center"
-                android:text="이번주는"
-                android:textSize="20sp" />
+                >
+                <TextView
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="5dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:id="@+id/text2"
+                    android:text="이번주는"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    />
+                <TextView
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="70"
-                android:textColor="@android:color/holo_blue_bright"
-                android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:text="70"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:gravity="center"
 
-                />
+                    />
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:text="%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    />
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:text="달성하셨어요!"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
 
-            <TextView
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:text="%"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:gravity="center"
-                android:text="%"
-                android:textColor="@android:color/holo_blue_bright"
-                android:textSize="25sp" />
+                    />
 
-                />
-            <TextView
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:text="달성하셨어요!"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="달성하셨어요!"
-                android:textSize="20sp"
-
-                />
-
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>

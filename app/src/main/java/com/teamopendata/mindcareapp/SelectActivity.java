@@ -1,13 +1,23 @@
 package com.teamopendata.mindcareapp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectActivity extends BaseActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class SelectActivity extends AppCompatActivity {
     private final String TAG = SelectActivity.class.getSimpleName();
 
     android.widget.Button stress_button,fear_button,insomnia_button,complete_button,selectCancel_button,depressed_button,anxiety_button,suicide_try_button,suicide_thinking_button,left_people_button;
@@ -57,18 +67,6 @@ public class SelectActivity extends BaseActivity {
                 int result = buttonAllInOne(stress_button_status,stress_button);
                 if(result != -1){
                     stress_button_status = result;
-                if(stress_button_status == 0 && sum <4){
-                    buttonClicked(stress_button);
-                    stress_button_status = 1;
-                    Log.d(TAG,"클릭시 sum: "+sum);
-                }
-                else if(stress_button_status == 1){
-                    buttonDefault(stress_button);
-                    stress_button_status = 0;
-                    Log.d(TAG,"클릭 다시 sum: "+sum);
-                }
-                else if(sum == 4){
-                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -80,17 +78,6 @@ public class SelectActivity extends BaseActivity {
                 int result = buttonAllInOne(fear_button_status,fear_button);
                 if(result != -1){
                     fear_button_status = result;
-
-                if(fear_button_status == 0 && sum < 4){
-                    buttonClicked(fear_button);
-                    fear_button_status = 1;
-                }
-                else if(fear_button_status == 1){
-                    buttonDefault(fear_button);
-                    fear_button_status = 0;
-                }
-                else if(sum == 4){
-                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -101,14 +88,6 @@ public class SelectActivity extends BaseActivity {
                 int result = buttonAllInOne(insomnia_button_status,insomnia_button);
                 if(result != -1){
                     insomnia_button_status = result;
-
-                if(insomnia_button_status == 0 && sum < 4){
-                    buttonClicked(insomnia_button);
-                    insomnia_button_status = 1;
-                }
-                else if(insomnia_button_status == 1){
-                    buttonDefault(insomnia_button);
-                    insomnia_button_status = 0;
                 }
             }
         });
@@ -163,61 +142,6 @@ public class SelectActivity extends BaseActivity {
             }
         });
 
-        suicide_try_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(suicide_try_button_status == 0 && sum < 4){
-                    buttonClicked(suicide_try_button);
-                    suicide_try_button_status = 1;
-                }
-                else if(suicide_try_button_status == 1){
-                    buttonDefault(suicide_try_button);
-                    suicide_try_button_status = 0;
-                }
-                else if(sum == 4){
-                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        suicide_thinking_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(suicide_thinking_button_status == 0 && sum < 4){
-                    buttonClicked(suicide_thinking_button);
-                    suicide_thinking_button_status = 1;
-                }
-                else if(suicide_thinking_button_status == 1){
-                    buttonDefault(suicide_thinking_button);
-                    suicide_thinking_button_status = 0;
-                }
-                else if(sum == 4){
-                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        left_people_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(left_people_button_status == 0 && sum < 4){
-                    buttonClicked(left_people_button);
-                    left_people_button_status = 1;
-                }
-                else if(left_people_button_status == 1){
-                    buttonDefault(left_people_button);
-                    left_people_button_status = 0;
-                }
-                else if(sum == 4){
-                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
 
 
         complete_button.setOnClickListener(new View.OnClickListener() {
@@ -261,22 +185,6 @@ public class SelectActivity extends BaseActivity {
 
     }
 
-    private int buttonAllInOne(int status,android.widget.Button button){
-        if(status == 0 && sum < 4){
-            buttonClicked(button);
-            Log.d(TAG,"클릭시 sum: "+sum);
-            return  1;
-        }
-        else if (status == 1){
-            buttonDefault(button);
-            Log.d(TAG,"클릭 다시 sum: "+sum);
-            return 0;
-        }
-        else if(sum == 4){
-            Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
-        }
-        return -1;
-    }
 //    //!--버튼  총합 메소드
 //    private void  buttonAllInOne(final android.widget.Button button , final int buttonStatus,final int sum){
 //
@@ -294,6 +202,23 @@ public class SelectActivity extends BaseActivity {
 //            }
 //        });
 ////    }
+
+    private int buttonAllInOne(int status,android.widget.Button button){
+        if(status == 0 && sum < 4){
+            buttonClicked(button);
+            Log.d(TAG,"클릭시 sum: "+sum);
+            return  1;
+        }
+        else if (status == 1){
+            buttonDefault(button);
+            Log.d(TAG,"클릭 다시 sum: "+sum);
+            return 0;
+        }
+        else if(sum == 4){
+            Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
+        }
+        return -1;
+    }
 
     //!--버튼 누를 때 메소드
     private void buttonClicked(android.widget.Button button) {
