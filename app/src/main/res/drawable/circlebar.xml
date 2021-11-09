@@ -13,7 +13,8 @@
             android:shape="ring"
             android:thicknessRatio="6"
             android:useLevel="true">
-            <solid android:color="@color/dot_light_screen3"/>
+            <gradient android:startColor="@color/dot_light_screen3"
+                android:endColor="@color/buttonDefaultcolor"/>
         </shape>
     </item>
 </layer-list>
