@@ -20,12 +20,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class SelectActivity extends AppCompatActivity {
     private final String TAG = SelectActivity.class.getSimpleName();
 
-    android.widget.Button stressbutton,fearbutton,insomniabutton,completebutton,selectcancelbutton,depressed_button,anxiety_button;
+    android.widget.Button stress_button,fear_button,insomnia_button,complete_button,selectCancel_button,depressed_button,anxiety_button,suicide_try_button,suicide_thinking_button,left_people_button;
     TextView picknum;
 
-    int  stressbutton_status =0,fearbutton_status =0,insomniabutton_status=0 ,depressed_button_status=0,anxiety_button_status=0; //정신 버튼
+    int  stress_button_status =0,fear_button_status =0,insomnia_button_status=0 ,depressed_button_status=0,anxiety_button_status=0; //정신 버튼
+    int suicide_try_button_status = 0, suicide_thinking_button_status = 0, left_people_button_status = 0;
     int sum =0;
-    String keyword1,keyword2,keyword3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,41 +35,44 @@ public class SelectActivity extends AppCompatActivity {
 
         depressed_button = findViewById(R.id.depressed_button);
         anxiety_button = findViewById(R.id.anxiety_button);
-        selectcancelbutton = findViewById(R.id.selectcancelbutton);
-        stressbutton = findViewById(R.id.stressbutton);
-        fearbutton = findViewById(R.id.fearbutton);
-        insomniabutton = findViewById(R.id.insomniabutton);
-        completebutton = findViewById(R.id.completebutton);
+        selectCancel_button = findViewById(R.id.selectCancel_button);
+        stress_button = findViewById(R.id.stress_button);
+        fear_button = findViewById(R.id.fear_button);
+        insomnia_button = findViewById(R.id.insomnia_button);
+        complete_button = findViewById(R.id.complete_button);
+        suicide_try_button = findViewById(R.id.suicide_try_button);
+        suicide_thinking_button = findViewById(R.id.suicide_thinking_button);
+        left_people_button = findViewById(R.id.left_people_button);
+
 
         picknum = findViewById(R.id.picknum);
 
 
-
-        selectcancelbutton.setOnClickListener(new View.OnClickListener() {
+        //!--버튼 Reset 메소드
+        selectCancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                buttonReset(depressed_button,anxiety_button,stressbutton,fearbutton,insomniabutton);
+                buttonReset(depressed_button,anxiety_button,stress_button,fear_button,insomnia_button,suicide_try_button,suicide_thinking_button,left_people_button);
             }
         });
 
         //!--키워드 클릭
         //!-- button 클릭인 겅우 status = 1
 
-
-        stressbutton.setOnClickListener(new View.OnClickListener() {
+        stress_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(stressbutton_status == 0 && sum <4){
-                    buttonClicked(stressbutton);
-                    stressbutton_status = 1;
+                if(stress_button_status == 0 && sum <4){
+                    buttonClicked(stress_button);
+                    stress_button_status = 1;
                     Log.d(TAG,"클릭시 sum: "+sum);
                 }
-                else if(stressbutton_status == 1){
-                    buttonDefault(stressbutton);
-                    stressbutton_status = 0;
+                else if(stress_button_status == 1){
+                    buttonDefault(stress_button);
+                    stress_button_status = 0;
                     Log.d(TAG,"클릭 다시 sum: "+sum);
                 }
                 else if(sum == 4){
@@ -78,18 +82,18 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
-        fearbutton.setOnClickListener(new View.OnClickListener() {
+        fear_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(fearbutton_status == 0 && sum < 4){
-                    buttonClicked(fearbutton);
-                    fearbutton_status = 1;
+                if(fear_button_status == 0 && sum < 4){
+                    buttonClicked(fear_button);
+                    fear_button_status = 1;
                 }
-                else if(fearbutton_status == 1){
-                    buttonDefault(fearbutton);
-                    fearbutton_status = 0;
+                else if(fear_button_status == 1){
+                    buttonDefault(fear_button);
+                    fear_button_status = 0;
                 }
                 else if(sum == 4){
                     Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
@@ -97,17 +101,17 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
-        insomniabutton.setOnClickListener(new View.OnClickListener() {
+        insomnia_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(insomniabutton_status == 0 && sum < 4){
-                    buttonClicked(insomniabutton);
-                    insomniabutton_status = 1;
+                if(insomnia_button_status == 0 && sum < 4){
+                    buttonClicked(insomnia_button);
+                    insomnia_button_status = 1;
                 }
-                else if(insomniabutton_status == 1){
-                    buttonDefault(insomniabutton);
-                    insomniabutton_status = 0;
+                else if(insomnia_button_status == 1){
+                    buttonDefault(insomnia_button);
+                    insomnia_button_status = 0;
                 }
                 else if(sum == 4){
                     Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
@@ -152,9 +156,64 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
+        suicide_try_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(suicide_try_button_status == 0 && sum < 4){
+                    buttonClicked(suicide_try_button);
+                    suicide_try_button_status = 1;
+                }
+                else if(suicide_try_button_status == 1){
+                    buttonDefault(suicide_try_button);
+                    suicide_try_button_status = 0;
+                }
+                else if(sum == 4){
+                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        suicide_thinking_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(suicide_thinking_button_status == 0 && sum < 4){
+                    buttonClicked(suicide_thinking_button);
+                    suicide_thinking_button_status = 1;
+                }
+                else if(suicide_thinking_button_status == 1){
+                    buttonDefault(suicide_thinking_button);
+                    suicide_thinking_button_status = 0;
+                }
+                else if(sum == 4){
+                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        left_people_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(left_people_button_status == 0 && sum < 4){
+                    buttonClicked(left_people_button);
+                    left_people_button_status = 1;
+                }
+                else if(left_people_button_status == 1){
+                    buttonDefault(left_people_button);
+                    left_people_button_status = 0;
+                }
+                else if(sum == 4){
+                    Toast.makeText(getApplicationContext(),"4개 이상 선택할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
-        completebutton.setOnClickListener(new View.OnClickListener() {
+
+
+        complete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(sum == 0){
@@ -163,19 +222,28 @@ public class SelectActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
 
-                if( stressbutton_status == 1){
-                    intent.putExtra("stress",stressbutton.getText().toString());
+                if( stress_button_status == 1){
+                    intent.putExtra("stress",stress_button.getText().toString());
                 }
-                if(fearbutton_status == 1){
-                    intent.putExtra("fear",fearbutton.getText().toString());
+                if(fear_button_status == 1){
+                    intent.putExtra("fear",fear_button.getText().toString());
                 }
-                if(insomniabutton_status == 1){
-                    intent.putExtra("insomnia",insomniabutton.getText().toString());
+                if(insomnia_button_status == 1){
+                    intent.putExtra("insomnia",insomnia_button.getText().toString());
                 }
                 if(depressed_button_status == 1){
                     intent.putExtra("depressed",depressed_button.getText().toString());
                 }
                 if(anxiety_button_status == 1){
+                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                }
+                if(suicide_try_button_status == 1){
+                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                }
+                if(suicide_thinking_button_status == 1){
+                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                }
+                if(left_people_button_status == 1){
                     intent.putExtra("anxiety",anxiety_button.getText().toString());
                 }
                 if( intent.getExtras() != null){
@@ -187,7 +255,7 @@ public class SelectActivity extends AppCompatActivity {
     }
 
 //    //!--버튼  총합 메소드
-//    private void  buttonAllInOne(final android.widget.Button button , int buttonStatus, int sum){
+//    private void  buttonAllInOne(final android.widget.Button button , final int buttonStatus,final int sum){
 //
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -202,7 +270,7 @@ public class SelectActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-//    }
+////    }
 
     //!--버튼 누를 때 메소드
     private void buttonClicked(android.widget.Button button ) {
@@ -222,7 +290,7 @@ public class SelectActivity extends AppCompatActivity {
 
 
     //!--buttonSelection 초기화 메소드
-    private  void buttonReset(android.widget.Button button1, android.widget.Button button2,android.widget.Button button3,android.widget.Button button4,android.widget.Button button5 ){
+    private  void buttonReset(android.widget.Button button1, android.widget.Button button2,android.widget.Button button3,android.widget.Button button4,android.widget.Button button5,android.widget.Button button6,android.widget.Button button7,android.widget.Button button8 ){
 
         button1.setBackgroundResource(R.drawable.button);
         button1.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
@@ -239,11 +307,24 @@ public class SelectActivity extends AppCompatActivity {
         button5.setBackgroundResource(R.drawable.button);
         button5.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
 
-        stressbutton_status = 0;
-        fearbutton_status = 0;
-        insomniabutton_status = 0;
+        button6.setBackgroundResource(R.drawable.button);
+        button6.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button7.setBackgroundResource(R.drawable.button);
+        button7.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button8.setBackgroundResource(R.drawable.button);
+        button8.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        stress_button_status = 0;
+        fear_button_status = 0;
+        insomnia_button_status = 0;
         depressed_button_status = 0;
         anxiety_button_status = 0;
+        suicide_try_button_status =0;
+        suicide_thinking_button_status=0;
+        left_people_button_status =0;
+
         sum = 0;
 
         picknum.setText("0"); //초기화

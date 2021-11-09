@@ -29,11 +29,13 @@
                 android:textStyle="bold" />
 
             <android.widget.Button
-                android:layout_marginTop="10dp"
-                android:id="@+id/selectcancelbutton"
+
+                android:id="@+id/selectCancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="-1dp"
                 android:background="@drawable/buttonselected"
                 android:text="선택해제"
                 android:textColor="@color/white" />
@@ -143,7 +145,7 @@
 
                 <android.widget.Button
                     android:stateListAnimator="@null"
-                    android:id="@+id/stressbutton"
+                    android:id="@+id/stress_button"
                     android:textColor="#0D47A1"
                     android:text="스트레스"
                     android:background="@drawable/button"
@@ -154,7 +156,7 @@
 
                 <android.widget.Button
                     android:stateListAnimator="@null"
-                    android:id="@+id/fearbutton"
+                    android:id="@+id/fear_button"
                     android:textColor="#0D47A1"
                     android:text="공포증"
                     android:background="@drawable/button"
@@ -174,7 +176,7 @@
                 >
 
                 <android.widget.Button
-                    android:id="@+id/insomniabutton"
+                    android:id="@+id/insomnia_button"
                     android:stateListAnimator="@null"
                     android:textColor="#0D47A1"
                     android:text="불면"
@@ -183,9 +185,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"/>
-
                 <android.widget.Button
-
+                    android:id="@+id/suicide_try_button"
                     android:stateListAnimator="@null"
                     android:textColor="#0D47A1"
                     android:text="자해·자살시도"
@@ -196,6 +197,7 @@
                     android:layout_marginRight="10dp"/>
 
                 <android.widget.Button
+                    android:id="@+id/suicide_thinking_button"
                     android:stateListAnimator="@null"
                     android:textColor="#0D47A1"
                     android:text="자살생각"
@@ -206,6 +208,7 @@
                     android:layout_marginRight="10dp"/>
 
                 <android.widget.Button
+                    android:id="@+id/left_people_button"
                     android:stateListAnimator="@null"
                     android:textColor="#0D47A1"
                     android:text="자살유족"
@@ -496,7 +499,7 @@
             android:layout_height="match_parent">
 
             <android.widget.Button
-                android:id="@+id/completebutton"
+                android:id="@+id/complete_button"
                 android:layout_width="90dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -506,11 +509,9 @@
                 android:layout_weight="1.5"
                 android:background="@drawable/buttonselected"
                 android:text="선택완료"
-                android:textSize="11dp"
                 android:textColor="#FFFFFF"
+                android:textSize="11dp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
     </LinearLayout>
-
 </ScrollView>
