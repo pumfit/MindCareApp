@@ -126,17 +126,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="url" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bottonBookmark"
+        <ImageButton
+            android:id="@+id/imageButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:background="#FFFFFF"
-            android:drawableLeft="@drawable/star" />
+            android:backgroundTint="#FFFFFF"
+            app:srcCompat="@drawable/star" />
 
     </LinearLayout>
 
