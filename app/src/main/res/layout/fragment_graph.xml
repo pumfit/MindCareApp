@@ -12,6 +12,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/buttonDefaultcolor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Graph"/>
+    <LinearLayout
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:textSize="30dp"
@@ -61,6 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:orientation="vertical">
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
 
@@ -127,6 +140,7 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,6 +188,10 @@
         </LinearLayout>
 
         <LinearLayout
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -224,6 +242,7 @@
                 android:textColor="@android:color/holo_blue_bright"
                 android:textSize="25sp" />
 
+                />
             <TextView
                 android:textStyle="bold"
                 android:textColor="#000000"
