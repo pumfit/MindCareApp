@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_rectangle_keywords"
-        android:drawablePadding="4dp"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
-        android:text="스트레스"
-        android:textColor="@color/white"
-        app:drawableStartCompat="@drawable/icon_check" />
-
-</LinearLayout>
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_rectangle_keywords"
+    android:drawableStart="@drawable/icon_check"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
+    android:text="스트레스"
+    android:textColor="@color/white" />
