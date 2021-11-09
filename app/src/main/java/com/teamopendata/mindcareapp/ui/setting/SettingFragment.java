@@ -98,6 +98,7 @@ public class SettingFragment extends Fragment {
                 nDay = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog PickerDialog_graph = new DatePickerDialog(v.getContext(),callbackMethod,nYear,nMonth,nDay);
+                PickerDialog_graph.getDatePicker().setMaxDate(cal.getTimeInMillis());
                 PickerDialog_graph.show();
             }
         });
