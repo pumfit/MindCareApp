@@ -21,11 +21,10 @@ public class HomeFragment extends Fragment {
         View view = binding.getRoot();
         return view;
     }
-
+  
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
