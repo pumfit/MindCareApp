@@ -8,6 +8,7 @@
     tools:context=".ui.notifications.NotificationsFragment">
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -33,9 +34,11 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitCenter"
                     android:id="@+id/calenderButton_graph"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ioncalendar" />
 
