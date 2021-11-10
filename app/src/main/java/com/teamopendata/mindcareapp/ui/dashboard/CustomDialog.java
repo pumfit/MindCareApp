@@ -24,7 +24,6 @@ class CustomDialog {
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dlg.setContentView(R.layout.map_question_dialog);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         dlg.show();
 
         final Button cancelButton = (Button) dlg.findViewById(R.id.cancelButton);
