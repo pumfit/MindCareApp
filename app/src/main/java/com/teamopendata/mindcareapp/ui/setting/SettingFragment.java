@@ -30,13 +30,14 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.teamopendata.mindcareapp.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
@@ -47,14 +48,12 @@ public class SettingFragment extends Fragment {
     Date current_Time;
     BarChart barchart;
     ImageButton calenderButton_graph;
-    private DatePickerDialog.OnDateSetListener callbackMethod;
+
+    String week_day,year,month,day;
 
     private SettingViewModel settingViewModel;
 
 
-    int nYear;
-    int nMonth;
-    int nDay;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         settingViewModel =
@@ -68,17 +67,18 @@ public class SettingFragment extends Fragment {
         //!--현재 날짜 넣기
         current_Time = Calendar.getInstance().getTime();
 
-
+        SimpleDateFormat weekFormat = new SimpleDateFormat("EE",Locale.getDefault());
         SimpleDateFormat dayFormat = new SimpleDateFormat("dd",Locale.getDefault());
         SimpleDateFormat monthFormat = new SimpleDateFormat("MM",Locale.getDefault());
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
 
 
-        String year = yearFormat.format(current_Time);
-        String month = monthFormat.format(current_Time);
-        String day = dayFormat.format(current_Time);
+        week_day = weekFormat.format(current_Time);
+        year = yearFormat.format(current_Time);
+        month = monthFormat.format(current_Time);
+        day = dayFormat.format(current_Time);
 
-        String Date = "현재날짜: "+ year +"."+ month +"."+ day;
+        String Date = "현재날짜: "+ year +"."+ month +"."+ day + " "+ week_day;
 
         tvToday.setText(Date);
 
@@ -87,18 +87,53 @@ public class SettingFragment extends Fragment {
         calenderButton_graph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //날짜 constraint
+
+                //요일 별 날짜 constraint
                 CalendarConstraints.Builder constrainBuilder =  new CalendarConstraints.Builder();
 
-                constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*7));
+                if(week_day.equals("월")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*6));
+                }
+                else if (week_day.equals("화")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*5));
+                }
+                else if (week_day.equals("수")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*4));
+                }
+                else if (week_day.equals("목")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*3));
+                }
+                else if (week_day.equals("금")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*2));
+                }
+                else if (week_day.equals("토")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000));
+                }
+                else if (week_day.equals("일")){
+                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()));
+                }
+
 
                 //MaterialDatePicker
                 MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker().setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar);
                 builder.setTitleText("날짜를 선택해주세요");
                 builder.setCalendarConstraints(constrainBuilder.build());
-                MaterialDatePicker materialDatePicker = builder.build();
 
+                final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
                 materialDatePicker.show(getChildFragmentManager(),"DATE_PICKER");
+
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener(){
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+
+                        Pair selectedDates = materialDatePicker.getSelection();
+                        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String selectedDays = "선택 날짜 : "+ simpleFormat.format(selectedDates.first)+" ~ "+simpleFormat.format(selectedDates.second);
+                        tvToday.setText(selectedDays);
+                    }
+
+                });
+
             }
         });
 
@@ -171,7 +206,7 @@ public class SettingFragment extends Fragment {
 
         //!--차트 기타 관리
         chart.setTouchEnabled(false);
+
+
     }
-
-
 }
