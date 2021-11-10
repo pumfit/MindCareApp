@@ -24,7 +24,7 @@ public class RecordAddListAdapter extends RecyclerView.Adapter<RecordAddListAdap
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RecordAddListAdapter.RecordViewHolder recordViewHolder;
-        View view  = inflater.inflate(R.layout.add_record_item,parent,false);
+        View view  = inflater.inflate(R.layout.item_add_record,parent,false);
         recordViewHolder = new RecordAddListAdapter.RecordViewHolder(view);
         return recordViewHolder;
     }

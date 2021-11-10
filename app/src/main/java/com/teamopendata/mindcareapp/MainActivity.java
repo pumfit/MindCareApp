@@ -1,7 +1,6 @@
 package com.teamopendata.mindcareapp;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -46,14 +45,5 @@ public class MainActivity extends BaseActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            Log.d(TAG, "itemSelected: " + destination);
-            if (destination.getId() == R.id.navigation_home) {
-                displayHomeAsUpEnabled(false);
-            } else {
-                displayHomeAsUpEnabled(true);
-            }
-        });
     }
-
 }

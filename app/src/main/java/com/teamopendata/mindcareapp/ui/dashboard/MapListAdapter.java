@@ -27,7 +27,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view  = inflater.inflate(R.layout.maplist_item,parent,false);
+        View view  = inflater.inflate(R.layout.item_map_list,parent,false);
         MapListAdapter.ViewHolder viewHolder = new MapListAdapter.ViewHolder(view);
 
         return viewHolder;
