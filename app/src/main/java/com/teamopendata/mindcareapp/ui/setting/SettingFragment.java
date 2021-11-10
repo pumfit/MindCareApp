@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -25,6 +26,10 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.teamopendata.mindcareapp.R;
 
 import java.text.SimpleDateFormat;
@@ -77,36 +82,29 @@ public class SettingFragment extends Fragment {
 
         tvToday.setText(Date);
 
-        //!--calender 구현
 
-        callbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Log.d(TAG,"onDateset month: "+month);
-                tvToday.setText("기준 날짜: "+year+"."+(month+1)+"."+dayOfMonth);
-            }
-        };
-
+        //DateRangePicker
         calenderButton_graph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //날짜 constraint
+                CalendarConstraints.Builder constrainBuilder =  new CalendarConstraints.Builder();
 
-                Calendar cal = new GregorianCalendar(Locale.KOREA);
-                nYear = cal.get(Calendar.YEAR);
-                nMonth = cal.get(Calendar.MONTH);
-                Log.d(TAG,"nMonth: "+nMonth);
-                nDay = cal.get(Calendar.DAY_OF_MONTH);
+                constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*7));
 
-                DatePickerDialog PickerDialog_graph = new DatePickerDialog(v.getContext(),callbackMethod,nYear,nMonth,nDay);
-                PickerDialog_graph.getDatePicker().setMaxDate(cal.getTimeInMillis());
-                PickerDialog_graph.show();
+                //MaterialDatePicker
+                MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker().setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar);
+                builder.setTitleText("날짜를 선택해주세요");
+                builder.setCalendarConstraints(constrainBuilder.build());
+                MaterialDatePicker materialDatePicker = builder.build();
+
+                materialDatePicker.show(getChildFragmentManager(),"DATE_PICKER");
             }
         });
 
         //!--차트 넣기
         barchart = GraphView.findViewById(R.id.graph);
         setChart(barchart);
-
 
 
         return GraphView;
