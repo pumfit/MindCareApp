@@ -9,7 +9,7 @@
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
-    <string name="start">GOT IT</string>
+    <string name="start">앱 실행</string>
 
     <string name="map_title">Map</string>
     <string name="map_sub_title">"치료 기관을 찾았어요.\n방문 후 처방 및 실천 기록을 작성해보세요."</string>

@@ -20,7 +20,7 @@ public class IntroActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override public void run() {
-                Intent intent = new Intent(IntroActivity.this,SelectActivity.class);
+                Intent intent = new Intent(IntroActivity.this,WelcomActivity.class);
                 startActivity(intent); finish();
             }
         },800);
