@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddRecordActivity extends AppCompatActivity {
 
@@ -30,8 +32,17 @@ public class AddRecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
         final RecyclerView recyclerView = findViewById(R.id.recordAddRecyclerview);
-        ArrayList<String> arrayList = new ArrayList<String>();
+        //일자 가져오기
+        final TextView dateText = findViewById(R.id.dateTextView);
+        LinearLayout dateLayout = findViewById(R.id.DateViewLayout);
 
+        long now =System.currentTimeMillis();
+        Date mDate = new Date(now);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy.MM.dd");
+        String getTime = simpleDate.format(mDate);
+        dateText.setText("Date : "+getTime);
+
+        ArrayList<String> arrayList = new ArrayList<String>();
         //defalt 기관 정보 이후 DAO 생성하고 변경
         arrayList.add("a");
 
@@ -61,10 +72,6 @@ public class AddRecordActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        //일자 가져오기
-        final TextView dateText = findViewById(R.id.dateTextView);
-        LinearLayout dateLayout = findViewById(R.id.DateViewLayout);
 
         callbackMethod = new DatePickerDialog.OnDateSetListener()
         {
