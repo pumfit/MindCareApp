@@ -31,7 +31,7 @@ public class SelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_slide1);
+        setContentView(R.layout.activity_select);
 
         depressed_button = findViewById(R.id.depressed_button);
         anxiety_button = findViewById(R.id.anxiety_button);
