@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.dashboard;
+package com.teamopendata.mindcareapp.ui.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
