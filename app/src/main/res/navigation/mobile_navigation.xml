@@ -12,20 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.teamopendata.mindcareapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_map"
+        android:name="com.teamopendata.mindcareapp.ui.map.MapFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.teamopendata.mindcareapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_graph"
+        android:name="com.teamopendata.mindcareapp.ui.graph.GraphFragment"
+        android:label="@string/title_graph"
         tools:layout="@layout/fragment_graph" />
 
     <fragment
-        android:id="@+id/navigation_setting"
-        android:name="com.teamopendata.mindcareapp.ui.setting.SettingFragment"
-        android:label="@string/title_setting"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_records"
+        android:name="com.teamopendata.mindcareapp.ui.records.RecordsFragment"
+        android:label="@string/title_records"
+        tools:layout="@layout/fragment_records" />
 </navigation>

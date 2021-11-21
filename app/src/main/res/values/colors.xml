@@ -24,11 +24,13 @@
     <color name="buttonDefaultcolor">#0920A1</color>
 
     <!-- home colors-->
-    <color name="default_background">#F2F6F9</color>
+    <color name="default_background">#FBFEFD</color>
     <color name="home_dark">#0D47A1</color>
     <color name="home_light">#90CAF9</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- records colors -->
+    <color name="records_light">#E7F6FF</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

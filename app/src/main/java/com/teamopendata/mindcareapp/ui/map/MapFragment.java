@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.dashboard;
+package com.teamopendata.mindcareapp.ui.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,17 +15,17 @@ import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment {
+public class MapFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private MapViewModel mapViewModel;
     private MapListAdapter adapter;
     private ArrayList<String> arrayList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        mapViewModel =
+                ViewModelProviders.of(this).get(MapViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_map, container, false);
         final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         final Button Questionbtn = root.findViewById(R.id.questionButton);
 

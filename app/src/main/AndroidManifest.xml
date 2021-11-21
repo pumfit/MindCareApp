@@ -12,7 +12,9 @@
         <activity
             android:name=".BaseActivity"
             android:exported="true" />
-        <activity android:name=".IntroActivity">
+        <activity
+            android:name=".IntroActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,8 +22,7 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SelectActivity" />
-        <activity android:name=".WelcomActivity"/>
-        <activity android:name=".ui.notifications.AddRecordActivity" />
+        <activity android:name=".WelcomActivity" />
     </application>
 
 </manifest>
