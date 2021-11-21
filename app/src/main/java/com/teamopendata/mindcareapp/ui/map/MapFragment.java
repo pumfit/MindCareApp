@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +48,10 @@ public class MapFragment extends Fragment {
                 customDialog.callFunction();
             }
         });
+
+            GoogleMapFragment map = new GoogleMapFragment();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.replace(R.id.mf_google_map, map).commit();
 
         return root;
     }
