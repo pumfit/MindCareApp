@@ -2,6 +2,7 @@ package com.teamopendata.mindcareapp.ui.Graph;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,20 +115,22 @@ public class GraphFragment extends Fragment {
 
 
                 //MaterialDatePicker
-                MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker().setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar);
+                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker().setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar);
                 builder.setTitleText("날짜를 선택해주세요");
                 builder.setCalendarConstraints(constrainBuilder.build());
 
-                final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
+                final MaterialDatePicker materialDatePicker = builder.build();
                 materialDatePicker.show(getChildFragmentManager(),"DATE_PICKER");
+
 
                 materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener(){
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-
-                        Pair selectedDates = materialDatePicker.getSelection();
+                        Long selectionSecond =  (Long)selection+60*60*24*1000*6;
                         SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        String selectedDays = "선택 날짜 : "+ simpleFormat.format(selectedDates.first)+" ~ "+simpleFormat.format(selectedDates.second);
+                        Log.d(TAG,"selection: "+selection);
+                        String selectedDays = "선택 날짜: "+ simpleFormat.format(selection)+" ~ " +simpleFormat.format(selectionSecond);
+
                         binding.tvToday.setText(selectedDays);
                     }
 
