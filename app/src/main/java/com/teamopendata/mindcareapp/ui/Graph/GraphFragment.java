@@ -1,18 +1,15 @@
-package com.teamopendata.mindcareapp.ui.setting;
+package com.teamopendata.mindcareapp.ui.Graph;
 
-import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,12 +25,11 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
-import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.databinding.FragmentGraphBinding;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,28 +37,31 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class SettingFragment extends Fragment {
-    private final String TAG = SettingFragment.class.getSimpleName();
+public class GraphFragment extends Fragment {
+    private final String TAG = GraphFragment.class.getSimpleName();
 
-    TextView tvToday;
+    private FragmentGraphBinding binding;
+
     Date current_Time;
-    BarChart barchart;
-    ImageButton calenderButton_graph;
+
 
     String week_day,year,month,day;
 
-    private SettingViewModel settingViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        settingViewModel =
-                ViewModelProviders.of(this).get(SettingViewModel.class);
-        View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
+        binding = FragmentGraphBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        //!--변수
-        tvToday = GraphView.findViewById(R.id.tvToday);
-        calenderButton_graph = GraphView.findViewById(R.id.calenderButton_graph);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // !--변수
 
         //!--현재 날짜 넣기
         current_Time = Calendar.getInstance().getTime();
@@ -80,11 +79,11 @@ public class SettingFragment extends Fragment {
 
         String Date = "현재날짜: "+ year +"."+ month +"."+ day + " "+ week_day;
 
-        tvToday.setText(Date);
+        binding.tvToday.setText(Date);
 
 
         //DateRangePicker
-        calenderButton_graph.setOnClickListener(new View.OnClickListener() {
+        binding.calenderButtonGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -129,7 +128,7 @@ public class SettingFragment extends Fragment {
                         Pair selectedDates = materialDatePicker.getSelection();
                         SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
                         String selectedDays = "선택 날짜 : "+ simpleFormat.format(selectedDates.first)+" ~ "+simpleFormat.format(selectedDates.second);
-                        tvToday.setText(selectedDays);
+                        binding.tvToday.setText(selectedDays);
                     }
 
                 });
@@ -138,12 +137,14 @@ public class SettingFragment extends Fragment {
         });
 
         //!--차트 넣기
-        barchart = GraphView.findViewById(R.id.graph);
-        setChart(barchart);
+        setChart(binding.graph);
 
-
-        return GraphView;
     }
+
+
+
+
+
 
     //!--라벨  메소드
     public void setDay(ArrayList<String> a, String day){
