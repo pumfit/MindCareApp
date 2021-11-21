@@ -3,7 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.2" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable-v24/fill_round_rectangle.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_date.xml" value="0.303125" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_date_light.xml" value="0.303125" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_light.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.5121477162293488" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_add_record.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_record.xml" value="0.6" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_records_header.xml" value="0.6" />
       </map>
     </option>
   </component>
