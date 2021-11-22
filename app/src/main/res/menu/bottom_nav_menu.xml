@@ -15,6 +15,7 @@
         android:id="@+id/navigation_records"
         android:icon="@drawable/icon_record"
         android:title="작성" />
+  
     <item
         android:id="@+id/navigation_graph"
         android:icon="@drawable/fragmenticon_graph"

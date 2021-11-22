@@ -49,4 +49,5 @@ public class Record extends RecordHeader {
     public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
+
 }

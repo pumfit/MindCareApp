@@ -61,5 +61,6 @@ public class AddRecordFragment extends Fragment {
             toast.setMargin(0, 0);
             toast.show();
         });
+
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
+
 import com.teamopendata.mindcareapp.ui.records.model.record.Record;
 import com.teamopendata.mindcareapp.ui.records.model.record.RecordHeader;
 import com.teamopendata.mindcareapp.ui.records.model.record.RecordItem;
@@ -36,7 +38,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecordsAdapter(List<RecordItem> data, OnAddEditRecordListener recordEditListener) {
         mData = data;
         mRecordEditListener = recordEditListener;
-    }
+
 
     @NonNull
     @Override
@@ -129,6 +131,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvRecordTitle = itemView.findViewById(R.id.tv_record_title);
             btnRecordEdit = itemView.findViewById(R.id.btn_record_edit);
             btnRecordEdit.setOnClickListener(v -> mRecordEditListener.onAddEditRecordButtonClick());
+
         }
 
         public void bind(Record record) {
