@@ -7,16 +7,16 @@
         android:title="홈" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_map"
         android:icon="@drawable/fragmenticon_map"
         android:title="위치" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_graph"
         android:icon="@drawable/icon_record"
         android:title="작성" />
     <item
-        android:id="@+id/navigation_setting"
+        android:id="@+id/navigation_records"
         android:icon="@drawable/fragmenticon_graph"
         android:title="그래프" />
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/border_round_rectangle_light"
+    android:orientation="horizontal"
+    android:padding="3dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_container_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/fill_round_rectangle_light">
+
+        <TextView
+            android:id="@+id/tv_record_day_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:minWidth="32dp"
+            android:text="14"
+            android:textColor="@color/home_light"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_record_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_record_day_number"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:includeFontPadding="false"
+            android:text="Tue"
+            android:textColor="@android:color/black"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_record_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/rl_container_date"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="노원구정신거낭복지센터 처방"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+
+</RelativeLayout>
