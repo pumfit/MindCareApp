@@ -1,18 +1,21 @@
-package com.teamopendata.mindcareapp.ui.records;
+package com.teamopendata.mindcareapp.ui.records.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.databinding.FragmentRecordsBinding;
+import com.teamopendata.mindcareapp.databinding.FragmentRecordsHomeBinding;
+import com.teamopendata.mindcareapp.ui.records.RecordsAdapter;
+import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
+import com.teamopendata.mindcareapp.ui.records.listener.OnAddRecordListener;
 import com.teamopendata.mindcareapp.ui.records.model.Record;
 import com.teamopendata.mindcareapp.ui.records.model.RecordHeader;
 import com.teamopendata.mindcareapp.ui.records.model.RecordItem;
@@ -20,16 +23,21 @@ import com.teamopendata.mindcareapp.ui.records.model.RecordItem;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+public class HomeRecordsFragment extends Fragment {
+    private FragmentRecordsHomeBinding binding;
 
-public class RecordsFragment extends Fragment {
-    private FragmentRecordsBinding binding;
+    private RecordsAdapter mRecordsAdapter;
 
-    private RecordsAdapter recordsAdapter;
+    private OnAddRecordListener mListener = null;
+
+    public void setOnAddRecordListener(OnAddRecordListener listener) {
+        mListener = listener;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_records, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_records_home, container, false);
         return binding.getRoot();
     }
 
@@ -57,9 +65,12 @@ public class RecordsFragment extends Fragment {
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
 
-        recordsAdapter = new RecordsAdapter(list);
-        binding.rvRecordsList.setAdapter(recordsAdapter);
-        binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(recordsAdapter));
-    }
+        mRecordsAdapter = new RecordsAdapter(list);
+        binding.rvRecordsList.setAdapter(mRecordsAdapter);
+        binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
 
+        binding.btnRecordAdd.setOnClickListener(v -> {
+            mListener.onAddRecordButtonClick();
+        });
+    }
 }
