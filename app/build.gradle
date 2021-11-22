@@ -44,6 +44,9 @@ repositories{
     maven { url 'https://jitpack.io' }
 }
 dependencies {
+    def room_version ="2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation 'com.wdullaer:materialdatetimepicker:3.6.4'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

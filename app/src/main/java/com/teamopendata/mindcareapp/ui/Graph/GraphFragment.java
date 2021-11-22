@@ -71,54 +71,14 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //선택 안했을 때 가리기
         binding.graph.setVisibility(View.GONE);
-        binding.leftArrowBtnGraph.setVisibility(View.GONE);
-        binding.rightArrowBtnGraph.setVisibility(View.GONE);
+        disappearArrow();
 
         // left버튼
-        binding.leftArrowBtnGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                millSec = millSec - 60*60*24*1000*7;
-                secondDayMilSec = millSec+60*60*24*1000*6;
-
-                // millSec - >  date
-                firstDate = convertDate(millSec,"MM월 dd일");
-                secondDate = convertDate(secondDayMilSec,"MM월 dd일");
-
-                setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
-                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
-
-                binding.tvDate.setText(firstDate+" ~ "+secondDate);
-                binding.tvProgressbar.setText(form.format(sum));
-                binding.tvProgressbar2.setText(form.format(sum));
-            }
-        });
+        btnListener(binding.leftArrowBtnGraph);
 
 
         // right버튼
-        binding.rightArrowBtnGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //현재 날짜 이상으로 하는 것 방지
-                if(System.currentTimeMillis() >= millSec + 60*60*24*1000*6){
-                    millSec = millSec + 60*60*24*1000*7;
-                    secondDayMilSec = millSec+60*60*24*1000*6;
-                }
-
-
-                firstDate = convertDate(millSec,"MM월 dd일");
-                secondDate = convertDate(secondDayMilSec,"MM월 dd일");
-                setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
-                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
-
-                binding.tvDate.setText(firstDate+" ~ "+secondDate);
-                binding.tvProgressbar.setText(form.format(sum));
-                binding.tvProgressbar2.setText(form.format(sum));
-            }
-        });
-
+        btnListener(binding.rightArrowBtnGraph);
 
 
         //DateRangePicker
@@ -146,6 +106,36 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     }
 
 
+    public void btnListener(ImageButton imgBtn){
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(imgBtn == binding.leftArrowBtnGraph){
+                    millSec = millSec - 60*60*24*1000*7;
+                }
+
+                else {
+                    if(System.currentTimeMillis() >= millSec + 60*60*24*1000*6){
+                        millSec = millSec + 60*60*24*1000*7;
+                        secondDayMilSec = millSec+60*60*24*1000*6;
+                    }
+                }
+                secondDayMilSec = millSec+60*60*24*1000*6;
+
+                // millSec - >  date
+                firstDate = convertDate(millSec,"MM월 dd일");
+                secondDate = convertDate(secondDayMilSec,"MM월 dd일");
+
+                setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
+                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
+                binding.tvDate.setText(firstDate+" ~ "+secondDate);
+                binding.tvProgressbar.setText(form.format(sum));
+                binding.tvProgressbar2.setText(form.format(sum));
+            }
+        });
+    }
 
 
     // !-- 사라져 메소드
