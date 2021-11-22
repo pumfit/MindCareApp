@@ -20,7 +20,6 @@ import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.ui.records.model.task.Task;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AddRecordFragment extends Fragment {
     private FragmentAddRecordBinding binding;
@@ -37,6 +36,7 @@ public class AddRecordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         ArrayList<Task> item = new ArrayList<>();
         item.add(new Task("1일 1회 명상 & 심호흡 하기"));
         item.add(new Task("처방약 복용 잘하기(아침/저녁, 1일 2회, 7일분"));
@@ -45,11 +45,6 @@ public class AddRecordFragment extends Fragment {
         item.add(new Task("스마트폰 하루 사용시간 지키기(최대 4시간)"));
         taskAdapter = new TaskAdapter(item);
         binding.includeRv.rvRecordTask.setAdapter(taskAdapter);
-
-        // set divider
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
-        itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.divider_layer_task, null)));
-        binding.includeRv.rvRecordTask.addItemDecoration(itemDecoration);
 
         binding.includeRv.btnTaskAdd.setOnClickListener(v -> {
             taskAdapter.addTask(new Task());

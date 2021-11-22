@@ -1,7 +1,11 @@
 package com.teamopendata.mindcareapp;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -9,6 +13,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -55,5 +61,25 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    /**
+     * 현재 포커싱된 EditText range외의 view를 클릭하면 포커스 해제
+     * {@link com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter}
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

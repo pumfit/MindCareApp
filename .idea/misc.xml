@@ -24,21 +24,12 @@
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_map_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_record.xml" value="0.8" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_records_header.xml" value="0.6" />
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_task.xml" value="0.536" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_task.xml" value="0.72" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/layout_record_list.xml" value="0.4" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/layout_records_list.xml" value="0.27447916666666666" />
       </map>
     </option>
   </component>
-<<<<<<< HEAD
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
->>>>>>> upstream/DB
 </project>

@@ -3,7 +3,9 @@ package com.teamopendata.mindcareapp.ui.records.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,16 +45,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-        private final CheckBox checkBox;
+        private final CheckBox cbCompletedTask;
+        private final EditText etContentsTask;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            checkBox = itemView.findViewById(R.id.cb_task);
+            cbCompletedTask = itemView.findViewById(R.id.cb_task);
+            etContentsTask = itemView.findViewById(R.id.et_contents_task);
         }
 
         public void bind(Task task) {
-            checkBox.setText(task.getContents());
-            checkBox.setChecked(task.isCompleted());
+            etContentsTask.setText(task.getContents());
+            cbCompletedTask.setChecked(task.isCompleted());
         }
     }
 }
