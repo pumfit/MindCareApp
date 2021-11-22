@@ -1,7 +1,7 @@
-package com.teamopendata.mindcareapp.ui.records.model;
+package com.teamopendata.mindcareapp.ui.records.model.record;
 
 
-import com.teamopendata.mindcareapp.ui.records.RecordsAdapter;
+import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 
 public class RecordItem {
     Object item;

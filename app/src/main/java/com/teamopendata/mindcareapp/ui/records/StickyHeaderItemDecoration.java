@@ -105,7 +105,7 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
         return childInContact;
     }
 
-    interface StickyHeaderInterface {
+    public interface StickyHeaderInterface {
         boolean isHeader(int position);
 
         View getHeaderLayoutView(RecyclerView parent, int position);

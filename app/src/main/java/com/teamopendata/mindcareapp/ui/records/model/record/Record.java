@@ -1,11 +1,9 @@
-package com.teamopendata.mindcareapp.ui.records.model;
+package com.teamopendata.mindcareapp.ui.records.model.record;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Record extends RecordHeader {
     private String title;

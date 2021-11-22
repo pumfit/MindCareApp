@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsHomeBinding;
-import com.teamopendata.mindcareapp.ui.records.RecordsAdapter;
+import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddRecordListener;
-import com.teamopendata.mindcareapp.ui.records.model.Record;
-import com.teamopendata.mindcareapp.ui.records.model.RecordHeader;
-import com.teamopendata.mindcareapp.ui.records.model.RecordItem;
+import com.teamopendata.mindcareapp.ui.records.model.record.Record;
+import com.teamopendata.mindcareapp.ui.records.model.record.RecordHeader;
+import com.teamopendata.mindcareapp.ui.records.model.record.RecordItem;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

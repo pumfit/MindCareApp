@@ -2,65 +2,58 @@ package com.teamopendata.mindcareapp.ui.records.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
+import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
+import com.teamopendata.mindcareapp.ui.records.model.task.Task;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddRecordFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class AddRecordFragment extends Fragment {
+    private FragmentAddRecordBinding binding;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TaskAdapter taskAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AddRecordFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddRecordFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddRecordFragment newInstance(String param1, String param2) {
-        AddRecordFragment fragment = new AddRecordFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ArrayList<Task> item = new ArrayList<>();
+        item.add(new Task("1일 1회 명상 & 심호흡 하기"));
+        item.add(new Task("처방약 복용 잘하기(아침/저녁, 1일 2회, 7일분"));
+        item.add(new Task("하루의 감정상태 기록하기"));
+        item.add(new Task("잠자기 2시간 전에 샤워 마치기"));
+        item.add(new Task("스마트폰 하루 사용시간 지키기(최대 4시간)"));
+        taskAdapter = new TaskAdapter(item);
+        binding.includeRv.rvRecordTask.setAdapter(taskAdapter);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_record, container, false);
+        // set divider
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.divider_layer_task, null)));
+        binding.includeRv.rvRecordTask.addItemDecoration(itemDecoration);
+
+        binding.includeRv.btnTaskAdd.setOnClickListener(v -> {
+            taskAdapter.addTask(new Task());
+            taskAdapter.notifyItemChanged(taskAdapter.getItemCount());
+        });
     }
 }

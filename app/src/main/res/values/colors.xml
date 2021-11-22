@@ -31,6 +31,8 @@
 
     <!-- record colors -->
     <color name="records_light">#E7F6FF</color>
+    <color name="records_dark">#BBDEFB</color>
+    <color name="task_color">#A1C5FF</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

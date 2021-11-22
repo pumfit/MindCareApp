@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.records;
+package com.teamopendata.mindcareapp.ui.records.adapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.ui.records.model.Record;
-import com.teamopendata.mindcareapp.ui.records.model.RecordHeader;
-import com.teamopendata.mindcareapp.ui.records.model.RecordItem;
+import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
+import com.teamopendata.mindcareapp.ui.records.model.record.Record;
+import com.teamopendata.mindcareapp.ui.records.model.record.RecordHeader;
+import com.teamopendata.mindcareapp.ui.records.model.record.RecordItem;
 import com.teamopendata.mindcareapp.util.Utils;
 
 import java.util.List;
