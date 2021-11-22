@@ -15,7 +15,8 @@ import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsHomeBinding;
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
-import com.teamopendata.mindcareapp.ui.records.listener.OnAddRecordListener;
+import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
+
 import com.teamopendata.mindcareapp.ui.records.model.record.Record;
 import com.teamopendata.mindcareapp.ui.records.model.record.RecordHeader;
 import com.teamopendata.mindcareapp.ui.records.model.record.RecordItem;
@@ -28,9 +29,9 @@ public class HomeRecordsFragment extends Fragment {
 
     private RecordsAdapter mRecordsAdapter;
 
-    private OnAddRecordListener mListener = null;
+    private OnAddEditRecordListener mListener = null;
 
-    public void setOnAddRecordListener(OnAddRecordListener listener) {
+    public void setOnAddRecordListener(OnAddEditRecordListener listener) {
         mListener = listener;
     }
 
@@ -46,8 +47,9 @@ public class HomeRecordsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<RecordItem> list = new ArrayList<>();
+        list.add(new RecordItem(RecordsAdapter.Type.TYPE_TOP_HEADER));
         list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 5, 1)), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("서울병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        list.add(new RecordItem(new Record("서울병원병원병원병원병원병원병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
@@ -65,12 +67,12 @@ public class HomeRecordsFragment extends Fragment {
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
 
-        mRecordsAdapter = new RecordsAdapter(list);
+        mRecordsAdapter = new RecordsAdapter(list, mListener);
         binding.rvRecordsList.setAdapter(mRecordsAdapter);
         binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
 
-        binding.btnRecordAdd.setOnClickListener(v -> {
+       /* binding.btnRecordAdd.setOnClickListener(v -> {
             mListener.onAddRecordButtonClick();
-        });
+        });*/
     }
 }

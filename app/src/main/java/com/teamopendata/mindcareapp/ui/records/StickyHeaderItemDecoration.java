@@ -40,6 +40,8 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
+
+    RecordsFragment
         drawHeader(c, currentHeader);
     }
 
@@ -113,5 +115,8 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
         int getHeaderPositionForItem(int itemPosition);
 
         void bindHeaderData(View header, int headerPosition);
+
+        int getHeaderLayout(int headerPosition);
+
     }
 }

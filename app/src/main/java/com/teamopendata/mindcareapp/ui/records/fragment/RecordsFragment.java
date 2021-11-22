@@ -13,10 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsBinding;
-import com.teamopendata.mindcareapp.ui.records.listener.OnAddRecordListener;
+import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
 
-public class RecordsFragment extends Fragment implements OnAddRecordListener {
+public class RecordsFragment extends Fragment implements OnAddEditRecordListener {
     public static final String TAG = "RecordsFragment";
     private FragmentRecordsBinding binding;
 
@@ -40,10 +40,10 @@ public class RecordsFragment extends Fragment implements OnAddRecordListener {
         transaction.add(R.id.fl_records_container, homeRecordsFragment).commit();
     }
 
-    @Override
-    public void onAddRecordButtonClick() {
+    public void onAddEditRecordButtonClick() {
         addRecordFragment = new AddRecordFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_records_container, addRecordFragment).addToBackStack(AddRecordFragment.class.getName()).commit();
     }
+
 }
