@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
@@ -20,6 +22,7 @@ import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.ui.records.model.task.Task;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddRecordFragment extends Fragment {
     private FragmentAddRecordBinding binding;
@@ -48,6 +51,15 @@ public class AddRecordFragment extends Fragment {
         binding.includeRv.btnTaskAdd.setOnClickListener(v -> {
             taskAdapter.addTask(new Task());
             taskAdapter.notifyItemChanged(taskAdapter.getItemCount());
+        });
+
+        binding.btnRecordSave.setOnClickListener(v -> {
+            Toast toast = new Toast(requireActivity().getApplicationContext());
+            toast.setGravity(Gravity.FILL, 0, 0);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.setView(getLayoutInflater().inflate(R.layout.toast_record_save, view.findViewById(R.id.toast_record_save)));
+            toast.setMargin(0, 0);
+            toast.show();
         });
     }
 }

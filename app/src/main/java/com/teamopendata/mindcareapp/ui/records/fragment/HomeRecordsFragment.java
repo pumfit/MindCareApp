@@ -48,7 +48,7 @@ public class HomeRecordsFragment extends Fragment {
         ArrayList<RecordItem> list = new ArrayList<>();
         list.add(new RecordItem(RecordsAdapter.Type.TYPE_TOP_HEADER));
         list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 5, 1)), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("서울병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        list.add(new RecordItem(new Record("서울병원병원병원병원병원병원병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));

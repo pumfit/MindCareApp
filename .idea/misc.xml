@@ -16,7 +16,7 @@
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/underline_layer_task.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/underline_layer_task_.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/underline_task.xml" value="0.290625" />
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_add_record.xml" value="0.4" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_add_record.xml" value="0.264" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.6538461538461539" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.264" />
@@ -30,6 +30,7 @@
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_top_header.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/layout_record_list.xml" value="0.4" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/layout_records_list.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/toast_record_save.xml" value="0.2" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.27447916666666666" />
       </map>
     </option>
