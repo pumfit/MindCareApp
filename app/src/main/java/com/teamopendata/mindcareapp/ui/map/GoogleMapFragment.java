@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamopendata.mindcareapp.R;
 
+import java.util.ArrayList;
+
 public class GoogleMapFragment extends Fragment
 {
     private GpsTracker gpsTracker;
@@ -32,6 +35,12 @@ public class GoogleMapFragment extends Fragment
     private MapView mMap;
     public double latitude = 37.4669;
     public double longitude= 126.8452;
+    ArrayList<LatLng> list = new ArrayList<LatLng>() {{
+        add(new LatLng(37.64315706083303, 127.07421387440895));
+        add(new LatLng(37.6542140862687, 127.05663668419913));
+        add(new LatLng(37.65654223086294, 127.07829199769162));
+        add(new LatLng(37.65448523300148, 127.0620681670044));
+    }};
     //https://milkissboy.tistory.com/11?category=733108
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,19 +56,26 @@ public class GoogleMapFragment extends Fragment
 
             checkRunTimePermission();
         }
-        getCurrentAddress();
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 getCurrentAddress();
                 LatLng currentPlace = new LatLng(latitude, longitude); //위경도 좌표를 나타내는 클래스
+                Log.d("??",latitude+" "+longitude);
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(currentPlace);
                 markerOptions.title("현위치");
                 markerOptions.snippet("간단한 설명");
                 googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
+                for(int i=0;i<list.size();i++)
+                {
+                    markerOptions.position(list.get(i));
+                    markerOptions.title("기관");
+                    markerOptions.snippet("간단한 설명");
+                    googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
+                }
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPlace));
-                googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
             }
         });
         return v;
