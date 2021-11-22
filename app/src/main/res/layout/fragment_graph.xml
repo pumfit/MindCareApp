@@ -13,15 +13,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/buttonDefaultcolor"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Graph"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Graph"
+                android:textColor="#000000"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+
+            <ImageButton
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/calenderButton_graph"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ioncalendar" />
+
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -29,37 +49,52 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:layout_marginTop="10dp"
-                    android:scaleType="fitCenter"
-                    android:id="@+id/calenderButton_graph"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ioncalendar" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="WEEK"
-                    android:textColor="@color/buttonDefaultcolor"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
 
             <TextView
-                android:id="@+id/tvDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="날짜를 선택해주세요"
-                android:textColor="@color/buttonDefaultcolor" />
+                android:layout_marginTop="10dp"
+                android:text="WEEK"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/left_arrow_btn_graph"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@+id/tvDate"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/arrow_left_graph" />
+
+                <TextView
+                    android:clickable="true"
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="날짜를 선택해주세요"
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/right_arrow_btn_graph"
+                    android:layout_toRightOf="@+id/tvDate"
+                    android:src="@drawable/arrow_right_graph"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    />
+            </RelativeLayout>
+
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/graph"
@@ -75,8 +110,8 @@
                 android:layout_marginRight="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="달성도"
-                android:textColor="@color/buttonDefaultcolor"
+                android:text="Rate"
+                android:textColor="#000000"
                 android:textSize="25sp"/>
 
             <RelativeLayout

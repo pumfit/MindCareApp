@@ -41,15 +41,15 @@ import java.util.Timer;
 
 public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
     private final String TAG = GraphFragment.class.getSimpleName();
-
+    DecimalFormat form;
     private FragmentGraphBinding binding;
-    Long millSec;
+    Long millSec,secondDayMilSec;
     DatePickerDialog datePickerDialog;
     int Year, Month, Day, Hour, Minute;
     Calendar calendar ;
     Date format1;
-    String secondDate;
-
+    String firstDate,secondDate;
+    float sum;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
 
 
@@ -65,19 +65,78 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //선택 안했을 때 그래프 가리기
-        binding.graph.setVisibility(View.GONE);
-
         // !-- datePickerDialog 세팅하기
         setDatePickerDialog();
+        form = new DecimalFormat("#");
+
+        //선택 안했을 때 가리기
+        binding.graph.setVisibility(View.GONE);
+        binding.leftArrowBtnGraph.setVisibility(View.GONE);
+        binding.rightArrowBtnGraph.setVisibility(View.GONE);
+
+        // left버튼
+        binding.leftArrowBtnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                millSec = millSec - 60*60*24*1000*7;
+                secondDayMilSec = millSec+60*60*24*1000*6;
+
+                // millSec - >  date
+                firstDate = convertDate(millSec,"MM월 dd일");
+                secondDate = convertDate(secondDayMilSec,"MM월 dd일");
+
+                setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
+                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
+                binding.tvDate.setText(firstDate+" ~ "+secondDate);
+                binding.tvProgressbar.setText(form.format(sum));
+                binding.tvProgressbar2.setText(form.format(sum));
+            }
+        });
+
+
+        // right버튼
+        binding.rightArrowBtnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //현재 날짜 이상으로 하는 것 방지
+                if(System.currentTimeMillis() >= millSec + 60*60*24*1000*6){
+                    millSec = millSec + 60*60*24*1000*7;
+                    secondDayMilSec = millSec+60*60*24*1000*6;
+                }
+
+
+                firstDate = convertDate(millSec,"MM월 dd일");
+                secondDate = convertDate(secondDayMilSec,"MM월 dd일");
+                setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
+                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
+                binding.tvDate.setText(firstDate+" ~ "+secondDate);
+                binding.tvProgressbar.setText(form.format(sum));
+                binding.tvProgressbar2.setText(form.format(sum));
+            }
+        });
+
+
 
         //DateRangePicker
         binding.calenderButtonGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                disappearArrow();
                 datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                binding.tvDate.setText("");
+            }
+        });
 
+        binding.tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disappearArrow();;
+                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                binding.tvDate.setText("");
             }
         });
 
@@ -89,6 +148,18 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
 
+    // !-- 사라져 메소드
+    public void disappearArrow(){
+        binding.leftArrowBtnGraph.setVisibility(View.GONE);
+        binding.rightArrowBtnGraph.setVisibility(View.GONE);
+    }
+
+    // !-- 보여줘 메소드
+    public void appearArrow(){
+        binding.leftArrowBtnGraph.setVisibility(View.VISIBLE);
+        binding.rightArrowBtnGraph.setVisibility(View.VISIBLE);
+    }
+
 
     //!--라벨  메소드
     public void setDay(ArrayList<String> a, String day){
@@ -99,13 +170,13 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     public void setChart(BarChart chart,float monDayRate,float tuesDayRate,float wednesdayRate,float thursdayRate,float fridayRate,float saturdayRate,float sundayRate){
 
         // 임시 랜덤 데이터
-        monDayRate = (float) Math.random()*100;
-        tuesDayRate = (float) Math.random()*100;
-        wednesdayRate = (float) Math.random()*100;
-        thursdayRate = (float) Math.random()*100;
-        fridayRate = (float) Math.random()*100;
-        saturdayRate = (float) Math.random()*100;
-        sundayRate = (float) Math.random()*100;
+        monDayRate = (float) Math.random()*50+50;
+        tuesDayRate = (float) Math.random()*50+50;
+        wednesdayRate = (float) Math.random()*50+50;
+        thursdayRate = (float) Math.random()*50+50;
+        fridayRate = (float) Math.random()*50+50;
+        saturdayRate = (float) Math.random()*50+50;
+        sundayRate = (float) Math.random()*50+50;
 
         mondayData = monDayRate;
         tuesDayData = tuesDayRate;
@@ -130,30 +201,31 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //!--2단계
         BarDataSet barDataSet = new BarDataSet(arrayList,"실천 점수");
-        barDataSet.setColor(Color.rgb(9,32,161));
+        barDataSet.setColors(Color.rgb(9,32,161),Color.rgb(34,135,201),Color.rgb(136,206,235));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(5F);
         barDataSet.setDrawValues(false);
 
         //!--3단계
         BarData barData = new BarData(barDataSet);
+        barData.setBarWidth(1f);
 
         chart.setFitBars(true);
         chart.setData(barData);
         chart.getDescription().setText(" ");
-        chart.animateY(1000);
+        chart.animateY(800);
 
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
 
 
-        setDay(label_day,"월요일");
-        setDay(label_day,"화요일");
-        setDay(label_day,"수요일");
-        setDay(label_day,"목요일");
-        setDay(label_day,"금요일");
-        setDay(label_day,"토요일");
-        setDay(label_day,"일요일");
+        setDay(label_day,"월");
+        setDay(label_day,"화");
+        setDay(label_day,"수");
+        setDay(label_day,"목");
+        setDay(label_day,"금");
+        setDay(label_day,"토");
+        setDay(label_day,"일");
 
         //!--x축 관리
         XAxis xAxis = chart.getXAxis();
@@ -171,12 +243,12 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         //!--차트 기타 관리
         chart.setTouchEnabled(false); //터치막음
 
-
     }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Long  secondDayMilSec;
+
+
         String parseDate = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
 
         // 날짜 변환
@@ -191,15 +263,23 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         }
         // 6일 뒤  = 일요일
         secondDayMilSec = millSec+60*60*24*1000*6;
-        secondDate = convertDate(secondDayMilSec,"yyyy-MM-dd");
-        Log.d(TAG,"millSec: "+millSec);
-        String writeDateFirst = "선택 날짜: "+ parseDate +"(월)"+" ~ "+secondDate+"(일)";
-        binding.tvDate.setText(writeDateFirst);
-        setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
-        binding.graph.setVisibility(View.VISIBLE);
 
-        float sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
-        DecimalFormat form = new DecimalFormat("#");
+        // millSec - >  date
+        firstDate = convertDate(millSec,"MM월 dd일");
+        secondDate = convertDate(secondDayMilSec,"MM월 dd일");
+
+
+        String writeDateFirst =  firstDate +" ~ "+secondDate;
+
+        binding.tvDate.setText(writeDateFirst);
+
+        setChart(binding.graph,mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData);
+
+        binding.graph.setVisibility(View.VISIBLE);
+        appearArrow();
+
+        sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
         binding.tvProgressbar.setText(form.format(sum));
         binding.tvProgressbar2.setText(form.format(sum));
     }
@@ -224,7 +304,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         datePickerDialog.showYearPickerFirst(false);
         datePickerDialog.setTitle("날짜를 선택해 주세요");
 
-        // Setting Min Date to today date
+        // min 날짜 제한
         Calendar min_date_c = Calendar.getInstance();
         min_date_c.set(Calendar.YEAR,Year-15); //과거 15년까지 가능 메모리 상의 후 얼마까지 가능하게 할 지 결정
         datePickerDialog.setMinDate(min_date_c);
@@ -248,6 +328,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             public void onCancel(DialogInterface dialog) {
                 binding.tvDate.setText("날짜를 선택해주세요");
                 binding.graph.setVisibility(View.GONE);
+                binding.leftArrowBtnGraph.setVisibility(View.GONE);
+                binding.rightArrowBtnGraph.setVisibility(View.GONE);
             }
         });
     }
