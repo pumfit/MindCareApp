@@ -17,6 +17,7 @@
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 
+
     <fragment
         android:id="@+id/navigation_graph"
         android:name="com.teamopendata.mindcareapp.ui.graph.GraphFragment"

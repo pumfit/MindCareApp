@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         return viewHolder;
     }
 
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         String text = arrayList.get(position);
         holder.textView1.setText(text);
 

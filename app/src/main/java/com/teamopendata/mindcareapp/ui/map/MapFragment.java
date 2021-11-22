@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,15 +20,16 @@ import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
-    private MapViewModel mapViewModel;
+    private DashboardViewModel dashboardViewModel;
+    FrameLayout map_container;
     private MapListAdapter adapter;
     private ArrayList<String> arrayList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mapViewModel =
-                ViewModelProviders.of(this).get(MapViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        dashboardViewModel =
+                ViewModelProviders.of(this).get(DashboardViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_map_mian, container, false);
         final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         final Button Questionbtn = root.findViewById(R.id.questionButton);
 
@@ -39,10 +43,9 @@ public class MapFragment extends Fragment {
         adapter = new MapListAdapter(arrayList);
         recyclerView.setAdapter(adapter);
 
-        Questionbtn.setOnClickListener(new View.OnClickListener() {
+        Questionbtn.setOnClickListener(new View.OnClickListener() {//기관 설명 Dialog
             @Override
             public void onClick(View view) {
-                // 커스텀 다이얼로그를 생성한다. 사용자가 만든 클래스이다.
                 CustomDialog customDialog = new CustomDialog(getActivity());
                 customDialog.callFunction();
             }
@@ -50,4 +53,17 @@ public class MapFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {//구글맵 fragment를 불러오기 위함
+        super.onViewCreated(view, savedInstanceState);
+
+        map_container = (FrameLayout) view.findViewById(R.id.fl_map_container) ;
+
+        GoogleMapFragment map = new GoogleMapFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_map_container, map).commit();
+    }
+
+
 }
