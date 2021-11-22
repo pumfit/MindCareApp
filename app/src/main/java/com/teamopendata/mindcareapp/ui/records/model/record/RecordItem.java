@@ -7,6 +7,10 @@ public class RecordItem {
     Object item;
     RecordsAdapter.Type type;
 
+    public RecordItem(RecordsAdapter.Type type) {
+        this.type = type;
+    }
+
     public RecordItem(Object item, RecordsAdapter.Type type) {
         this.item = item;
         this.type = type;

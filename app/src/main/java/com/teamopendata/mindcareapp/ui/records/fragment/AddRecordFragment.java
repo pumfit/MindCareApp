@@ -25,7 +25,6 @@ public class AddRecordFragment extends Fragment {
     private FragmentAddRecordBinding binding;
     private TaskAdapter taskAdapter;
 
-    // test
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
