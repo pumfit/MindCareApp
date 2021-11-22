@@ -15,7 +15,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.teamopendata.mindcareapp.ui.map.MapFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map_mian" />
 
     <fragment
         android:id="@+id/navigation_notifications"

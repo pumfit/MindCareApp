@@ -53,12 +53,13 @@
             android:textColor="#0920A1"
             android:text="@string/map_sub_title" />
 
-        <fragment
-            android:id="@+id/mf_google_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <FrameLayout
+            android:id="@+id/fl_map_container"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            tools:context=".ui.map.MapFragment" />
+            android:layout_height="300dp">
+
+        </FrameLayout>
+
         <TextView
             android:id="@+id/textView5"
             android:paddingTop="8dp"
