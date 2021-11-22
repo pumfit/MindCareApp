@@ -11,19 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.ui.records.model.Record;
+import com.teamopendata.mindcareapp.ui.records.model.RecordHeader;
 import com.teamopendata.mindcareapp.ui.records.model.RecordItem;
 import com.teamopendata.mindcareapp.util.Utils;
 
 import java.util.List;
 
-public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
+
     public enum Type {
         TYPE_HEADER,
         TYPE_ITEM
     }
 
     private static final String TAG = "RecordsAdapter";
-    private List<RecordItem> mData;
+    private final List<RecordItem> mData;
+
+    private int[] headerDate = null;
 
     public RecordsAdapter(List<RecordItem> data) {
         mData = data;
@@ -32,6 +36,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: " + viewType);
         if (viewType == Type.TYPE_HEADER.ordinal()) {
             return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_header, parent, false));
         } else {
@@ -42,7 +47,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind((int[]) mData.get(position).getItem());
+            ((HeaderViewHolder) holder).bind((RecordHeader) mData.get(position).getItem());
         } else {
             ((RecordViewHolder) holder).bind((Record) mData.get(position).getItem());
         }
@@ -58,9 +63,42 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return mData.size();
     }
 
-    private boolean isHeader(int position) {
+    @Override
+    public boolean isHeader(int position) {
         return mData.get(position).getType() == Type.TYPE_HEADER;
     }
+
+    @Override
+    public View getHeaderLayoutView(RecyclerView parent, int position) {
+        View header = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_header, parent, false);
+        bindHeaderData(header, position);
+        return header;
+    }
+
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        int headerPosition = 0;
+        do {
+            if (isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+        return headerPosition;
+    }
+
+    @Override
+    public void bindHeaderData(View header, int headerPosition) {
+        RecordHeader item = ((RecordHeader) mData.get(headerPosition).getItem());
+
+        String year = item.getDate().getYear() + "년";
+        String month = item.getDate().getMonthValue() + "월";
+
+        ((TextView) header.findViewById(R.id.tv_record_item_year)).setText(year);
+        ((TextView) header.findViewById(R.id.tv_record_item_month)).setText(month);
+    }
+
 
     private static class RecordViewHolder extends RecyclerView.ViewHolder {
         TextView tvDayNumber, tvDayText, tvRecordTitle;
@@ -89,9 +127,10 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvMonth = itemView.findViewById(R.id.tv_record_item_month);
         }
 
-        public void bind(int[] date) {
-            String year = date[0] + "년";
-            String month = date[1] + "월";
+        public void bind(RecordHeader date) {
+            String year = date.getDate().getYear() + "년";
+            String month = date.getDate().getMonthValue() + "월";
+
             tvYear.setText(year);
             tvMonth.setText(month);
         }

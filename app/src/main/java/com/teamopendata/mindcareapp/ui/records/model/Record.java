@@ -7,14 +7,12 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Record {
+public class Record extends RecordHeader {
     private String title;
 
-    private LocalDate date;
-
     public Record(String title, LocalDate date) {
+        super(date);
         this.title = title;
-        this.date = date;
     }
 
     @Override
@@ -36,11 +34,4 @@ public class Record {
         this.title = title;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 }
