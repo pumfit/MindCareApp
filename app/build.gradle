@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.teamopendata.mindcareapp"
-        minSdkVersion 24
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -21,6 +21,10 @@ android {
 
     // android 3.6 ~ 4.0
     viewBinding {
+        enabled true
+    }
+
+    dataBinding{
         enabled true
     }
 
@@ -40,6 +44,7 @@ repositories{
     maven { url 'https://jitpack.io' }
 }
 dependencies {
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.4'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
