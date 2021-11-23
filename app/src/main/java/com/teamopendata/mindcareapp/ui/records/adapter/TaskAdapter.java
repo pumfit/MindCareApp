@@ -3,7 +3,6 @@ package com.teamopendata.mindcareapp.ui.records.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.ui.records.model.task.Task;
+import com.teamopendata.mindcareapp.model.entity.Task;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.records.model.record;
+package com.teamopendata.mindcareapp.ui.records.model.item;
 
 
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;

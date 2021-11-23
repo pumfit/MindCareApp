@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.model;
+package com.teamopendata.mindcareapp.model.entity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
