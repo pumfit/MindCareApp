@@ -1,26 +1,25 @@
-package com.teamopendata.mindcareapp.ui.records.model.record;
+package com.teamopendata.mindcareapp.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.teamopendata.mindcareapp.ui.records.model.task.Task;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Record extends RecordHeader {
+public class Record {
     private String title;
+    private LocalDate date;
     private ArrayList<Task> tasks;
 
-    public Record(String title, LocalDate date) {
-        super(date);
+    public Record(LocalDate date, String title, ArrayList<Task> tasks) {
         this.title = title;
+        this.date = date;
+        this.tasks = tasks;
     }
 
-    public Record(LocalDate date, String title, ArrayList<Task> tasks) {
-        super(date);
+    public Record(String title, LocalDate date) {
         this.title = title;
-        this.tasks = tasks;
+        this.date = date;
     }
 
     @Override
@@ -31,7 +30,13 @@ public class Record extends RecordHeader {
     @NonNull
     @Override
     public String toString() {
-        return "기록 제목:" + title + "날짜:" + date.toString();
+        String taskString = null;
+        if (tasks != null) {
+            for (Task task : tasks) {
+                taskString = String.join(task.toString() + "\n");
+            }
+        }
+        return "기록 제목:" + title + "날짜:" + date.toString() + "할 일:" + taskString;
     }
 
     public String getTitle() {
@@ -50,4 +55,11 @@ public class Record extends RecordHeader {
         this.tasks = tasks;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.records.model.task;
+package com.teamopendata.mindcareapp.model;
 
 import androidx.annotation.NonNull;
 
@@ -40,7 +40,7 @@ public class Task {
     @NonNull
     @Override
     public String toString() {
-        return "TaskDTO{" +
+        return "Task{" +
                 "contents='" + contents + '\'' +
                 ", completed=" + completed +
                 '}';
