@@ -4,11 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,10 +16,9 @@ import android.widget.Toast;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
-import com.teamopendata.mindcareapp.ui.records.model.task.Task;
+import com.teamopendata.mindcareapp.model.entity.Task;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AddRecordFragment extends Fragment {
     private FragmentAddRecordBinding binding;

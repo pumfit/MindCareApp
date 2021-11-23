@@ -17,9 +17,8 @@ import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
-import com.teamopendata.mindcareapp.ui.records.model.record.Record;
-import com.teamopendata.mindcareapp.ui.records.model.record.RecordHeader;
-import com.teamopendata.mindcareapp.ui.records.model.record.RecordItem;
+import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.ui.records.model.item.RecordItem;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,17 +47,20 @@ public class HomeRecordsFragment extends Fragment {
 
         ArrayList<RecordItem> list = new ArrayList<>();
         list.add(new RecordItem(RecordsAdapter.Type.TYPE_TOP_HEADER));
-        list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 5, 1)), RecordsAdapter.Type.TYPE_HEADER));
+        list.add(new RecordItem(LocalDate.of(2021, 5, 1), RecordsAdapter.Type.TYPE_HEADER));
         list.add(new RecordItem(new Record("서울병원병원병원병원병원병원병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 6, 1)), RecordsAdapter.Type.TYPE_HEADER));
+        list.add(new RecordItem(LocalDate.of(2021, 6, 1), RecordsAdapter.Type.TYPE_HEADER));
         list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 7, 1)), RecordsAdapter.Type.TYPE_HEADER));
+        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        list.add(new RecordItem(LocalDate.of(2021, 7, 1), RecordsAdapter.Type.TYPE_HEADER));
         list.add(new RecordItem(new Record("제주도병원 처방", LocalDate.of(2021, 7, 5)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new RecordHeader(LocalDate.of(2021, 8, 1)), RecordsAdapter.Type.TYPE_HEADER));
+        list.add(new RecordItem(LocalDate.of(2021, 8, 1), RecordsAdapter.Type.TYPE_HEADER));
         list.add(new RecordItem(new Record("경북병원 처방", LocalDate.of(2021, 8, 13)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
         list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
