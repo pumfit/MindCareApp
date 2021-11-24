@@ -54,7 +54,6 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     float sum;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGraphBinding.inflate(inflater, container, false);
