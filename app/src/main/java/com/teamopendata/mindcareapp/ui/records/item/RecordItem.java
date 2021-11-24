@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.records.model.item;
+package com.teamopendata.mindcareapp.ui.records.item;
 
 
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
@@ -6,6 +6,11 @@ import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 public class RecordItem {
     Object item;
     RecordsAdapter.Type type;
+
+    public RecordItem(Object item) {
+        this.item = item;
+        type = RecordsAdapter.Type.TYPE_ITEM;
+    }
 
     public RecordItem(RecordsAdapter.Type type) {
         this.type = type;

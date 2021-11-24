@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.records.adapter;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,11 @@ import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
 import com.teamopendata.mindcareapp.model.entity.Record;
-import com.teamopendata.mindcareapp.ui.records.model.item.RecordItem;
+import com.teamopendata.mindcareapp.ui.records.item.RecordItem;
 import com.teamopendata.mindcareapp.util.Utils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
@@ -31,14 +33,38 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private static final String TAG = "RecordsAdapter";
-    private final List<RecordItem> mData;
+    private List<RecordItem> mItems;
 
-    private final OnAddEditRecordListener mRecordEditListener;
+    private final OnAddEditRecordListener mAddEditRecordListener;
+    int currentHeaderYear = 0, currentHeaderMonth = 0;
 
-    public RecordsAdapter(List<RecordItem> data, OnAddEditRecordListener recordEditListener) {
-        mData = data;
-        mRecordEditListener = recordEditListener;
+    public RecordsAdapter(List<RecordItem> data, OnAddEditRecordListener addEditRecordListener) {
+        addHeader(data);
+        mAddEditRecordListener = addEditRecordListener;
 
+    }
+
+    private void addHeader(List<RecordItem> data) {
+        mItems = new ArrayList<>();
+        mItems.add(new RecordItem(RecordsAdapter.Type.TYPE_TOP_HEADER));
+
+        for (RecordItem item : data) {
+            Record record = (Record) item.getItem();
+            if (!isCurrentHeader(record)) {
+                mItems.add(new RecordItem(LocalDate.of(currentHeaderYear, currentHeaderMonth, 1), RecordsAdapter.Type.TYPE_HEADER));
+            }
+            mItems.add(new RecordItem(record, Type.TYPE_ITEM));
+        }
+    }
+
+    private boolean isCurrentHeader(Record record) {
+        if (currentHeaderYear == record.getDate().getYear() && currentHeaderMonth == record.getDate().getMonthValue())
+            return true;
+        else {
+            currentHeaderYear = record.getDate().getYear();
+            currentHeaderMonth = record.getDate().getMonthValue();
+            return false;
+        }
     }
 
     @NonNull
@@ -59,31 +85,37 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof TopHeaderViewHolder) {
             ((TopHeaderViewHolder) holder).bind();
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind((LocalDate) mData.get(position).getItem());
+            ((HeaderViewHolder) holder).bind((LocalDate) mItems.get(position).getItem());
         } else {
-            ((RecordViewHolder) holder).bind((Record) mData.get(position).getItem());
+            ((RecordViewHolder) holder).bind((Record) mItems.get(position).getItem(), position);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position).getType().ordinal();
+        return mItems.get(position).getType().ordinal();
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mItems.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void initItems(ArrayList<RecordItem> items) {
+        addHeader(items);
+        this.notifyDataSetChanged();
     }
 
     @Override
     public boolean isHeader(int position) {
-        return mData.get(position).getType() == Type.TYPE_HEADER;
+        return mItems.get(position).getType() == Type.TYPE_HEADER;
     }
 
     @Override
     public View getHeaderLayoutView(RecyclerView parent, int position) {
         View header = LayoutInflater.from(parent.getContext()).inflate(getHeaderLayout(position), parent, false);
-        if (mData.get(position).getType() != Type.TYPE_TOP_HEADER)
+        if (mItems.get(position).getType() != Type.TYPE_TOP_HEADER)
             bindHeaderData(header, position);
         return header;
     }
@@ -105,12 +137,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void bindHeaderData(View header, int headerPosition) {
         String year, month;
 
-        if (mData.get(headerPosition).getType() == Type.TYPE_HEADER) {
-            LocalDate date = ((LocalDate) mData.get(headerPosition).getItem());
+        if (mItems.get(headerPosition).getType() == Type.TYPE_HEADER) {
+            LocalDate date = ((LocalDate) mItems.get(headerPosition).getItem());
             year = date.getYear() + "년";
             month = date.getMonthValue() + "월";
         } else {
-            Record record = ((Record) mData.get(headerPosition).getItem());
+            Record record = ((Record) mItems.get(headerPosition).getItem());
             year = record.getDate().getYear() + "년";
             month = record.getDate().getMonthValue() + "월";
         }
@@ -121,7 +153,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getHeaderLayout(int headerPosition) {
-        if (mData.get(headerPosition).getType() == Type.TYPE_TOP_HEADER)
+        if (mItems.get(headerPosition).getType() == Type.TYPE_TOP_HEADER)
             return R.layout.item_records_top_header;
         else {
             return R.layout.item_records_header;
@@ -139,15 +171,15 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvDayText = itemView.findViewById(R.id.tv_record_day_text);
             tvRecordTitle = itemView.findViewById(R.id.tv_record_title);
             btnRecordEdit = itemView.findViewById(R.id.btn_record_edit);
-            btnRecordEdit.setOnClickListener(v -> mRecordEditListener.onAddEditRecordButtonClick());
-
         }
 
-        public void bind(Record record) {
+        public void bind(Record record, int position) {
             Log.d(TAG, "bind: " + record.toString());
             tvDayNumber.setText(String.valueOf(record.getDate().getDayOfMonth()));
             tvDayText.setText(Utils.getDayString(record.getDate().getDayOfWeek()));
             tvRecordTitle.setText(record.getTitle());
+
+            btnRecordEdit.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordButtonClick((Record) mItems.get(position).getItem()));
         }
     }
 
@@ -175,7 +207,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public TopHeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             btnRecordAdd = itemView.findViewById(R.id.btn_record_add);
-            btnRecordAdd.setOnClickListener(v -> mRecordEditListener.onAddEditRecordButtonClick());
+            btnRecordAdd.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordButtonClick(null));
         }
 
         public void bind() {

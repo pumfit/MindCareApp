@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.records.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,24 +8,29 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsHomeBinding;
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
+import com.teamopendata.mindcareapp.ui.records.item.RecordItem;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
-import com.teamopendata.mindcareapp.model.entity.Record;
-import com.teamopendata.mindcareapp.ui.records.model.item.RecordItem;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class HomeRecordsFragment extends Fragment {
+    private static final String TAG = "HomeRecordsFragment";
     private FragmentRecordsHomeBinding binding;
+
+    private Button btnRecordAdd, btnRecordEdit;
 
     private RecordsAdapter mRecordsAdapter;
 
@@ -41,40 +47,21 @@ public class HomeRecordsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<RecordItem> list = new ArrayList<>();
-        list.add(new RecordItem(RecordsAdapter.Type.TYPE_TOP_HEADER));
-        list.add(new RecordItem(LocalDate.of(2021, 5, 1), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("서울병원병원병원병원병원병원병원 처방", LocalDate.of(2021, 5, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("대구병원 처방", LocalDate.of(2021, 5, 15)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(LocalDate.of(2021, 6, 1), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("부산병원 처방", LocalDate.of(2021, 6, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(LocalDate.of(2021, 7, 1), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("제주도병원 처방", LocalDate.of(2021, 7, 5)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(LocalDate.of(2021, 8, 1), RecordsAdapter.Type.TYPE_HEADER));
-        list.add(new RecordItem(new Record("경북병원 처방", LocalDate.of(2021, 8, 13)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
-        list.add(new RecordItem(new Record("마산병원 처방", LocalDate.of(2021, 8, 3)), RecordsAdapter.Type.TYPE_ITEM));
+        // getAll -> add recordItem
+        ArrayList<RecordItem> items = new ArrayList<>();
 
-        mRecordsAdapter = new RecordsAdapter(list, mListener);
+        new Thread(() -> {
+            MindChargeDB.getInstance(requireContext()).getRecordDao().getAll().forEach(record -> items.add(new RecordItem(record)));
+            new Handler(Looper.getMainLooper()).post(() -> mRecordsAdapter.initItems(items));
+        }).start();
+
+        mRecordsAdapter = new RecordsAdapter(items, mListener);
         binding.rvRecordsList.setAdapter(mRecordsAdapter);
         binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
-
-       /* binding.btnRecordAdd.setOnClickListener(v -> {
-            mListener.onAddRecordButtonClick();
-        });*/
     }
 }

@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.records.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,22 +8,31 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.DatePicker;
 
+import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
+import com.teamopendata.mindcareapp.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.model.entity.Task;
+import com.teamopendata.mindcareapp.util.Utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddRecordFragment extends Fragment {
+    private static final String TAG = "AddRecordFragment";
     private FragmentAddRecordBinding binding;
     private TaskAdapter taskAdapter;
+
+    Calendar cal = Calendar.getInstance();
 
     @Nullable
     @Override
@@ -36,11 +46,6 @@ public class AddRecordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ArrayList<Task> item = new ArrayList<>();
-        item.add(new Task("1일 1회 명상 & 심호흡 하기"));
-        item.add(new Task("처방약 복용 잘하기(아침/저녁, 1일 2회, 7일분"));
-        item.add(new Task("하루의 감정상태 기록하기"));
-        item.add(new Task("잠자기 2시간 전에 샤워 마치기"));
-        item.add(new Task("스마트폰 하루 사용시간 지키기(최대 4시간)"));
         taskAdapter = new TaskAdapter(item);
         binding.includeRv.rvRecordTask.setAdapter(taskAdapter);
 
@@ -50,13 +55,54 @@ public class AddRecordFragment extends Fragment {
         });
 
         binding.btnRecordSave.setOnClickListener(v -> {
-            Toast toast = new Toast(requireActivity().getApplicationContext());
-            toast.setGravity(Gravity.FILL, 0, 0);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.setView(getLayoutInflater().inflate(R.layout.toast_record_save, view.findViewById(R.id.toast_record_save)));
-            toast.setMargin(0, 0);
-            toast.show();
+            new Thread(() -> MindChargeDB.getInstance(requireContext()).getRecordDao().insert(newRecord())).start();
+            Utils.buildSaveToast(view, requireContext(), getLayoutInflater()).show();
         });
 
+        String date = cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.DATE);
+        binding.tvRecordPickDate.setText(date);
+
+        binding.tvRecordPickDate.setOnClickListener(v -> showDatePickerDialog());
+
+    }
+
+    /**
+     * DatePickerListener
+     */
+    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            binding.tvRecordPickDate.setText(String.format(Locale.KOREAN, "%d-%d-%d", year, month, dayOfMonth));
+        }
+    };
+
+    private void showDatePickerDialog() {
+        new DatePickerDialog(requireContext(), mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+    }
+
+    private Record newRecord() {
+        Record record = new Record(binding.etRecordTitle.getText().toString(), LocalDate.now());
+        Log.d(TAG, "newTask:" + taskAdapter.getItem());
+        record.setTasks(taskAdapter.getItem());
+        Log.d(TAG, "newRecord: " + record.toString());
+        return record;
+    }
+
+    @Override
+    public void onDetach() {
+        Log.d(TAG, "onDetach: ");
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG, "onDestroyView: ");
+        super.onDestroyView();
     }
 }

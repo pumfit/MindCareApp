@@ -1,21 +1,36 @@
 package com.teamopendata.mindcareapp.model.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Task {
-
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String contents;
     private boolean completed;
 
+    @Ignore
     public Task() {
 
     }
 
+    public Task(long id, String contents, boolean completed) {
+        this.id = id;
+        this.contents = contents;
+        this.completed = completed;
+    }
+
+    @Ignore
     public Task(String contents, boolean completed) {
         this.contents = contents;
         this.completed = completed;
     }
 
+    @Ignore
     public Task(String contents) {
         this.contents = contents;
         completed = false;
@@ -35,6 +50,14 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @NonNull

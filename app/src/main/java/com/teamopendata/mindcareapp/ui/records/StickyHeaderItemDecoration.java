@@ -44,7 +44,7 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     private void moveHeader(Canvas c, View currentHeader, View nextHeader) {
-        Log.d(TAG, "moveHeader: " + currentHeader + nextHeader);
+         //  Log.d(TAG, "moveHeader: " + currentHeader + nextHeader);
         c.save();
         c.translate(0f, nextHeader.getTop() - currentHeader.getHeight());
         currentHeader.draw(c);

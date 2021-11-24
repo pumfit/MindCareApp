@@ -1,22 +1,39 @@
 package com.teamopendata.mindcareapp.model.entity;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity(tableName = "record_table")
 public class Record {
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String title;
     private LocalDate date;
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
-    public Record(LocalDate date, String title, ArrayList<Task> tasks) {
+    public Record(long id, String title, LocalDate date, List<Task> tasks) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.tasks = tasks;
     }
 
+    @Ignore
+    public Record(LocalDate date, String title, List<Task> tasks) {
+        this.title = title;
+        this.date = date;
+        this.tasks = tasks;
+    }
+
+    @Ignore
     public Record(String title, LocalDate date) {
         this.title = title;
         this.date = date;
@@ -30,13 +47,11 @@ public class Record {
     @NonNull
     @Override
     public String toString() {
-        String taskString = null;
-        if (tasks != null) {
-            for (Task task : tasks) {
-                taskString = String.join(task.toString() + "\n");
-            }
+        if (tasks == null) {
+            return "기록 제목:" + title + "날짜:";
+        } else {
+            return "기록 제목:" + title + "날짜:" + date.toString() + "할 일:" + tasks.toString();
         }
-        return "기록 제목:" + title + "날짜:" + date.toString() + "할 일:" + taskString;
     }
 
     public String getTitle() {
@@ -47,11 +62,11 @@ public class Record {
         this.title = title;
     }
 
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(ArrayList<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 
@@ -61,5 +76,13 @@ public class Record {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
