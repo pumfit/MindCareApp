@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.Graph;
+package com.teamopendata.mindcareapp.ui.graph;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,6 +53,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     String firstDate,secondDate;
     float sum;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
