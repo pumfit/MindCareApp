@@ -3,8 +3,6 @@ package com.teamopendata.mindcareapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +18,7 @@ public class IntroActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override public void run() {
-                Intent intent = new Intent(IntroActivity.this,WelcomActivity.class);
+                Intent intent = new Intent(IntroActivity.this, WelcomeActivity.class);
                 startActivity(intent); finish();
             }
         },800);
