@@ -32,6 +32,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     DatePickerDialog datePickerDialog;
     int Year, Month, Day, Hour, Minute;
     Calendar calendar ;
+    Calendar[] disabledDays;
     Date format1;
     String firstDate,secondDate;
     float sum;
@@ -241,7 +243,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         String parseDate = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
 
-        // 날짜 변환
+//       millSec= LocalDate.of(year,monthOfYear,dayOfMonth);
+
         try {
             format1 = new SimpleDateFormat("yyyy-MM-dd").parse(parseDate);
         }
@@ -307,12 +310,20 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         for (Calendar loopdate = min_date_c; min_date_c.before(max_date_c); min_date_c.add(Calendar.DATE, 1), loopdate = min_date_c) {
             int dayOfWeek = loopdate.get(Calendar.DAY_OF_WEEK);
             if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.TUESDAY || dayOfWeek == Calendar.WEDNESDAY || dayOfWeek == Calendar.THURSDAY || dayOfWeek == Calendar.FRIDAY  ) {
-                Calendar[] disabledDays =  new Calendar[1];
+                disabledDays =  new Calendar[1];
                 disabledDays[0] = loopdate;
                 datePickerDialog.setDisabledDays(disabledDays);
             }
         }
+        if(max_date_c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
 
+        }
+        else {
+            Log.d(TAG,"월요일이 아닙니다.");
+            disabledDays = new Calendar[1];
+            disabledDays[0] = max_date_c;
+            datePickerDialog.setDisabledDays(disabledDays);
+        }
         datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
