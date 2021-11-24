@@ -1,17 +1,13 @@
-package com.teamopendata.mindcareapp.ui.setting;
+package com.teamopendata.mindcareapp.ui.graph;
 
-import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -28,12 +24,10 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointBackward;
-import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.teamopendata.mindcareapp.R;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,8 +35,8 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class SettingFragment extends Fragment {
-    private final String TAG = SettingFragment.class.getSimpleName();
+public class GraphFragment extends Fragment {
+    private final String TAG = GraphFragment.class.getSimpleName();
 
     TextView tvToday;
     Date current_Time;
@@ -51,13 +45,13 @@ public class SettingFragment extends Fragment {
 
     String week_day,year,month,day;
 
-    private SettingViewModel settingViewModel;
+    private GraphViewModel graphViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        settingViewModel =
-                ViewModelProviders.of(this).get(SettingViewModel.class);
+        graphViewModel =
+                ViewModelProviders.of(this).get(GraphViewModel.class);
         View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
 
         //!--변수
