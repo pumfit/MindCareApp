@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.util;
+package com.teamopendata.mindcareapp.common;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -18,13 +18,15 @@ import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-public class Utils {
+public final class Utils {
+    private Utils() {
+    }
+
     public static String getDayString(DayOfWeek day) {
         return day.getDisplayName(TextStyle.SHORT, Locale.KOREAN);
     }
 
     public static long localDateToMilli(LocalDate date) {
-
         return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 

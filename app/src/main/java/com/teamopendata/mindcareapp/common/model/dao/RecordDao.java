@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.model.dao;
+package com.teamopendata.mindcareapp.common.model.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
 
 import java.util.List;
 

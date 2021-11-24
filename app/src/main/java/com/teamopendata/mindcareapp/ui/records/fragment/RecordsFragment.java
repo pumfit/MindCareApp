@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsBinding;
-import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
 public class RecordsFragment extends Fragment implements OnAddEditRecordListener {

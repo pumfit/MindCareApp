@@ -12,8 +12,8 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.teamopendata.mindcareapp.converters.Converters;
-import com.teamopendata.mindcareapp.model.dao.RecordDao;
-import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.dao.RecordDao;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.map.MedicalInstitution;
 import com.teamopendata.mindcareapp.ui.map.MedicalInstitutionDao;
 

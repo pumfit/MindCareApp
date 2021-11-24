@@ -16,9 +16,9 @@ import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
 
-import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.item.RecordItem;
-import com.teamopendata.mindcareapp.util.Utils;
+import com.teamopendata.mindcareapp.common.Utils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

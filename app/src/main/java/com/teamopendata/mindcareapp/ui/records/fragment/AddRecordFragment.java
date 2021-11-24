@@ -17,10 +17,10 @@ import android.widget.DatePicker;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
-import com.teamopendata.mindcareapp.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
-import com.teamopendata.mindcareapp.model.entity.Task;
-import com.teamopendata.mindcareapp.util.Utils;
+import com.teamopendata.mindcareapp.common.model.entity.Task;
+import com.teamopendata.mindcareapp.common.Utils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

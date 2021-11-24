@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.model.entity.Task;
+import com.teamopendata.mindcareapp.common.model.entity.Task;
 
 import java.util.ArrayList;
 import java.util.List;
