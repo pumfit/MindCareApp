@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/default_background"
-    tools:context=".ui.Graph.GraphFragment">
+    tools:context=".ui.graph.GraphFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

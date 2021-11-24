@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-public class WelcomActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
@@ -118,7 +118,7 @@ public class WelcomActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         PrefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomActivity.this, SelectActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, SelectActivity.class));
         finish();
     }
 

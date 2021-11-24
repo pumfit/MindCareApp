@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.dashboard;
+package com.teamopendata.mindcareapp.ui.map;
 
 import android.app.Dialog;
 import android.content.Context;
