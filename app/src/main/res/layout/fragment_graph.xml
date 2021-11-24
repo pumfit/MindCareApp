@@ -123,15 +123,16 @@
                 >
 
                 <ProgressBar
+                    android:indeterminateDuration="4000"
                     android:id="@+id/progressbar"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="80dp"
                     android:layout_marginTop="15dp"
-                    android:indeterminateOnly="false"
+                    android:indeterminateOnly="true"
                     android:progress="70"
-                    android:progressDrawable="@drawable/circlebar" />
+                    android:indeterminateDrawable="@drawable/circlebar_rotate" />
 
                 <TextView
                     android:id="@+id/tv_progressbar"

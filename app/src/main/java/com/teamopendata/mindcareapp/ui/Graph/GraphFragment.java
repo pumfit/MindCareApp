@@ -133,6 +133,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
 
                 binding.tvDate.setText(firstDate+" ~ "+secondDate);
+                binding.progressbar.setProgress((int) sum);
                 binding.tvProgressbar.setText(form.format(sum));
                 binding.tvProgressbar2.setText(form.format(sum));
             }
@@ -306,7 +307,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         Calendar max_date_c = Calendar.getInstance();
         datePickerDialog.setMaxDate(max_date_c);
 
-        // !-- 요일 제한하기 for 문이라 메모리 좀 많이씀...15 * 365 번 돌아감..
+        // !-- 요일 제한하기 for 문이라 메모리 좀 많이씀...10 * 365 번 돌아감..
         for (Calendar loopdate = min_date_c; min_date_c.before(max_date_c); min_date_c.add(Calendar.DATE, 1), loopdate = min_date_c) {
             int dayOfWeek = loopdate.get(Calendar.DAY_OF_WEEK);
             if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.TUESDAY || dayOfWeek == Calendar.WEDNESDAY || dayOfWeek == Calendar.THURSDAY || dayOfWeek == Calendar.FRIDAY  ) {
