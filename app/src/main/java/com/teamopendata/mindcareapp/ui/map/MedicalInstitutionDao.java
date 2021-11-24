@@ -9,7 +9,7 @@ import java.util.List;
 
 @Dao
 public interface MedicalInstitutionDao {
-    @Query("SELECT * FROM MedicalInstitution")
+    @Query("SELECT * FROM medicalInstitution")
     List<MedicalInstitution> getAll();
 
     @Insert

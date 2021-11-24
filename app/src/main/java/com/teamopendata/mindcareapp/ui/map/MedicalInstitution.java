@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class MedicalInstitution {
+
     @PrimaryKey(autoGenerate = true)//기본키
-    public int id;
+    public long id;
 
     @ColumnInfo(name="name")//기관이름
     public String name;
@@ -19,7 +20,7 @@ public class MedicalInstitution {
     public int grade;
 
     @ColumnInfo(name="address")//주소
-    public String lyrics;
+    public String address;
 
     @ColumnInfo(name="tel")//전화번호
     public String tel;
@@ -32,4 +33,5 @@ public class MedicalInstitution {
 
     @ColumnInfo(name="longitude")//경도
     public double longitude;
+
 }

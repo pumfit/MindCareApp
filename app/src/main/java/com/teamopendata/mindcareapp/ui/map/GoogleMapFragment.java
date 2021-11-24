@@ -32,16 +32,17 @@ public class GoogleMapFragment extends Fragment
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;//for GPS Tracking
+
     private MapView mMap;
-    public double latitude = 37.4669;
-    public double longitude= 126.8452;
+    public double latitude = 37.65373464975277;
+    public double longitude= 127.06081718059411;
     ArrayList<LatLng> list = new ArrayList<LatLng>() {{
         add(new LatLng(37.64315706083303, 127.07421387440895));
         add(new LatLng(37.6542140862687, 127.05663668419913));
         add(new LatLng(37.65654223086294, 127.07829199769162));
         add(new LatLng(37.65448523300148, 127.0620681670044));
     }};
-    //https://milkissboy.tistory.com/11?category=733108
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_googlemap, container, false);
@@ -56,23 +57,25 @@ public class GoogleMapFragment extends Fragment
 
             checkRunTimePermission();
         }
+        //getCurrentAddress();
+        Log.d("??",latitude+" "+longitude);//위경도를 애뮬레이터 상에서 불러오지못함 (구글 본사 or 0,0뜸,디바이스 빌드시엔 정상작동)
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                getCurrentAddress();
-                LatLng currentPlace = new LatLng(latitude, longitude); //위경도 좌표를 나타내는 클래스
+                //getCurrentAddress();
+                LatLng currentPlace = new LatLng(latitude, longitude); //LatLng 위경도 좌표를 나타내는 클래스
                 Log.d("??",latitude+" "+longitude);
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(currentPlace);
                 markerOptions.title("현위치");
                 markerOptions.snippet("간단한 설명");
                 googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
-                for(int i=0;i<list.size();i++)
+                for(int i=0;i<list.size();i++)//TODO : DB제작 이후 기관 리스트 추가하는 로직  getUserInstitution에서 처리
                 {
                     markerOptions.position(list.get(i));
                     markerOptions.title("기관");
                     markerOptions.snippet("간단한 설명");
-                    googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
+                    googleMap.addMarker(markerOptions);
                 }
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPlace));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
@@ -121,7 +124,7 @@ public class GoogleMapFragment extends Fragment
         return true;
     }
 
-    public void getUserInstitution()
+    public void getUserInstitution()//TODO : 기관 추천 처리
     {
 
     }
