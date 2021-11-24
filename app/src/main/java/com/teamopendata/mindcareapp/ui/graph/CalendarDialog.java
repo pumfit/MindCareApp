@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.ui.setting;
+package com.teamopendata.mindcareapp.ui.graph;
 
 import android.app.Dialog;
 import android.content.Context;
