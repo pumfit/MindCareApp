@@ -1,5 +1,7 @@
 package com.teamopendata.mindcareapp;
 
+import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,6 +12,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -19,6 +23,13 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+
+        ArrayList<String> a = new ArrayList<String>();
+        a = BtnPrefMgr.getStringArrayPref(MainActivity.this,BTN_PREF_KEY);
+        for(int i = 0; i< a.size();i++){
+            Log.d("keyValues", a.get(i));
+        }
+
 
 //        SharedPreferences pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE);
 //        boolean checkFisrt = pref.getBoolean("checkFirst",false);

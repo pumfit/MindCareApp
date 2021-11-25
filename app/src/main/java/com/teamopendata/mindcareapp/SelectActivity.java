@@ -1,5 +1,7 @@
 package com.teamopendata.mindcareapp;
 
+import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +19,31 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class SelectActivity extends AppCompatActivity {
     private final String TAG = SelectActivity.class.getSimpleName();
 
-    android.widget.Button stress_button,fear_button,insomnia_button,complete_button,selectCancel_button,depressed_button,anxiety_button,suicide_try_button,suicide_thinking_button,left_people_button;
+
+    android.widget.Button btn_depress_anxiety,btn_sleeplessness,btn_stress,btn_phobia,btn_mental_illness,btn_suicide_thinking,btn_left_people,btn_self_injury;
+    android.widget.Button btn_adult,btn_kids,btn_elders,btn_parents_family,btn_healthcare;
+    android.widget.Button btn_out_clinic,btn_rehabilitation,btn_residence,btn_guidance,btn_vocation_training,btn_mental_retardation,btn_disaster,btn_adjust;
+    android.widget.Button btn_alcohol_addicted,btn_gambling_addicted,btn_drug_addicted,btn_smartphone_addicted;
+
+    android.widget.Button selectCancel_button,complete_button;
+
     TextView picknum;
 
-    int  stress_button_status =0,fear_button_status =0,insomnia_button_status=0 ,depressed_button_status=0,anxiety_button_status=0; //정신 버튼
-    int suicide_try_button_status = 0, suicide_thinking_button_status = 0, left_people_button_status = 0;
+
+    int  btn_depress_anxiety_status =0,btn_sleeplessness_status = 0,btn_stress_status = 0,btn_phobia_status = 0,btn_mental_illness_status = 0,btn_suicide_thinking_status = 0,btn_left_people_status = 0,btn_self_injury_status = 0; //정신 버튼
+
+    int  btn_adult_status =0,btn_kids_status = 0,btn_elders_status = 0,btn_parents_family_status = 0,btn_healthcare_status = 0;
+
+    int  btn_out_clinic_status =0,btn_rehabilitation_status = 0,btn_residence_status = 0,btn_guidance_status = 0,btn_vocation_training_status = 0,btn_mental_retardation_status = 0,btn_disaster_status=0,btn_adjust_status =0 ;
+
+    int  btn_alcohol_addicted_status =0,btn_gambling_addicted_status = 0,btn_drug_addicted_status = 0,btn_smartphone_addicted_status = 0;
+
+
     int sum =0;
 
 
@@ -33,18 +52,49 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
 
-        depressed_button = findViewById(R.id.depressed_button);
-        anxiety_button = findViewById(R.id.anxiety_button);
-        selectCancel_button = findViewById(R.id.selectCancel_button);
-        stress_button = findViewById(R.id.stress_button);
-        fear_button = findViewById(R.id.fear_button);
-        insomnia_button = findViewById(R.id.insomnia_button);
+        // !-- 첫번 째 버튼
+        btn_depress_anxiety = findViewById(R.id.btn_depress_anxiety);
+        btn_sleeplessness = findViewById(R.id.btn_sleeplessness);
+        btn_stress = findViewById(R.id.btn_stress);
+        btn_phobia = findViewById(R.id.btn_phobia);
+        btn_mental_illness = findViewById(R.id.btn_mental_illness);
+        btn_suicide_thinking = findViewById(R.id.btn_suicide_thinking);
+        btn_left_people = findViewById(R.id.btn_left_people);
+        btn_self_injury = findViewById(R.id.btn_self_injury);
+
+
+        // !-- 두번 째 버튼
+        btn_adult = findViewById(R.id.btn_adult);
+        btn_kids = findViewById(R.id.btn_kids);
+        btn_elders = findViewById(R.id.btn_elders);
+        btn_parents_family = findViewById(R.id.btn_parents_family);
+        btn_healthcare = findViewById(R.id.btn_healthcare);
+
+
+        // !-- 세번 째 버튼
+        btn_out_clinic = findViewById(R.id.btn_out_clinic);
+        btn_rehabilitation = findViewById(R.id.btn_rehabilitation);
+        btn_residence = findViewById(R.id.btn_residence);
+        btn_guidance = findViewById(R.id.btn_guidance);
+        btn_vocation_training = findViewById(R.id.btn_vocation_training);
+        btn_mental_retardation = findViewById(R.id.btn_mental_retardation);
+        btn_disaster = findViewById(R.id.btn_disaster);
+        btn_adjust = findViewById(R.id.btn_adjust);
+
+
+        // !-- 네번 째 버튼
+        btn_alcohol_addicted = findViewById(R.id.btn_alcohol_addicted);
+        btn_gambling_addicted = findViewById(R.id.btn_gambling_addicted);
+        btn_drug_addicted = findViewById(R.id.btn_drug_addicted);
+        btn_smartphone_addicted = findViewById(R.id.btn_smartphone_addicted);
+
+
+
+
+
+
         complete_button = findViewById(R.id.complete_button);
-        suicide_try_button = findViewById(R.id.suicide_try_button);
-        suicide_thinking_button = findViewById(R.id.suicide_thinking_button);
-        left_people_button = findViewById(R.id.left_people_button);
-
-
+        selectCancel_button = findViewById(R.id.selectCancel_button);
         picknum = findViewById(R.id.picknum);
 
 
@@ -52,156 +102,384 @@ public class SelectActivity extends AppCompatActivity {
         selectCancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                buttonReset(depressed_button,anxiety_button,stress_button,fear_button,insomnia_button,suicide_try_button,suicide_thinking_button,left_people_button);
+                buttonReset(btn_depress_anxiety,btn_sleeplessness,btn_stress,btn_phobia,btn_mental_illness,btn_suicide_thinking,btn_left_people,btn_self_injury
+                        ,btn_adult,btn_kids,btn_elders,btn_parents_family,btn_healthcare
+                        ,btn_out_clinic,btn_rehabilitation,btn_residence,btn_guidance,btn_vocation_training,btn_mental_retardation,btn_disaster,btn_adjust
+                        ,btn_alcohol_addicted,btn_gambling_addicted,btn_drug_addicted,btn_smartphone_addicted);
             }
         });
 
         //!--키워드 클릭
         //!-- button 클릭인 겅우 status = 1
-
-        stress_button.setOnClickListener(new View.OnClickListener() {
+        //!-- 첫번째 라인 버튼
+        btn_depress_anxiety.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(stress_button_status,stress_button);
+                int result = buttonAllInOne(btn_depress_anxiety_status,btn_depress_anxiety);
                 if(result != -1){
-                    stress_button_status = result;
+                    btn_depress_anxiety_status = result;
+                    Log.d(TAG,"btn_depress_anxiety_status: "+result);
                 }
             }
         });
 
-        fear_button.setOnClickListener(new View.OnClickListener() {
 
+
+        btn_sleeplessness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(fear_button_status,fear_button);
+                int result = buttonAllInOne(btn_sleeplessness_status,btn_sleeplessness);
                 if(result != -1){
-                    fear_button_status = result;
+                    btn_sleeplessness_status = result;
                 }
             }
         });
 
-        insomnia_button.setOnClickListener(new View.OnClickListener() {
+        btn_stress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(insomnia_button_status,insomnia_button);
+                int result = buttonAllInOne(btn_stress_status,btn_stress);
                 if(result != -1){
-                    insomnia_button_status = result;
+                    btn_stress_status = result;
                 }
             }
         });
 
-        depressed_button.setOnClickListener(new View.OnClickListener() {
+
+
+        btn_phobia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(depressed_button_status,depressed_button);
+                int result = buttonAllInOne(btn_phobia_status,btn_phobia);
                 if(result != -1){
-                    depressed_button_status = result;
+                    btn_phobia_status = result;
                 }
             }
         });
 
-        anxiety_button.setOnClickListener(new View.OnClickListener() {
+        btn_mental_illness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(anxiety_button_status,anxiety_button);
+                int result = buttonAllInOne(btn_mental_illness_status,btn_mental_illness);
                 if(result != -1){
-                    anxiety_button_status = result;
+                    btn_mental_illness_status = result;
+                }
+            }
+        });
+        btn_suicide_thinking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_suicide_thinking_status,btn_suicide_thinking);
+                if(result != -1){
+                    btn_suicide_thinking_status = result;
                 }
             }
         });
 
-        suicide_try_button.setOnClickListener(new View.OnClickListener() {
+        btn_left_people.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(suicide_try_button_status,suicide_try_button);
+                int result = buttonAllInOne(btn_left_people_status,btn_left_people);
                 if(result != -1){
-                    suicide_try_button_status = result;
+                    btn_left_people_status = result;
                 }
             }
         });
 
-        suicide_thinking_button.setOnClickListener(new View.OnClickListener() {
+        btn_self_injury.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(suicide_thinking_button_status,suicide_thinking_button);
+                int result = buttonAllInOne(btn_self_injury_status,btn_self_injury);
                 if(result != -1){
-                    suicide_thinking_button_status = result;
+                    btn_self_injury_status = result;
                 }
             }
         });
 
-        left_people_button.setOnClickListener(new View.OnClickListener() {
+
+
+        //!-- 두번째 라인 버튼
+        btn_adult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int result = buttonAllInOne(left_people_button_status,left_people_button);
+                int result = buttonAllInOne(btn_adult_status,btn_adult);
                 if(result != -1){
-                    left_people_button_status = result;
+                    btn_adult_status = result;
                 }
             }
         });
 
+        btn_kids.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_kids_status,btn_kids);
+                if(result != -1){
+                    btn_kids_status = result;
+                }
+            }
+        });
+
+        btn_elders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_elders_status,btn_elders);
+                if(result != -1){
+                    btn_elders_status = result;
+                }
+            }
+        });
+
+        btn_parents_family.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_parents_family_status,btn_parents_family);
+                if(result != -1){
+                    btn_parents_family_status = result;
+                }
+            }
+        });
+
+        btn_healthcare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_healthcare_status,btn_healthcare);
+                if(result != -1){
+                    btn_healthcare_status = result;
+                }
+            }
+        });
+
+
+
+
+        // !-- 세번 째 버튼
+        btn_out_clinic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_out_clinic_status,btn_out_clinic);
+                if(result != -1){
+                    btn_out_clinic_status = result;
+                }
+            }
+        });
+
+        btn_rehabilitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_rehabilitation_status,btn_rehabilitation);
+                if(result != -1){
+                    btn_rehabilitation_status = result;
+                }
+            }
+        });
+
+        btn_residence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_residence_status,btn_residence);
+                if(result != -1){
+                    btn_residence_status = result;
+                }
+            }
+        });
+
+        btn_guidance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_guidance_status,btn_guidance);
+                if(result != -1){
+                    btn_guidance_status = result;
+                }
+            }
+        });
+
+        btn_vocation_training.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_vocation_training_status,btn_vocation_training);
+                if(result != -1){
+                    btn_vocation_training_status = result;
+                }
+            }
+        });
+
+        btn_mental_retardation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_mental_retardation_status,btn_mental_retardation);
+                if(result != -1){
+                    btn_mental_retardation_status = result;
+                }
+            }
+        });
+
+        btn_disaster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_disaster_status,btn_disaster);
+                if(result != -1){
+                    btn_disaster_status = result;
+                }
+            }
+        });
+
+        btn_adjust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_adjust_status,btn_adjust);
+                if(result != -1){
+                    btn_adjust_status = result;
+                }
+            }
+        });
+
+
+        //!--네번째 라인 버튼
+
+        btn_alcohol_addicted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_alcohol_addicted_status,btn_alcohol_addicted);
+                if(result != -1){
+                    btn_alcohol_addicted_status = result;
+                }
+            }
+        });
+
+        btn_gambling_addicted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_gambling_addicted_status,btn_gambling_addicted);
+                if(result != -1){
+                    btn_gambling_addicted_status = result;
+                }
+            }
+        });
+
+        btn_drug_addicted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_drug_addicted_status,btn_drug_addicted);
+                if(result != -1){
+                    btn_drug_addicted_status = result;
+                }
+            }
+        });
+
+        btn_smartphone_addicted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int result = buttonAllInOne(btn_smartphone_addicted_status,btn_smartphone_addicted);
+                if(result != -1){
+                    btn_smartphone_addicted_status = result;
+                }
+            }
+        });
 
 
         complete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<String> btnList = new ArrayList<String>();
                 if(sum == 0){
                     Toast.makeText(getApplicationContext(),"키워드를 선택해주세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
 
-                if( stress_button_status == 1){
-                    intent.putExtra("stress",stress_button.getText().toString());
+                // !-- 첫번째 버튼
+                if( btn_depress_anxiety_status == 1){
+                    btnList.add("btn_depress_anxiety");
                 }
-                if(fear_button_status == 1){
-                    intent.putExtra("fear",fear_button.getText().toString());
+                if(btn_sleeplessness_status == 1){
+                    btnList.add("btn_sleeplessness");
                 }
-                if(insomnia_button_status == 1){
-                    intent.putExtra("insomnia",insomnia_button.getText().toString());
+                if(btn_stress_status == 1){
+                    btnList.add("btn_stress");
                 }
-                if(depressed_button_status == 1){
-                    intent.putExtra("depressed",depressed_button.getText().toString());
+                if(btn_phobia_status == 1){
+                    btnList.add("btn_phobia");
                 }
-                if(anxiety_button_status == 1){
-                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                if(btn_mental_illness_status == 1){
+                    btnList.add("btn_mental_illness");
                 }
-                if(suicide_try_button_status == 1){
-                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                if(btn_suicide_thinking_status == 1){
+                    btnList.add("btn_suicide_thinking");
                 }
-                if(suicide_thinking_button_status == 1){
-                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                if(btn_left_people_status == 1){
+                    btnList.add("btn_left_people");
                 }
-                if(left_people_button_status == 1){
-                    intent.putExtra("anxiety",anxiety_button.getText().toString());
+                if(btn_self_injury_status == 1){
+                    btnList.add("btn_self_injury");
                 }
-                if( intent.getExtras() != null){
-                    startActivity(intent);
+
+                // !-- 두번째 버튼
+                if(btn_adult_status == 1){
+                    btnList.add("btn_adult");
                 }
+                if(btn_kids_status == 1){
+                    btnList.add("btn_kids");
+                }
+                if(btn_elders_status == 1){
+                    btnList.add("btn_elders");
+                }
+                if(btn_parents_family_status == 1){
+                    btnList.add("btn_parents_family");
+                }
+                if(btn_healthcare_status == 1){
+                    btnList.add("btn_healthcare");
+                }
+
+                if(btn_out_clinic_status == 1){
+                    btnList.add("btn_out_clinic");
+                }
+                if(btn_rehabilitation_status == 1){
+                    btnList.add("btn_rehabilitation");
+                }
+                if(btn_residence_status == 1){
+                    btnList.add("btn_residence");
+                }
+                if(btn_guidance_status == 1){
+                    btnList.add("btn_guidance");
+                }
+                if(btn_vocation_training_status == 1){
+                    btnList.add("btn_vocation_training");
+                }
+                if(btn_mental_retardation_status == 1){
+                    btnList.add("btn_mental_retardation");
+                }
+                if(btn_disaster_status == 1){
+                    btnList.add("btn_disaster");
+                }
+                if(btn_adjust_status == 1){
+                    btnList.add("btn_adjust");
+                }
+                if(btn_alcohol_addicted_status == 1){
+                    btnList.add("btn_alcohol_addicted");
+                }
+                if(btn_gambling_addicted_status == 1){
+                    btnList.add("btn_gambling_addicted");
+                }
+                if(btn_drug_addicted_status == 1){
+                    btnList.add("btn_drug_addicted");
+                }
+                if(btn_smartphone_addicted_status == 1){
+                    btnList.add("btn_smartphone_addicted");
+                }
+
+
+                for(int i = 0;i<btnList.size();i++){
+                    Log.d(TAG,"SelectedBtnList : "+btnList.get(i));
+                }
+
+                BtnPrefMgr.setStringArrayPref(SelectActivity.this,BTN_PREF_KEY,btnList);
+                startActivity(intent);
             }
         });
-
     }
 
-//    //!--버튼  총합 메소드
-//    private void  buttonAllInOne(final android.widget.Button button , final int buttonStatus,final int sum){
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(buttonStatus == 0 && sum < 4){
-//                    buttonClicked(button);
-//                    buttonStatus = 1;
-//                }
-//                else if (buttonStatus == 1){
-//                    buttonDefault(button);
-//                    buttonStatus = 0;
-//                }
-//            }
-//        });
-////    }
+
 
     private int buttonAllInOne(int status,android.widget.Button button){
         if(status == 0 && sum < 4){
@@ -238,7 +516,11 @@ public class SelectActivity extends AppCompatActivity {
 
 
     //!--buttonSelection 초기화 메소드
-    private  void buttonReset(android.widget.Button button1, android.widget.Button button2,android.widget.Button button3,android.widget.Button button4,android.widget.Button button5,android.widget.Button button6,android.widget.Button button7,android.widget.Button button8 ){
+    private  void buttonReset(android.widget.Button button1, android.widget.Button button2,android.widget.Button button3,android.widget.Button button4,android.widget.Button button5,android.widget.Button button6,android.widget.Button button7,android.widget.Button button8
+            ,android.widget.Button button9,android.widget.Button button10,android.widget.Button button11,android.widget.Button button12,android.widget.Button button13
+            ,android.widget.Button button14,android.widget.Button button15,android.widget.Button button16,android.widget.Button button17,android.widget.Button button18,android.widget.Button button19,android.widget.Button button20,android.widget.Button button21
+            ,android.widget.Button button22,android.widget.Button button23,android.widget.Button button24,android.widget.Button button25){
+
 
         button1.setBackgroundResource(R.drawable.button);
         button1.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
@@ -264,18 +546,71 @@ public class SelectActivity extends AppCompatActivity {
         button8.setBackgroundResource(R.drawable.button);
         button8.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
 
-        stress_button_status = 0;
-        fear_button_status = 0;
-        insomnia_button_status = 0;
-        depressed_button_status = 0;
-        anxiety_button_status = 0;
-        suicide_try_button_status =0;
-        suicide_thinking_button_status=0;
-        left_people_button_status =0;
+        button9.setBackgroundResource(R.drawable.button);
+        button9.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button10.setBackgroundResource(R.drawable.button);
+        button10.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button11.setBackgroundResource(R.drawable.button);
+        button11.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button12.setBackgroundResource(R.drawable.button);
+        button12.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button13.setBackgroundResource(R.drawable.button);
+        button13.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button14.setBackgroundResource(R.drawable.button);
+        button14.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button15.setBackgroundResource(R.drawable.button);
+        button15.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button16.setBackgroundResource(R.drawable.button);
+        button16.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button17.setBackgroundResource(R.drawable.button);
+        button17.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button18.setBackgroundResource(R.drawable.button);
+        button18.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button19.setBackgroundResource(R.drawable.button);
+        button19.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button20.setBackgroundResource(R.drawable.button);
+        button20.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button21.setBackgroundResource(R.drawable.button);
+        button21.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button22.setBackgroundResource(R.drawable.button);
+        button22.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button23.setBackgroundResource(R.drawable.button);
+        button23.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button24.setBackgroundResource(R.drawable.button);
+        button24.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+        button25.setBackgroundResource(R.drawable.button);
+        button25.setTextColor(getResources().getColor(R.color.buttonDefaultcolor,getTheme()));
+
+
+        btn_depress_anxiety_status = 0;
+        btn_sleeplessness_status = 0;
+        btn_stress_status = 0;
+        btn_phobia_status = 0;
+        btn_mental_illness_status = 0;
+        btn_suicide_thinking_status =0;
+        btn_left_people_status=0;
+        btn_self_injury_status =0;
 
         sum = 0;
-
         picknum.setText("0"); //초기화
 
     }
+
+//!--end
 }
