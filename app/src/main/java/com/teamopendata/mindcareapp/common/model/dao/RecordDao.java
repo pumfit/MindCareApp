@@ -21,6 +21,6 @@ public interface RecordDao {
     @Update
     void update(Record record);
 
-    @Query("SELECT * FROM record_table")
+    @Query("SELECT * FROM record_table ORDER BY date")
     List<Record> getAll();
 }

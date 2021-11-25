@@ -10,7 +10,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.records.fragment.AddRecordFragment">
+            tools:context=".ui.records.fragment.AddEditRecordFragment">
 
             <LinearLayout
                 android:id="@+id/cl_record_date_container"
@@ -45,8 +45,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text=""
                     android:hint="날짜 선택"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -89,9 +89,9 @@
                     android:autofillHints="title"
                     android:background="@null"
                     android:gravity="center"
+                    android:hint="기록 제목 입력"
                     android:minHeight="40dp"
                     android:text=""
-                    android:hint="기록 제목 입력"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>

@@ -14,14 +14,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentRecordsBinding;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
-import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordListener;
+import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordClickListener;
 
-public class RecordsFragment extends Fragment implements OnAddEditRecordListener {
+public class RecordsFragment extends Fragment implements OnAddEditRecordClickListener {
     public static final String TAG = "RecordsFragment";
     private FragmentRecordsBinding binding;
 
     HomeRecordsFragment homeRecordsFragment;
-    AddRecordFragment addRecordFragment;
+    AddEditRecordFragment addEditRecordFragment;
 
     @Nullable
     @Override
@@ -40,10 +40,10 @@ public class RecordsFragment extends Fragment implements OnAddEditRecordListener
         transaction.add(R.id.fl_records_container, homeRecordsFragment).commit();
     }
 
-    public void onAddEditRecordButtonClick(Record record) {
-        addRecordFragment = new AddRecordFragment();
+    public void onAddEditRecordClick(Record record) {
+        addEditRecordFragment = new AddEditRecordFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_records_container, addRecordFragment).addToBackStack(AddRecordFragment.class.getName()).commit();
+        transaction.replace(R.id.fl_records_container, addEditRecordFragment).addToBackStack(AddEditRecordFragment.class.getName()).commit();
     }
 
 }

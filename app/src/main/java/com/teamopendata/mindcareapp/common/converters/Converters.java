@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp.converters;
+package com.teamopendata.mindcareapp.common.converters;
 
 import androidx.room.TypeConverter;
 
