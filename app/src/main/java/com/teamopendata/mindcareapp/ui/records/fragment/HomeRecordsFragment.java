@@ -34,7 +34,7 @@ public class HomeRecordsFragment extends Fragment {
 
     private RecordsAdapter mRecordsAdapter;
 
-    private OnAddEditRecordClickListener mListener = null;
+    private final OnAddEditRecordClickListener mListener;
 
     public HomeRecordsFragment(OnAddEditRecordClickListener listener) {
         mListener = listener;
@@ -90,10 +90,10 @@ public class HomeRecordsFragment extends Fragment {
         binding.rvRecordsList.setAdapter(mRecordsAdapter);
         binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
         binding.fabRecordAdd.setOnClickListener(v -> mListener.onAddEditRecordClick(EventType.EVENT_ADD, null, record -> {
+            // TODO 아이템 추가가 끝나고 호출되는 콜백~
             mRecordsAdapter.addItem(record);
             binding.pbRecordsLoading.setVisibility(View.GONE);
             binding.tvTextStickyEmpty.setVisibility(View.GONE);
-            // TODO 아이템 추가가 끝나고 호출되는 콜백~
         }));
         binding.rvRecordsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

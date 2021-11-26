@@ -24,6 +24,7 @@ import com.teamopendata.mindcareapp.common.Utils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
@@ -71,6 +72,11 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final OnAddEditRecordClickListener mAddEditRecordListener;
 
     private int cachedAddPosition = 0;
+    private static long cachedRecordId = 1;
+
+    public static long getCachedRecordId() {
+        return cachedRecordId;
+    }
 
     public int getCachedAddPosition() {
         return cachedAddPosition;
@@ -140,12 +146,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         }
         // 3. 일치하는 header 없음 -> 맨 마지막에 추가
-        insertHeaderAndItem(mItems.size() - 1, headers.size(), newRecord);
+        insertHeaderAndItem(mItems.size(), headers.size(), newRecord);
     }
 
     private void insertItem(Record newRecord, int i) {
         mItems.add(i, new RecordItem(newRecord));
         cachedAddPosition = i;
+        cachedRecordId = newRecord.getId() > cachedRecordId ? newRecord.getId() + 1 : cachedRecordId + 1;
+        Log.d(TAG, "insertItem: " + cachedRecordId);
     }
 
     private void insertHeaderAndItem(int position, int listPosition, Record newRecord) {
@@ -163,8 +171,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return header.position + 1;
     }
 
-    private void headerIncrementPos(int pos, int increment) {
-        for (int i = pos; i < headers.size(); i++) headers.get(i).position += increment;
+    private void headerIncrementPos(int pos, int value) {
+        for (int i = pos; i < headers.size(); i++) headers.get(i).position += value;
+    }
+
+    private void headerDecrementPos(int pos, int value) {
+        for (int i = pos; i < headers.size(); i++) headers.get(i).position -= value;
     }
 
     @NonNull
@@ -285,14 +297,54 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvRecordTitle.setText(record.getTitle());
 
             btnRecordEdit.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordClick(
-                    AddEditRecordFragment.EventType.EVENT_EDIT, (Record) mItems.get(position).getItem(),
+                    AddEditRecordFragment.EventType.EVENT_EDIT, record,
                     r -> {
-                        mItems.set(position, new RecordItem(r));
-                        notifyItemChanged(position);
                         // TODO 아이템 수정 끝나고 호출 되는 콜백~
+                        if (r == null) {
+                            removeItem(position);
+                        } else {
+                            removeItem(position);
+                            addItem(r);
+                        }
                     }
             ));
         }
+    }
+
+    private void removeItem(int position) {
+        mItems.remove(position);
+        notifyHeader(position);
+    }
+
+    private void notifyHeader(int position) {
+        Header prevHeader = headers.get(0);
+        if (headers.size() > 1) {
+            for (Header header : headers) {
+                if (header.position >= position) {
+                    headerDecrementPos(headers.indexOf(prevHeader) + 1, 1);
+                    if (header.position - prevHeader.position == 1)
+                        removeHeader(prevHeader);
+                    return;
+                }
+                prevHeader = header;
+            }
+            if (mItems.size() - prevHeader.position == 1) {
+                removeHeader(prevHeader);
+            }
+        } else {
+            if (mItems.size() < 2) {
+                headers.remove(0);
+                mItems.remove(1);
+                notifyItemRemoved(1);
+            }
+        }
+    }
+
+    private void removeHeader(Header header) {
+        mItems.remove(header.position);
+        headerDecrementPos(headers.indexOf(header), 1);
+        headers.remove(header);
+        notifyItemRemoved(header.position);
     }
 
     private static class HeaderViewHolder extends RecyclerView.ViewHolder {
@@ -326,4 +378,3 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 }
-

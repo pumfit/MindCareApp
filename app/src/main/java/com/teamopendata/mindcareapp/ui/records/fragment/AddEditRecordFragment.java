@@ -22,6 +22,7 @@ import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddEditRecordBinding;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
+import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.common.Utils;
@@ -65,7 +66,7 @@ public class AddEditRecordFragment extends Fragment {
         else mNewRecord = new Record();
         mSaveListener = listener;
 
-        Log.d(TAG, "AddEditRecordFragment: " + "eventType" + mEventType.toString() + "Record->" + mNewRecord.toString());
+        Log.d(TAG, "AddEditRecordFragment: " + "eventType-> " + mEventType.toString() + "Record-> " + mNewRecord.toString());
     }
 
 
@@ -126,7 +127,7 @@ public class AddEditRecordFragment extends Fragment {
             showToast();
             new Thread(() -> {
                 Log.d(TAG, "addRecord: " + mNewRecord.toString());
-
+                mNewRecord.setId(RecordsAdapter.getCachedRecordId());
                 MindChargeDB.getInstance(requireContext()).getRecordDao().insert(mNewRecord);
                 mSaveListener.onPerformEvent(mNewRecord);
             }).start();
@@ -134,7 +135,7 @@ public class AddEditRecordFragment extends Fragment {
     }
 
     private void updateRecord() {
-        if (!mNewRecord.equals(mCachedRecord)) {
+        if (newRecord() && !mNewRecord.equals(mCachedRecord)) {
             Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
             new Thread(() -> {
                 Log.d(TAG, "updateRecord: " + mNewRecord.toString());
@@ -147,13 +148,14 @@ public class AddEditRecordFragment extends Fragment {
     }
 
     private void deleteRecord() {
-        Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+        getParentFragmentManager().popBackStack();
         new Thread(() -> {
             Log.d(TAG, "deleteRecord: " + mNewRecord.toString());
 
             MindChargeDB.getInstance(requireContext()).getRecordDao().delete(mNewRecord);
-            mSaveListener.onPerformEvent(mNewRecord);
+            mSaveListener.onPerformEvent(null);
         }).start();
+        Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void showToast() {
@@ -211,14 +213,15 @@ public class AddEditRecordFragment extends Fragment {
 
     @Override
     public void onPause() {
+        if (mEventType == EventType.EVENT_ADD) addRecord();
+        else updateRecord();
         super.onPause();
         Log.d(TAG, "onPause: ");
     }
 
     @Override
     public void onStop() {
-        if (mEventType == EventType.EVENT_ADD) addRecord();
-        else updateRecord();
+
         Log.d(TAG, "onStop: ");
         super.onStop();
     }

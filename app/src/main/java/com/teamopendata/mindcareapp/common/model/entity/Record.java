@@ -61,11 +61,12 @@ public class Record implements Cloneable {
     @Override
     public String toString() {
         if (tasks == null) {
-            return "기록 제목:" + title + "날짜:";
+            return "id:" + id + " 기록 제목:" + title + " 날짜:";
         } else {
-            return "기록 제목:" + title + "날짜:" + date.toString() + "할 일:" + tasks.toString();
+            return "id:" + id + " 기록 제목:" + title + " 날짜:" + date.toString() + " 할 일:" + tasks.toString();
         }
     }
+
 
     @NonNull
     @Override
