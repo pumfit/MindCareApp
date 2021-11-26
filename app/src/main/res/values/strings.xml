@@ -48,4 +48,7 @@
     <string name="add_task_record">할 일 추가</string>
     <string name="save_record">저장</string>
     <string name="hint_task">할 일을 입력하세요!</string>
+    <string name="select_date_record">날짜 선택</string>
+    <string name="enter_title_record">제목 입력</string>
+    <string name="check_list_tasks">Check List</string>
 </resources>

@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.databinding.FragmentAddRecordBinding;
+import com.teamopendata.mindcareapp.databinding.FragmentAddEditRecordBinding;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
@@ -28,12 +28,11 @@ import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordSaveListe
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 public class AddEditRecordFragment extends Fragment {
     private static final String TAG = "AddEditRecordFragment";
-    private FragmentAddRecordBinding binding;
+    private FragmentAddEditRecordBinding binding;
     private TaskAdapter taskAdapter;
 
     private Toast toastSave;
@@ -64,7 +63,7 @@ public class AddEditRecordFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_edit_record, container, false);
         return binding.getRoot();
     }
 
@@ -86,7 +85,7 @@ public class AddEditRecordFragment extends Fragment {
 
         binding.tvRecordPickDate.setText(getDate());
 
-        binding.tvRecordPickDate.setOnClickListener(v -> showDatePickerDialog());
+        binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());
 
     }
 
