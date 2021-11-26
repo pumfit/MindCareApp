@@ -33,18 +33,21 @@ public class MapListSubInfoDialog {
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dlg.show();
 
-        final Button cancelButton = (Button) dlg.findViewById(R.id.btn_map_info_back);
         final Button callButton = (Button) dlg.findViewById(R.id.btn_map_info_call);
         final Button webButton = (Button) dlg.findViewById(R.id.btn_map_info_web);
-        final TextView textView = (TextView) dlg.findViewById(R.id.tv_map_info_name);
-        textView.setText(mediInfo.name+", "+mediInfo.tel+", "+mediInfo.address+", "+mediInfo.grade);
+        final Button bookMarkButton = (Button) dlg.findViewById(R.id.btn_map_info_bookmark);
+        final TextView nameTextView = (TextView) dlg.findViewById(R.id.tv_map_info_name);
+        final TextView typeTextView = (TextView) dlg.findViewById(R.id.tv_map_info_type);
+        final TextView addressTextView = (TextView) dlg.findViewById(R.id.tv_map_info_address);
+        final TextView urlTextView = (TextView) dlg.findViewById(R.id.tv_map_info_url);
+        final TextView telTextView = (TextView) dlg.findViewById(R.id.tv_map_info_tel);
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dlg.dismiss();
-            }
-        });
+        nameTextView.setText(mediInfo.name);
+        typeTextView.setText(mediInfo.type);
+        addressTextView.setText(mediInfo.address);
+        urlTextView.setText(mediInfo.url);
+        telTextView.setText(mediInfo.tel);
+
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
