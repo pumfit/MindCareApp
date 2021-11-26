@@ -7,6 +7,15 @@
     android:background="@color/default_background"
     tools:context=".ui.map.MapFragment">
 
+    <FrameLayout
+        android:id="@+id/fl_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="123dp">
+
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +25,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:padding="8dp"
+            android:background="@drawable/dialog_rounded_background"
             android:orientation="horizontal">
 
             <TextView
@@ -35,7 +47,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btn_bookmark"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_weight="1"
@@ -45,22 +57,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#0920A1"
-            android:text="@string/map_sub_title" />
-
-        <FrameLayout
-            android:layout_marginTop="12dp"
-            android:id="@+id/fl_map_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
 
 
     </LinearLayout>

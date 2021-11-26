@@ -1,11 +1,38 @@
 package com.teamopendata.mindcareapp.ui.map;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "medicalinstitution")
 public class MedicalInstitution {
+
+    public MedicalInstitution(long id, @NonNull String name, @NonNull String type, int grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.grade = grade;
+        this.address = address;
+        this.tel = tel;
+        this.url = url;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public MedicalInstitution(@NonNull String name, @NonNull String type, int grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
+        this.name = name;
+        this.type = type;
+        this.grade = grade;
+        this.address = address;
+        this.tel = tel;
+        this.url = url;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public MedicalInstitution() {
+    }
 
     @PrimaryKey(autoGenerate = true)//기본키
     public long id;

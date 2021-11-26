@@ -29,15 +29,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/questionButton"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_weight="1"
-                android:background="@drawable/iconquestioni"
-                android:paddingRight="10dp" />
-
-            <Button
-                android:id="@+id/button1"
+                android:id="@+id/btn_bookmark"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"

@@ -37,4 +37,6 @@
     <string name="graph">그래프</string>
     <string name="today_task">Today\'s task</string>
     <string name="home_something">"오늘 하루도 수고했어요."</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -15,18 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHolder> {
 
-    private ArrayList<String> arrayList;
+    private List<MedicalInstitution> medicalList;
     private boolean[] bookmarkStatus;
+    private Context context;
 
-    public MapListAdapter(ArrayList<String> list) { arrayList = list; bookmarkStatus = new boolean[list.size()];};
+    public MapListAdapter(List<MedicalInstitution> list) { medicalList = list; bookmarkStatus = new boolean[list.size()];};
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view  = inflater.inflate(R.layout.item_map_list,parent,false);
         MapListAdapter.ViewHolder viewHolder = new MapListAdapter.ViewHolder(view);
@@ -35,18 +36,24 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
     }
 
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        String text = arrayList.get(position);
-        holder.textView1.setText(text);
+        String name = medicalList.get(position).name;
+        String type = medicalList.get(position).type;
+        String address = medicalList.get(position).address;
 
-        holder.bookmarkBtn.setOnClickListener(new Button.OnClickListener() {
+        holder.tvName.setText(name);
+        holder.tvType.setText(type);
+        holder.tvAddress.setText(address);
+
+        holder.btnBookmark.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 if(bookmarkStatus[position] == false){
-                    buttonClicked(holder.bookmarkBtn);
+                    buttonClicked(holder.btnBookmark);
                     Toast.makeText(v.getContext(), "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                     bookmarkStatus[position] = true;
                 }
                 else if(bookmarkStatus[position] == true){
-                    buttonDefault(holder.bookmarkBtn);
+                    buttonDefault(holder.btnBookmark);
+                    Toast.makeText(v.getContext(), "즐겨찾기가 취소되었습니다.", Toast.LENGTH_SHORT).show();
                     bookmarkStatus[position] = false;
                 }
             }
@@ -55,22 +62,30 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return medicalList.size();
     }
 
-    public void setArrayData(String strData) { arrayList.add(strData); }
+    public void setArrayData(MedicalInstitution mediData) { medicalList.add(mediData); }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView1;
-        public TextView textView2;
-        public ImageButton bookmarkBtn;
+        public TextView tvName;
+        public TextView tvType;
+        public TextView tvAddress;
+        public ImageButton btnBookmark;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView1 = itemView.findViewById(R.id.textTitle);
-            textView2 = itemView.findViewById(R.id.textType);
-            bookmarkBtn = itemView.findViewById(R.id.imageButton);
+            tvName = itemView.findViewById(R.id.tv_map_name);
+            tvType = itemView.findViewById(R.id.tv_map_type);
+            tvAddress = itemView.findViewById(R.id.tv_map_address);
+            btnBookmark = itemView.findViewById(R.id.ib_map_bookmark_star);
+
+            itemView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                MapListSubInfoDialog subInfoDialog = new MapListSubInfoDialog(context,medicalList.get(pos));
+                subInfoDialog.callFunction();
+            });
         }
 
     }

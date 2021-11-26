@@ -1,7 +1,6 @@
 package com.teamopendata.mindcareapp;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -9,25 +8,34 @@ import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
+import com.teamopendata.mindcareapp.common.model.dao.RecordDao;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
+import com.teamopendata.mindcareapp.converters.Converters;
 import com.teamopendata.mindcareapp.ui.map.MedicalInstitution;
 import com.teamopendata.mindcareapp.ui.map.MedicalInstitutionDao;
 
-@Database(entities = {MedicalInstitution.class}, version = 1)
-public abstract class mindChargeDB extends RoomDatabase {
+@Database(entities = {MedicalInstitution.class, Record.class}, version = 1, exportSchema = false)
+@TypeConverters(Converters.class)
+public abstract class MindChargeDB extends RoomDatabase {
 
-    private static mindChargeDB INSTANCE = null;
+    private static MindChargeDB INSTANCE = null;
 
-    public abstract MedicalInstitutionDao medicalInstitutionDao();
+    public MedicalInstitutionDao medicalInstitutionDao() {
+        return null;
+    }
 
+    public abstract RecordDao getRecordDao();
+    public abstract MedicalInstitutionDao getMedicalInstitutionDao();
 
-    public static mindChargeDB getInstance(Context context) {
+    public static MindChargeDB getInstance(Context context) {
         if (INSTANCE == null) {
+//            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+//                    MindChargeDB.class, "medicalinstitution.db").build();
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    mindChargeDB.class, "medicalinstitution.db").build();
-            //.createFromAsset("database/medicalinstitution.db")
-            Log.d("db on","db!!!");
+                    MindChargeDB.class, "medicalinstitution.db").createFromAsset("database/medicalinstitution.db").build();
         }
         return INSTANCE;
     }
