@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,29 +25,49 @@ import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.common.Utils;
-import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordSaveListener;
+import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class AddEditRecordFragment extends Fragment {
+    public enum EventType {
+        EVENT_ADD,
+        EVENT_EDIT;
+
+        @NonNull
+        @Override
+        public String toString() {
+            return this.name();
+        }
+    }
+
     private static final String TAG = "AddEditRecordFragment";
     private FragmentAddEditRecordBinding binding;
     private TaskAdapter taskAdapter;
 
-    private Toast toastSave;
-    private LocalDate date;
+    private final EventType mEventType;
 
+    private Toast toastEvent;
 
-    private OnAddEditRecordSaveListener mListener;
+    private Record mNewRecord;
+    private final Record mCachedRecord;
 
     /**
-     * @param listener called after being saved record
+     * @see HomeRecordsFragment called after being saved record
      */
-    public void setOnAddEditRecordSaveListener(OnAddEditRecordSaveListener listener) {
-        mListener = listener;
+    private final OnAddEditRecordEventListener mSaveListener;
+
+    public AddEditRecordFragment(EventType type, Record record, OnAddEditRecordEventListener listener) {
+        mEventType = type;
+        mCachedRecord = record;
+        if (mEventType == EventType.EVENT_EDIT) mNewRecord = record.clone();
+        else mNewRecord = new Record();
+        mSaveListener = listener;
+
+        Log.d(TAG, "AddEditRecordFragment: " + "eventType" + mEventType.toString() + "Record->" + mNewRecord.toString());
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -70,11 +91,19 @@ public class AddEditRecordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toastSave = Utils.buildSaveToast(view, requireContext(), getLayoutInflater());
+        toastEvent = Utils.buildSaveToast(view, requireContext(), getLayoutInflater());
 
         ArrayList<Task> item = new ArrayList<>();
+
+        if (mEventType == EventType.EVENT_ADD) {
+            mNewRecord = new Record("", LocalDate.now());
+            binding.btnRecordDelete.setVisibility(View.GONE);
+        } else {
+            item.addAll(mNewRecord.getTasks());
+        }
         taskAdapter = new TaskAdapter(item);
         binding.includeRv.rvRecordTask.setAdapter(taskAdapter);
+        binding.includeRv.rvRecordTask.addItemDecoration(new DividerItemDecoration(requireContext(), 1));
 
         binding.includeRv.btnTaskAdd.setOnClickListener(v -> {
             taskAdapter.addTask(new Task());
@@ -82,29 +111,89 @@ public class AddEditRecordFragment extends Fragment {
         });
 
         binding.btnRecordSave.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        binding.btnRecordDelete.setOnClickListener(v -> deleteRecord());
 
-        binding.tvRecordPickDate.setText(getDate());
+        binding.tvRecordPickDate.setText(Utils.LocalDateToString(mNewRecord.getDate()));
+        binding.etRecordTitle.setText(mNewRecord.getTitle());
 
         binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());
 
     }
 
-    private void addRecord() {
-        Log.d(TAG, "addRecord: " + newRecord().toString());
-        new Thread(() -> {
-            MindChargeDB.getInstance(requireContext()).getRecordDao().insert(newRecord());
-            //mListener.onRecordSave();
-        }).start();
 
-        new CountDownTimer(500, 100 /*Tick duration*/) {
+    private void addRecord() {
+        if (newRecord()) {
+            showToast();
+            new Thread(() -> {
+                Log.d(TAG, "addRecord: " + mNewRecord.toString());
+
+                MindChargeDB.getInstance(requireContext()).getRecordDao().insert(mNewRecord);
+                mSaveListener.onPerformEvent(mNewRecord);
+            }).start();
+        }
+    }
+
+    private void updateRecord() {
+        if (!mNewRecord.equals(mCachedRecord)) {
+            Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+            new Thread(() -> {
+                Log.d(TAG, "updateRecord: " + mNewRecord.toString());
+
+                MindChargeDB.getInstance(requireContext()).getRecordDao().update(mNewRecord);
+                mSaveListener.onPerformEvent(mNewRecord);
+            }).start();
+
+        }
+    }
+
+    private void deleteRecord() {
+        Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+        new Thread(() -> {
+            Log.d(TAG, "deleteRecord: " + mNewRecord.toString());
+
+            MindChargeDB.getInstance(requireContext()).getRecordDao().delete(mNewRecord);
+            mSaveListener.onPerformEvent(mNewRecord);
+        }).start();
+    }
+
+    private void showToast() {
+        new CountDownTimer(500, 100) {
             public void onTick(long millisUntilFinished) {
-                toastSave.show();
+                toastEvent.show();
             }
 
             public void onFinish() {
-                toastSave.cancel();
+                toastEvent.cancel();
             }
         }.start();
+    }
+
+    /**
+     * DatePickerListener
+     */
+    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            mNewRecord.setDate(LocalDate.of(year, month + 1, dayOfMonth));
+            binding.tvRecordPickDate.setText(Utils.LocalDateToString(mNewRecord.getDate()));
+        }
+    };
+
+    private void showDatePickerDialog() {
+        LocalDate date = mNewRecord.getDate();
+        new DatePickerDialog(requireContext(), mDateSetListener, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth()).show();
+    }
+
+    private boolean newRecord() {
+        if (!(binding.etRecordTitle.getText().toString().equals("")) && taskAdapter.getItemCount() != 0) {
+            mNewRecord.setTitle(binding.etRecordTitle.getText().toString());
+            mNewRecord.setDate(Utils.StringToLocalDate(binding.tvRecordPickDate.getText().toString()));
+            mNewRecord.setTasks(taskAdapter.getItem());
+            Log.d(TAG, "newTask:" + taskAdapter.getItem());
+            Log.d(TAG, "newRecord: " + mNewRecord.toString());
+            return true;
+        }
+        return false;
     }
 
 
@@ -128,40 +217,10 @@ public class AddEditRecordFragment extends Fragment {
 
     @Override
     public void onStop() {
-        super.onStop();
+        if (mEventType == EventType.EVENT_ADD) addRecord();
+        else updateRecord();
         Log.d(TAG, "onStop: ");
-        boolean etFlag = binding.etRecordTitle.getText().toString().equals("");
-        boolean taskFlag = taskAdapter.getItem().isEmpty();
-        if (!etFlag && !taskFlag) addRecord();
-    }
-
-    private String getDate() {
-        date = LocalDate.now();
-        return date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth();
-    }
-
-    /**
-     * DatePickerListener
-     */
-    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            date = LocalDate.of(year, month, dayOfMonth);
-            binding.tvRecordPickDate.setText(String.format(Locale.KOREAN, "%d-%d-%d", year, month + 1, dayOfMonth));
-        }
-    };
-
-    private void showDatePickerDialog() {
-        new DatePickerDialog(requireContext(), mDateSetListener, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth()).show();
-    }
-
-    private Record newRecord() {
-        Record record = new Record(binding.etRecordTitle.getText().toString(),
-                Utils.StringToLocalDate(binding.tvRecordPickDate.getText().toString()));
-        record.setTasks(taskAdapter.getItem());
-        Log.d(TAG, "newTask:" + taskAdapter.getItem());
-        Log.d(TAG, "newRecord: " + record.toString());
-        return record;
+        super.onStop();
     }
 
     @Override

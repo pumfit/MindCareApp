@@ -22,6 +22,8 @@ import com.teamopendata.mindcareapp.databinding.FragmentRecordsHomeBinding;
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.item.RecordItem;
+
+import com.teamopendata.mindcareapp.ui.records.fragment.AddEditRecordFragment.EventType;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordClickListener;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class HomeRecordsFragment extends Fragment {
 
     private OnAddEditRecordClickListener mListener = null;
 
-    public void setOnAddRecordListener(OnAddEditRecordClickListener listener) {
+    public HomeRecordsFragment(OnAddEditRecordClickListener listener) {
         mListener = listener;
     }
 
@@ -53,22 +55,24 @@ public class HomeRecordsFragment extends Fragment {
         ArrayList<RecordItem> items = new ArrayList<>();
 
         new Thread(() -> {
-            MindChargeDB.getInstance(requireContext()).getRecordDao().getAll().forEach(record -> items.add(new RecordItem(record)));
+            MindChargeDB.getInstance(requireContext()).getRecordDao().getAll().forEach(record -> {
+                Log.d(TAG, "task: " + record.toString());
+                items.add(new RecordItem(record));
+            });
+
             new Handler(Looper.getMainLooper()).post(() -> {
                 binding.pbRecordsLoading.setVisibility(View.GONE);
+                if (!items.isEmpty()) binding.tvTextStickyEmpty.setVisibility(View.GONE);
                 mRecordsAdapter.initItems(items);
             });
         }).start();
-
         mRecordsAdapter = new RecordsAdapter(items, mListener);
     }
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
-        // mRecordsAdapter.addItem()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_records_home, container, false);
         return binding.getRoot();
     }
@@ -77,11 +81,20 @@ public class HomeRecordsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
-
+        if (mRecordsAdapter.getItemCount() > 0) {
+            binding.pbRecordsLoading.setVisibility(View.GONE);
+            if (mRecordsAdapter.getItemCount() > 1)
+                binding.tvTextStickyEmpty.setVisibility(View.GONE);
+        }
 
         binding.rvRecordsList.setAdapter(mRecordsAdapter);
         binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
-        binding.fabRecordAdd.setOnClickListener(v -> mListener.onAddEditRecordClick(null));
+        binding.fabRecordAdd.setOnClickListener(v -> mListener.onAddEditRecordClick(EventType.EVENT_ADD, null, record -> {
+            mRecordsAdapter.addItem(record);
+            binding.pbRecordsLoading.setVisibility(View.GONE);
+            binding.tvTextStickyEmpty.setVisibility(View.GONE);
+            // TODO 아이템 추가가 끝나고 호출되는 콜백~
+        }));
         binding.rvRecordsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -132,4 +145,6 @@ public class HomeRecordsFragment extends Fragment {
         Log.d(TAG, "onDetach: ");
         super.onDetach();
     }
+
+
 }

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
+import com.teamopendata.mindcareapp.ui.records.fragment.AddEditRecordFragment;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordClickListener;
 
 import com.teamopendata.mindcareapp.common.model.entity.Record;
@@ -70,6 +70,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private final OnAddEditRecordClickListener mAddEditRecordListener;
 
+    private int cachedAddPosition = 0;
+
+    public int getCachedAddPosition() {
+        return cachedAddPosition;
+    }
+
     public RecordsAdapter(List<RecordItem> data, OnAddEditRecordClickListener addEditRecordListener) {
         headers = new ArrayList<>();
         mItems = new ArrayList<>();
@@ -103,18 +109,22 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (hDate.getYear() == rDate.getYear()) {
                 // 1.1 hMonth == rMonth -> header 밑으로 아이템 비교 후 삽입
                 if (hDate.getMonthValue() == rDate.getMonthValue()) {
-                    int target = headers.get(headers.indexOf(header) + 1) != null ?
-                            headers.get(headers.indexOf(header) + 1).position : mItems.size();
+                    int index = headers.indexOf(header) + 1;
+                    int target;
+
+                    if (index >= headers.size()) target = mItems.size();
+                    else target = headers.get(index).position;
+
                     for (int i = header.position + 1; i < target; i++) {
                         LocalDate recordDate = ((Record) mItems.get(i).getItem()).getDate();
 
                         if (recordDate.compareTo(newRecord.getDate()) <= 0) {
-                            mItems.add(i, new RecordItem(newRecord));
+                            insertItem(newRecord, i);
                             headerIncrementPos(header.position, 1);
                             return;
                         }
                     }
-                    mItems.add(target, new RecordItem(newRecord));
+                    insertItem(newRecord, target);
                     headerIncrementPos(headers.indexOf(header), 1);
                     return;
                 }
@@ -133,10 +143,15 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         insertHeaderAndItem(mItems.size() - 1, headers.size(), newRecord);
     }
 
+    private void insertItem(Record newRecord, int i) {
+        mItems.add(i, new RecordItem(newRecord));
+        cachedAddPosition = i;
+    }
+
     private void insertHeaderAndItem(int position, int listPosition, Record newRecord) {
         if (!headers.isEmpty()) headerIncrementPos(listPosition, 2);
         int itemPos = insertHeader(position, newRecord);
-        mItems.add(itemPos, new RecordItem(newRecord));
+        insertItem(newRecord, itemPos);
     }
 
     private int insertHeader(int position, Record record) {
@@ -193,6 +208,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void addItem(Record newRecord) {
         addHeaderAndItem(newRecord);
+        notifyItemInserted(cachedAddPosition);
     }
 
     @Override
@@ -235,7 +251,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             month = record.getDate().getMonthValue() + "월";
         }
 
-        ((TextView) view.findViewById(R.id.tv_text_sticky)).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.tv_text_sticky).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.tv_record_item_year)).setText(year);
         ((TextView) view.findViewById(R.id.tv_record_item_month)).setText(month);
     }
@@ -268,7 +284,14 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvDayText.setText(Utils.getDayString(record.getDate().getDayOfWeek()));
             tvRecordTitle.setText(record.getTitle());
 
-            btnRecordEdit.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordClick((Record) mItems.get(position).getItem()));
+            btnRecordEdit.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordClick(
+                    AddEditRecordFragment.EventType.EVENT_EDIT, (Record) mItems.get(position).getItem(),
+                    r -> {
+                        mItems.set(position, new RecordItem(r));
+                        notifyItemChanged(position);
+                        // TODO 아이템 수정 끝나고 호출 되는 콜백~
+                    }
+            ));
         }
     }
 

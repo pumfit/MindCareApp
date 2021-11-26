@@ -2,11 +2,13 @@ package com.teamopendata.mindcareapp;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -56,11 +58,7 @@ public class MainActivity extends BaseActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "itemSelected: " + destination);
-            if (destination.getId() == R.id.navigation_home) {
-                displayHomeAsUpEnabled(false);
-            } else {
-                displayHomeAsUpEnabled(true);
-            }
+            displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);
         });
 
     }
@@ -84,4 +82,5 @@ public class MainActivity extends BaseActivity {
         }
         return super.dispatchTouchEvent(event);
     }
+
 }

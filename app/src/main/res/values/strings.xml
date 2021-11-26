@@ -51,4 +51,5 @@
     <string name="select_date_record">날짜 선택</string>
     <string name="enter_title_record">제목 입력</string>
     <string name="check_list_tasks">Check List</string>
+    <string name="record_delete">삭제</string>
 </resources>
