@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -80,6 +81,14 @@ public class HomeRecordsFragment extends Fragment {
 
         binding.rvRecordsList.setAdapter(mRecordsAdapter);
         binding.rvRecordsList.addItemDecoration(new StickyHeaderItemDecoration(mRecordsAdapter));
+        binding.fabRecordAdd.setOnClickListener(v -> mListener.onAddEditRecordClick(null));
+        binding.rvRecordsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) binding.fabRecordAdd.hide();
+                else if (dy < 0) binding.fabRecordAdd.show();
+            }
+        });
     }
 
 

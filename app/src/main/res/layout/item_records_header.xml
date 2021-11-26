@@ -6,9 +6,23 @@
     android:background="@color/white">
 
     <TextView
+        android:id="@+id/tv_text_sticky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/list_records"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_record_item_year"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tv_record_item_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@drawable/fill_round_rectangle_date"
         android:paddingVertical="4dp"
         android:paddingStart="40dp"
@@ -19,7 +33,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_text_sticky" />
 
     <TextView
         android:id="@+id/tv_record_item_month"
@@ -33,6 +47,6 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_record_item_year"
+        app:layout_constraintStart_toStartOf="@+id/tv_record_item_year" />
 </androidx.constraintlayout.widget.ConstraintLayout>

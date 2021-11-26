@@ -40,9 +40,9 @@
 
 
     <!-- record -->
-    <string name="title_records_box">진료 후 받으신 처방을\n기록해 매일 실천해보세요.</string>
+    <string name="title_records_box">기관을 다녀온 후\n실천리스트를 만들어\n매일 마음을 체크해보세요.</string>
     <string name="hint_records">주차별, 월별의 기록을 쌓아 한눈에 볼 수 있어요.</string>
-    <string name="list_records">Your list</string>
+    <string name="list_records">My list</string>
     <string name="date_record">Date</string>
     <string name="title_record">Title</string>
     <string name="add_task_record">할 일 추가</string>

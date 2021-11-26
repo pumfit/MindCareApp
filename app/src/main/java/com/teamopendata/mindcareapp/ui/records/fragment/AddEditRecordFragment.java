@@ -131,6 +131,9 @@ public class AddEditRecordFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: ");
+        boolean etFlag = binding.etRecordTitle.getText().toString().equals("");
+        boolean taskFlag = taskAdapter.getItem().isEmpty();
+        if (!etFlag && !taskFlag) addRecord();
     }
 
     private String getDate() {
@@ -165,15 +168,6 @@ public class AddEditRecordFragment extends Fragment {
     @Override
     public void onDestroyView() {
         Log.d(TAG, "onDestroyView: ");
-        boolean etFlag = binding.etRecordTitle.getText().toString().equals("");
-        boolean taskFlag = taskAdapter.getItem().isEmpty();
-        if (!etFlag && !taskFlag) {
-            addRecord();
-        } else if (etFlag) {
-            Toast.makeText(requireContext(), "제목을 입력하세요!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "할 일을 입력하세요!", Toast.LENGTH_SHORT).show();
-        }
         super.onDestroyView();
     }
 

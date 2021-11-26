@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,8 +54,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            if (getClass() != (obj != null ? obj.getClass() : null))
-                return false;
+            if (getClass() != (obj != null ? obj.getClass() : null)) return false;
             return this.localDate.equals(((Header) obj).localDate);
         }
     }
@@ -64,7 +64,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final List<RecordItem> mItems;
 
     /**
-     * 새로 추가되는 아이템의 위치를 header들의 날짜와 비교해서 알맞은 위치에 추가한다.
+     * 새로 추가되는 아이템의 위치를 header의 날짜와 비교해서 알맞은 위치에 추가한다.
      */
     private final List<Header> headers;
 
@@ -139,10 +139,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mItems.add(itemPos, new RecordItem(newRecord));
     }
 
-    private void headerIncrementPos(int pos, int increment) {
-        for (int i = pos; i < headers.size(); i++) headers.get(i).position += increment;
-    }
-
     private int insertHeader(int position, Record record) {
         Header header =
                 new Header(LocalDate.of(record.getDate().getYear(), record.getDate().getMonthValue(), 1), position);
@@ -152,10 +148,13 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return header.position + 1;
     }
 
+    private void headerIncrementPos(int pos, int increment) {
+        for (int i = pos; i < headers.size(); i++) headers.get(i).position += increment;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: " + viewType);
         if (viewType == Type.TYPE_TOP_HEADER.ordinal()) {
             return new TopHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_top_header, parent, false));
         } else if (viewType == Type.TYPE_HEADER.ordinal()) {
@@ -170,7 +169,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof TopHeaderViewHolder) {
             ((TopHeaderViewHolder) holder).bind();
         } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind((Header) mItems.get(position).getItem());
+            ((HeaderViewHolder) holder).bind((Header) mItems.get(position).getItem(), position);
         } else {
             ((RecordViewHolder) holder).bind((Record) mItems.get(position).getItem(), position);
         }
@@ -236,6 +235,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             month = record.getDate().getMonthValue() + "월";
         }
 
+        ((TextView) view.findViewById(R.id.tv_text_sticky)).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.tv_record_item_year)).setText(year);
         ((TextView) view.findViewById(R.id.tv_record_item_month)).setText(month);
     }
@@ -273,15 +273,18 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvYear, tvMonth;
+        TextView tvYear, tvMonth, tvStickyText;
 
         public HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvYear = itemView.findViewById(R.id.tv_record_item_year);
             tvMonth = itemView.findViewById(R.id.tv_record_item_month);
+            tvStickyText = itemView.findViewById(R.id.tv_text_sticky);
         }
 
-        public void bind(Header header) {
+        public void bind(Header header, int position) {
+            tvStickyText.setVisibility(position == 1 ? View.VISIBLE : View.GONE);
+
             String year = header.localDate.getYear() + "년";
             String month = header.localDate.getMonthValue() + "월";
 
@@ -290,13 +293,10 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private class TopHeaderViewHolder extends RecyclerView.ViewHolder {
-        ImageButton btnRecordAdd;
+    private static class TopHeaderViewHolder extends RecyclerView.ViewHolder {
 
         public TopHeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnRecordAdd = itemView.findViewById(R.id.btn_record_add);
-            btnRecordAdd.setOnClickListener(v -> mAddEditRecordListener.onAddEditRecordClick(null));
         }
 
         public void bind() {

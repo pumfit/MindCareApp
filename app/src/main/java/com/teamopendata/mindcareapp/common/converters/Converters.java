@@ -15,16 +15,14 @@ public class Converters {
     @TypeConverter
     public String fromTaskList(List<Task> list) {
         if (list == null) return (null);
-        Type type = new TypeToken<List<Task>>() {
-        }.getType();
+        Type type = new TypeToken<List<Task>>() {}.getType();
         return new Gson().toJson(list, type);
     }
 
     @TypeConverter
     public List<Task> toTaskList(String value) {
         if (value == null) return (null);
-        Type type = new TypeToken<List<Task>>() {
-        }.getType();
+        Type type = new TypeToken<List<Task>>() {}.getType();
         return new Gson().fromJson(value, type);
     }
 
