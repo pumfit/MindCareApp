@@ -8,6 +8,7 @@ import androidx.room.Update;
 
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Dao
@@ -23,4 +24,8 @@ public interface RecordDao {
 
     @Query("SELECT * FROM record_table")
     List<Record> getAll();
+
+    @Query("Select * FROM record_table WHERE record_table.date LIKE :localdate")
+    Record getDateRecord(LocalDate localdate);
+
 }

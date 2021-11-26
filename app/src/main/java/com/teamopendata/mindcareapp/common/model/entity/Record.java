@@ -4,6 +4,7 @@ package com.teamopendata.mindcareapp.common.model.entity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -15,10 +16,11 @@ import java.util.List;
 public class Record {
     @PrimaryKey(autoGenerate = true)
     private long id;
+    @ColumnInfo(name = "title")
     private String title;
+    @ColumnInfo(name = "date")
     private LocalDate date;
     private List<Task> tasks;
-
     public Record(long id, String title, LocalDate date, List<Task> tasks) {
         this.id = id;
         this.title = title;

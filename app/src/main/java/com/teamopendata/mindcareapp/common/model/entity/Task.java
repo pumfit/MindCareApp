@@ -5,9 +5,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "task_table")
 public class Task {
     @PrimaryKey(autoGenerate = true)
+
     private long id;
     private String contents;
     private boolean completed;
@@ -62,7 +63,7 @@ public class Task {
     @NonNull
     @Override
     public String toString() {
-        return "Task{" +
+        return "{" +
                 "contents='" + contents + '\'' +
                 ", completed=" + completed +
                 '}';
