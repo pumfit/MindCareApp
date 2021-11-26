@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +28,23 @@ import java.util.List;
 
 public class GoogleMapFragment extends Fragment
 {
-    private static List<MedicalInstitution> list;
-    private GpsTracker gpsTracker;
-    private static GoogleMap gMap;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;//for GPS Tracking
 
+    private GpsTracker gpsTracker;
+    private GoogleMap gMap;
     private MapView mMap;
+
     public double latitude = 37.65373464975277;
     public double longitude= 127.06081718059411;
+
+    private CustomMapListener listener;
+
+    GoogleMapFragment(CustomMapListener listener)
+    {
+        this.listener = listener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,15 +59,12 @@ public class GoogleMapFragment extends Fragment
         } else {
             checkRunTimePermission();
         }
-        //getCurrentAddress();
-        //Log.d("??",latitude+" "+longitude);//위경도를 애뮬레이터 상에서 불러오지못함 (구글 본사 or 0,0뜸,디바이스 빌드시엔 정상작동)
+        getCurrentAddress();
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 gMap = googleMap;
-                getCurrentAddress();
                 LatLng currentPlace = new LatLng(latitude, longitude); //LatLng 위경도 좌표를 나타내는 클래스
-                //Log.d("??",latitude+" "+longitude);
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(currentPlace);
                 markerOptions.title("현위치");
@@ -67,14 +72,18 @@ public class GoogleMapFragment extends Fragment
                 googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPlace));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                listener.callBackMapReady();
             }
         });
         return v;
     }
 
-    public static void addMarker(List<MedicalInstitution> mediList)
+    public interface CustomMapListener{
+        void callBackMapReady();
+    }
+
+    public void addMarker(List<MedicalInstitution> list)
     {
-        list = mediList;
         MarkerOptions markerOptions = new MarkerOptions();
         for(int i=0;i<list.size();i++)
         {
