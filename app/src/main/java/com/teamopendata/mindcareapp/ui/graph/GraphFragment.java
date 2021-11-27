@@ -54,9 +54,10 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     DecimalFormat form;
     int taskTrueNum,taskNum;
     private FragmentGraphBinding binding;
-    long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7,secondDayMilSec;
+    long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
-    String monday,tuesday,wednesday,thursday,friday,saturday,sunday;
+
+    LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;
     DatePickerDialog datePickerDialog;
     int Year, Month, Day, Hour, Minute;
     Calendar calendar ;
@@ -161,17 +162,18 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 }
 
                 //날짜형으로 형 변환
-                monday = convertDate(millSec,"yyyy-MM-dd");
-                tuesday = convertDate(millSec2,"yyyy-MM-dd");
-                wednesday = convertDate(millSec3,"yyyy-MM-dd");
-                thursday = convertDate(millSec4,"yyyy-MM-dd");
-                friday = convertDate(millSec5,"yyyy-MM-dd");
-                saturday = convertDate(millSec6,"yyyy-MM-dd");
-                sunday = convertDate(millSec7,"yyyy-MM-dd");
+//                monday = convertDate(millSec,"yyyy-MM-dd");
+                monday = converters.LongFromLocalDate(millSec);
+                tuesday = converters.LongFromLocalDate(millSec2);
+                wednesday = converters.LongFromLocalDate(millSec3);
+                thursday = converters.LongFromLocalDate(millSec4);
+                friday = converters.LongFromLocalDate(millSec5);
+                saturday = converters.LongFromLocalDate(millSec6);
+                sunday = converters.LongFromLocalDate(millSec7);
 
 
                 //!-- 날짜 쓰기
-                String writeDateFirst =  monday +" ~ "+sunday;
+                String writeDateFirst =  monday +" - "+sunday;
                 binding.tvDate.setText(writeDateFirst);
 
                 //!-- DB -----------
@@ -180,16 +182,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 setChart(binding.graph);
                 sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
 
-                binding.progressbar.setProgress((int) sum);
-                if((int)sum<10 && (int)sum != 0){
-                    binding.tvProgressbar.setText("0"+form.format(sum));
-                }
-                else if((int)sum == 0){
-                    binding.tvProgressbar.setText(" "+form.format(sum));
-                }
-                else{
-                    binding.tvProgressbar.setText(form.format(sum));
-                }
+
                 binding.tvProgressbar2.setText(form.format(sum));
             }
         });
@@ -224,6 +217,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //!--1단계
         ArrayList<BarEntry> arrayList = new ArrayList<>();
+//        arrayList.add(new BarEntry(0,mondayData));
         arrayList.add(new BarEntry(0,mondayData));
         arrayList.add(new BarEntry(1,tuesDayData));
         arrayList.add(new BarEntry(2,wednesdayData));
@@ -234,7 +228,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //!--2단계
         BarDataSet barDataSet = new BarDataSet(arrayList,"실천 점수");
-        barDataSet.setColors(Color.rgb(34,135,201));
+        barDataSet.setColors(Color.rgb(72,202,228));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(5F);
         barDataSet.setDrawValues(false);
@@ -260,25 +254,25 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         setDay(label_day,"x");
 
         if(datesList.contains(converters.LongFromLocalDate(millSec))) {
-            label_day.set(0,"월");
+            label_day.set(0,"Mon");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec2))) {
-            label_day.set(1,"화");
+            label_day.set(1,"Tue");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec3))) {
-            label_day.set(2,"수");
+            label_day.set(2,"Wen");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec4))) {
-            label_day.set(3,"목");
+            label_day.set(3,"Thu");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec5))) {
-            label_day.set(4,"금");
+            label_day.set(4,"Fri");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec6))) {
-            label_day.set(5,"토");
+            label_day.set(5,"Sat");
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec7))) {
-            label_day.set(6,"일");
+            label_day.set(6,"Sun");
         }
 
 
@@ -290,7 +284,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));
 
         //!-- y축 관리
-        chart.getAxisLeft().setEnabled(true); //y축 left 지우기
+        chart.getAxisLeft().setEnabled(false); //y축 left 지우기
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setAxisMaximum(100);
         chart.getAxisLeft().setAxisMinimum(0);
@@ -327,13 +321,13 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         millSec7 = millSec + 60*60*24*1000*6;//일
 
         //날짜형으로 형 변환
-        monday = convertDate(millSec,"yyyy-MM-dd");
-        tuesday = convertDate(millSec2,"yyyy-MM-dd");
-        wednesday = convertDate(millSec3,"yyyy-MM-dd");
-        thursday = convertDate(millSec4,"yyyy-MM-dd");
-        friday = convertDate(millSec5,"yyyy-MM-dd");
-        saturday = convertDate(millSec6,"yyyy-MM-dd");
-        sunday = convertDate(millSec7,"yyyy-MM-dd");
+        monday = converters.LongFromLocalDate(millSec);
+        tuesday = converters.LongFromLocalDate(millSec2);
+        wednesday = converters.LongFromLocalDate(millSec3);
+        thursday = converters.LongFromLocalDate(millSec4);
+        friday = converters.LongFromLocalDate(millSec5);
+        saturday = converters.LongFromLocalDate(millSec6);
+        sunday = converters.LongFromLocalDate(millSec7);
 
 
         //!-- 날짜 쓰기
@@ -349,15 +343,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
 
-        if((int)sum<10 && (int)sum != 0){
-            binding.tvProgressbar.setText("0"+form.format(sum));
-        }
-        else if((int)sum == 0){
-            binding.tvProgressbar.setText(" "+form.format(sum));
-        }
-        else{
-            binding.tvProgressbar.setText(form.format(sum));
-        }
+
         binding.tvProgressbar2.setText(form.format(sum));
     }
 
@@ -446,8 +432,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //선택한 날짜에 값이 들어있는지 여부 체크
         if(selectedRecordDay != null){
-            datesList.add(selectedRecordDay.getDate());
             //라벨을 위해
+            datesList.add(selectedRecordDay.getDate());
            Log.d(TAG,"selectedRecordDate: "+String.valueOf(selectedRecordDay.getDate()));
 
             List<Task> tasksList = selectedRecordDay.getTasks();
@@ -476,10 +462,6 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     }
 
 
-    //  milSec -> Date 메소드
-    public String convertDate(Long dateInMilSec,String dateFormat){
-        return DateFormat.format(dateFormat,dateInMilSec).toString();
-    }
 
     //데이트피커 세팅하기 메소드
     public void setDatePickerDialog(){
@@ -515,6 +497,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 datePickerDialog.setDisabledDays(disabledDays);
             }
         }
+
+        //!-- 현재날짜가 월요일이 아닌경우 뜨는 문제가 발생햇는데 그 오류를 해결하는 코드
         if(max_date_c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
 
         }
