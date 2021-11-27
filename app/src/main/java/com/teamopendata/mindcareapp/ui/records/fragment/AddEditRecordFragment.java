@@ -2,13 +2,24 @@ package com.teamopendata.mindcareapp.ui.records.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -18,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddEditRecordBinding;
@@ -106,6 +118,7 @@ public class AddEditRecordFragment extends Fragment {
         taskAdapter = new TaskAdapter(item);
         binding.includeRv.rvRecordTask.setAdapter(taskAdapter);
         binding.includeRv.rvRecordTask.addItemDecoration(new DividerItemDecoration(requireContext(), 1));
+        new ItemTouchHelper(itemTouchHelperCallback(view)).attachToRecyclerView(binding.includeRv.rvRecordTask);
 
         binding.includeRv.btnTaskAdd.setOnClickListener(v -> {
             taskAdapter.addTask(new Task());
@@ -120,6 +133,56 @@ public class AddEditRecordFragment extends Fragment {
 
         binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());
 
+    }
+
+    @NonNull
+    private ItemTouchHelper.SimpleCallback itemTouchHelperCallback(@NonNull View view) {
+        return new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int fromPos = viewHolder.getAdapterPosition();
+                int toPos = target.getAdapterPosition();
+                taskAdapter.swapItem(fromPos, toPos);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                RecyclerView.ViewHolder rv = binding.includeRv.rvRecordTask
+                        .findViewHolderForAdapterPosition(viewHolder.getLayoutPosition());
+                if (rv != null) rv.itemView.findViewById(R.id.et_contents_task).clearFocus();
+
+                taskAdapter.removeItem(viewHolder.getLayoutPosition());
+                Snackbar.make(view, "삭제되었습니다.", Snackbar.LENGTH_SHORT)
+                        .setAction("되돌리기", v -> taskAdapter.revertItem())
+                        .show();
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c,
+                                    @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    View itemView = viewHolder.itemView;
+                    float h = itemView.getBottom() - itemView.getTop();
+                    float w = h / 4;
+                    Paint paint = new Paint();
+                    if (dX < 0) {
+                        paint.setColor(Color.parseColor("#90CAF9"));
+                        RectF background =
+                                new RectF(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                        c.drawRect(background, paint);
+
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_delete);
+                        RectF iconDst =
+                                new RectF(itemView.getRight() - 3 * w, itemView.getTop() + w, itemView.getRight() - w, itemView.getBottom() - w);
+                        c.drawBitmap(icon, null, iconDst, null);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
     }
 
 
@@ -144,20 +207,19 @@ public class AddEditRecordFragment extends Fragment {
                 MindChargeDB.getInstance(requireContext()).getRecordDao().update(mNewRecord);
                 mSaveListener.onPerformEvent(mNewRecord);
             }).start();
-
         }
     }
 
     private void deleteRecord() {
         mEventType = EventType.EVENT_DELETE;
         getParentFragmentManager().popBackStack();
+        Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
         new Thread(() -> {
             Log.d(TAG, "deleteRecord: " + mNewRecord.toString());
 
             MindChargeDB.getInstance(requireContext()).getRecordDao().delete(mNewRecord);
             mSaveListener.onPerformEvent(null);
         }).start();
-        Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     private void showToast() {
@@ -199,11 +261,6 @@ public class AddEditRecordFragment extends Fragment {
         }
         return false;
     }
-
-    private void removeBlankItem() {
-
-    }
-
 
     @Override
     public void onStart() {

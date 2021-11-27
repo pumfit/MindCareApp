@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.records.adapter;
 
+import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,17 +16,16 @@ import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-    List<Task> mItems = null;
+    List<Task> mItems;
+    private Task cachedItem;
+    private int cachedPosition = -1;
 
     public TaskAdapter(List<Task> item) {
         mItems = item;
-    }
-
-    public TaskAdapter() {
-        mItems = new ArrayList<>();
     }
 
     @NonNull
@@ -56,11 +56,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public boolean hasItem() {
         if (mItems.isEmpty()) return false;
-        else {
-            for (Task mItem : mItems) {
-                if (!(mItem.getContents() == null))
-                    if (!mItem.getContents().equals("")) return true;
-            }
+
+        for (Task mItem : mItems) {
+            if (!(mItem.getContents() == null))
+                if (!mItem.getContents().equals("")) return true;
         }
         return false;
     }
@@ -77,6 +76,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return tasks;
     }
 
+    public void removeItem(int position) {
+        cachedItem = mItems.get(position);
+        cachedPosition = position;
+        mItems.remove(position);
+        //notifyItemRemoved(position);
+       // notifyItemRangeChanged(position, mItems.size());
+        // notifyItemRemoved()는 뭔가 잘안됨..
+        notifyDataSetChanged();
+    }
+
+    public void revertItem() {
+        mItems.add(cachedPosition, cachedItem);
+        notifyItemInserted(cachedPosition);
+    }
+
+    public void swapItem(int fromPos, int toPos) {
+        Collections.swap(mItems, fromPos, toPos);
+        notifyItemMoved(fromPos, toPos);
+    }
+
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         private final CheckBox cbCompletedTask;
         private final EditText etContentsTask;
@@ -91,15 +110,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             etContentsTask.setText(task.getContents());
             cbCompletedTask.setChecked(task.isCompleted());
 
-            cbCompletedTask.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                mItems.get(position).setCompleted(isChecked);
-            });
+            cbCompletedTask.setOnCheckedChangeListener((buttonView, isChecked) -> mItems.get(position).setCompleted(isChecked));
             etContentsTask.addTextChangedListener(new ContentsTextWatcher(position));
         }
     }
 
     class ContentsTextWatcher implements TextWatcher {
-
         int mPosition;
 
         public ContentsTextWatcher(int position) {
