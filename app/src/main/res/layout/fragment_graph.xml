@@ -6,174 +6,236 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/default_background"
-    tools:context=".ui.records.RecordsFragment">
+    tools:context=".ui.Graph.GraphFragment">
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/buttonDefaultcolor"
+
+        <RelativeLayout
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Graph"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Graph"
+                android:textColor="#000000"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+
+            <ImageButton
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/calenderButton_graph"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ioncalendar" />
+
+
+        </RelativeLayout>
+
         <LinearLayout
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <ImageButton
-                    android:layout_marginTop="10dp"
-                    android:scaleType="fitCenter"
-                    android:id="@+id/calenderButton_graph"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ioncalendar" />
+
+
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="WEEK"
-                    android:textColor="@color/buttonDefaultcolor"
-                    android:textSize="25sp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="60dp"
+                    android:textStyle="bold"
+                    android:text="Week"
+                    android:textColor="#90CAF9"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/left_arrow_btn_graph"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="125dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/arrow_left_graph" />
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="175dp"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="날짜를 선택해주세요"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
-            </LinearLayout>
 
+                <ImageButton
+                    android:id="@+id/right_arrow_btn_graph"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@+id/tvDate"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/arrow_right_graph" />
+            </RelativeLayout>
 
-
-
-
-            <TextView
-                android:textColor="@color/buttonDefaultcolor"
-                android:id="@+id/tvToday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="오늘날짜"/>
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/graph"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="20dp"/>
 
 
-            <TextView
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="달성도"
-                android:textColor="@color/buttonDefaultcolor"
-                android:textSize="25sp"/>
-
-            <RelativeLayout
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="300dp"
                 android:background="@drawable/achievementrate_graph"
                 >
 
-                <ProgressBar
-                    android:id="@+id/progressbar"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginTop="15dp"
-                    android:indeterminateOnly="false"
-                    android:progress="70"
-                    android:progressDrawable="@drawable/circlebar" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!--                <ProgressBar-->
+<!--                    android:id="@+id/progressbar"-->
+<!--                    android:layout_width="130dp"-->
+<!--                    android:layout_height="130dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="80dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:indeterminateDrawable="@drawable/circlebar_rotate"-->
+<!--                    android:indeterminateDuration="4000"-->
+<!--                    android:indeterminateOnly="true"-->
+<!--                    android:progress="70" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_progressbar"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginLeft="120dp"-->
+<!--                    android:layout_marginTop="60dp"-->
+<!--                    android:text="70"-->
+<!--                    android:textSize="30dp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="60dp"-->
+<!--                    android:layout_toRightOf="@+id/tv_progressbar"-->
+<!--                    android:text="%"-->
+<!--                    android:textSize="30dp"-->
+<!--                    android:textStyle="bold" />-->
+
+                <ImageView
+
+                    android:id="@+id/imageView12"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="120dp"
-                    android:layout_marginTop="60dp"
-                    android:text="70%"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                    android:src="@drawable/icon_alyak50"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="80dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_editor_absoluteX="0dp">
+
+                    <TextView
+
+                        android:id="@+id/text2"
+                        android:layout_width="62dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="이번 주는 "
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="180dp" />
+
+                    <TextView
+                        android:id="@+id/tv_progressbar2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="50"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textView9" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="% "
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/textView10"
+                        tools:layout_editor_absoluteY="180dp" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="마음 충전되었습니다."
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/imageView12" />
+
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
 
 
-            <LinearLayout
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
 
-                >
-                <TextView
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="5dp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:id="@+id/text2"
-                    android:text="이번주는"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    />
-                <TextView
 
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:text="70"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:gravity="center"
-
-                    />
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:text="%"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:gravity="center"
-                    android:layout_marginRight="5dp"
-                    />
-                <TextView
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:text="달성하셨어요!"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-
-                    />
-
-            </LinearLayout>
-        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

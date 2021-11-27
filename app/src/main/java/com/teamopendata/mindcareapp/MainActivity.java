@@ -1,5 +1,7 @@
 package com.teamopendata.mindcareapp;
 
+import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,6 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -20,22 +24,14 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-//        SharedPreferences pref = getSharedPreferences("checkFirst", Activity.MODE_PRIVATE);
-//        boolean checkFisrt = pref.getBoolean("checkFirst",false);
-//        if(checkFisrt==false)//첫 시작시 튜토리얼 액티비티 실행
-//        {
-//            SharedPreferences.Editor editor = pref.edit();
-//            editor.putBoolean("checkFirst",true);
-//            editor.commit();
-//
-//            Intent intent  = new Intent(MainActivity.this, SelectActivity.class);
-//            startActivity(intent);
-//
-//            finish();
-//        }else
-//        {
-//
-//        }
+        ArrayList<String> a = new ArrayList<String>();
+        a = BtnPrefMgr.getStringArrayPref(MainActivity.this,BTN_PREF_KEY);
+        for(int i = 0; i< a.size();i++){
+            Log.d("keyValues", a.get(i));
+        }
+
+
+
         //!-- fragment 네이게이션 만드는 코드
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
