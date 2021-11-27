@@ -49,12 +49,12 @@
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/add_record_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/calender_dialog_graph.xml" value="0.264" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.13125" />
-        <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.264" />
+        <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.31314878892733566" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_notifications.xml" value="0.2" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_setting.xml" value="0.253125" />
-        <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/intro.xml" value="0.12195121951219512" />
+        <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/intro.xml" value="0.1" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/map_question_dialog.xml" value="0.1" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/record_yourlist_add_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/record_yourlist_item.xml" value="0.536" />
@@ -63,6 +63,7 @@
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide3.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide4.xml" value="0.1" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/mipmap-anydpi-v26/ic_appicon.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/oxojj/StudioProjects/upstream/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.27447916666666666" />
       </map>
     </option>

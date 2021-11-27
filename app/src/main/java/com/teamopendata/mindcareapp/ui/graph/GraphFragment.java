@@ -1,5 +1,7 @@
 package com.teamopendata.mindcareapp.ui.graph;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
@@ -21,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
 
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -30,6 +34,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.converters.Converters;
@@ -64,7 +69,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     Calendar[] disabledDays;
     Date format1;
     Converters converters;
-
+    int isDataNone;
     ArrayList<LocalDate> datesList;
 
     float sum;
@@ -90,7 +95,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         form = new DecimalFormat("#");
 
         //선택 안했을 때 가리기
-        binding.graph.setVisibility(View.GONE);
+        binding.graph.setVisibility(GONE);
         disappearArrow();
 
         // left버튼(일주일 전으로 )
@@ -180,10 +185,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 startBackgroundThread();
 
                 setChart(binding.graph);
-                sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
 
-
-                binding.tvProgressbar2.setText(form.format(sum));
+                //!--controlSum
+                controlSum();
             }
         });
     }
@@ -191,8 +195,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     // !-- 사라져 메소드
     public void disappearArrow(){
-        binding.leftArrowBtnGraph.setVisibility(View.GONE);
-        binding.rightArrowBtnGraph.setVisibility(View.GONE);
+        binding.leftArrowBtnGraph.setVisibility(GONE);
+        binding.rightArrowBtnGraph.setVisibility(GONE);
     }
 
     // !-- 보여줘 메소드
@@ -214,24 +218,24 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
 
-
         //!--1단계
         ArrayList<BarEntry> arrayList = new ArrayList<>();
 //        arrayList.add(new BarEntry(0,mondayData));
-        arrayList.add(new BarEntry(0,mondayData));
-        arrayList.add(new BarEntry(1,tuesDayData));
-        arrayList.add(new BarEntry(2,wednesdayData));
-        arrayList.add(new BarEntry(3,thursdayData));
-        arrayList.add(new BarEntry(4,fridayData));
-        arrayList.add(new BarEntry(5,saturdayData));
-        arrayList.add(new BarEntry(6,sundayData));
+        arrayList.add(new BarEntry(0,new float[]{mondayData,100-mondayData}));
+        arrayList.add(new BarEntry(1,new float[]{tuesDayData,100-tuesDayData}));
+        arrayList.add(new BarEntry(2,new float[]{wednesdayData,100-wednesdayData}));
+        arrayList.add(new BarEntry(3,new float[]{thursdayData,100-thursdayData}));
+        arrayList.add(new BarEntry(4,new float[]{fridayData,100-fridayData}));
+        arrayList.add(new BarEntry(5,new float[]{saturdayData,100-saturdayData}));
+        arrayList.add(new BarEntry(6,new float[]{sundayData,100-sundayData}));
 
         //!--2단계
         BarDataSet barDataSet = new BarDataSet(arrayList,"실천 점수");
-        barDataSet.setColors(Color.rgb(72,202,228));
+        barDataSet.setColors(Color.rgb(72,202,228),Color.argb(100,213,222,226));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(5F);
-        barDataSet.setDrawValues(false);
+        barDataSet.setDrawValues(true);
+
 
         //!--3단계
         BarData barData = new BarData(barDataSet);
@@ -241,6 +245,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         chart.setData(barData);
         chart.getDescription().setText(" ");
         chart.animateY(800);
+        chart.getLegend().setEnabled(false); //하단부 없애기
 
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
@@ -275,6 +280,18 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             label_day.set(6,"Sun");
         }
 
+         isDataNone =0;
+        for(int i =0;i<label_day.size();i++){
+            if(label_day.get(i) == "x"){
+                isDataNone ++;
+            }
+        }
+        if(isDataNone == 7){
+            binding.tvWeek.setVisibility(GONE);
+            binding.tvProgressbar2.setVisibility(GONE);
+            binding.tvPercent.setText("기록을 ");
+            binding.tvCharge.setText("입력해주세요!");
+        }
 
 
         //!--x축 관리
@@ -337,16 +354,49 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         //!-- DB -----------
         startBackgroundThread();
 
+        //차트 그리기
         setChart(binding.graph);
         binding.graph.setVisibility(View.VISIBLE);
         appearArrow();
 
-        sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+        //달성률 관리하기
+        controlSum();
 
 
-        binding.tvProgressbar2.setText(form.format(sum));
     }
 
+    //!--control sum
+    public void controlSum(){
+        sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
+        if((int)sum >=0 && (int)sum <25){
+            binding.iconAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak0));
+        }
+        else if((int)sum >=25 && (int)sum <50){
+            binding.iconAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak25));
+        }
+        else if((int)sum >=50 && (int)sum <75){
+            binding.iconAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak50));
+        }
+        else if((int)sum >=75 && (int)sum <100){
+            binding.iconAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak75));
+        }
+        else if((int)sum == 100){
+            binding.iconAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak100));
+        }
+        if(isDataNone == 7){
+
+        }
+        else{
+            binding.tvWeek.setVisibility(View.VISIBLE);
+            binding.tvProgressbar2.setVisibility(View.VISIBLE);
+            binding.tvPercent.setVisibility(View.VISIBLE);
+            binding.tvPercent.setText("% ");
+            binding.tvCharge.setText("마음 충전되었습니다.");
+            binding.tvProgressbar2.setText(form.format(sum));
+        }
+
+    }
 
 
     //!-- DB
@@ -374,32 +424,44 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
 
-//
-//                                      // !--  가짜 데이터----
+
+////                                      // !--  가짜 데이터----
 //                    ArrayList<Task> tasks = new ArrayList<>();
-//                    ArrayList<Task> tasks2 = new ArrayList<>();
-//                    Task task1 = new Task("행복하게 웃기",true);
-//                    Task task2 = new Task("친구한테 칭찬하기",true);
-//                    Task task4 = new Task("스스로  토닥이기",false);
-//                    Task task5 = new Task("울지 않기",false);
+//
+//                    Task task1 = new Task("소주 마시기",true);
+//                    Task task2 = new Task("친구랑 놀기",true);
+//                    Task task3 = new Task("영화보기",true);
+//                    Task task4 = new Task("맛있는 거먹기",true);
+//                    Task task5 = new Task("맛있는 거먹기",true);
+//                    Task task6 = new Task("취미생활 하기",true);
+//                    Task task7 = new Task("하루종일 공부하기",false);
+//                    Task task8 = new Task("하루종일 독서하기",true);
+//                    Task task9 = new Task("하루종일 명상하기",true);
+//
 //
 //                    tasks.add(task1);
 //                    tasks.add(task2);
+//                    tasks.add(task3);
 //                    tasks.add(task4);
 //                    tasks.add(task5);
+//                    tasks.add(task6);
+//                    tasks.add(task7);
+//                    tasks.add(task8);
+//                    tasks.add(task9);
+//
 //
 //
 //
 //
 ////
-//                    Record record5 = new Record(LocalDate.of(2021,11,14),"ㅈㅈ병원 방문하기",tasks);
+//                    Record record8 = new Record(LocalDate.of(2021,11,13),"ff병원 방문하기",tasks);
 ////                    Record record2 = new Record(LocalDate.of(2021,11,02),"ㅇㅇ병원 방문하기",tasks2);
 //
 //
 //
 //
-//                    db.getRecordDao().insert(record5);
-////                    db.getRecordDao().insert(record2);
+//                    db.getRecordDao().insert(record8);
+//
 
                 }
                 catch (Exception e){
@@ -512,9 +574,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onCancel(DialogInterface dialog) {
                 binding.tvDate.setText("날짜를 선택해주세요");
-                binding.graph.setVisibility(View.GONE);
-                binding.leftArrowBtnGraph.setVisibility(View.GONE);
-                binding.rightArrowBtnGraph.setVisibility(View.GONE);
+                binding.graph.setVisibility(GONE);
+                binding.leftArrowBtnGraph.setVisibility(GONE);
+                binding.rightArrowBtnGraph.setVisibility(GONE);
             }
         });
     }
