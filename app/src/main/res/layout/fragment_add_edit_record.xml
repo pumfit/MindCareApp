@@ -10,6 +10,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical"
             tools:context=".ui.records.fragment.AddEditRecordFragment">
 
@@ -61,7 +62,7 @@
                         android:gravity="center"
                         android:hint="@string/select_date_record"
                         android:textColor="@android:color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -112,7 +113,7 @@
                         android:maxLines="1"
                         android:minHeight="40dp"
                         android:textColor="@android:color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 

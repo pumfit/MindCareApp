@@ -96,6 +96,29 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Log.d(TAG, "addHeaderAndItem: headers(index) -> " + headers.toString());
     }
 
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == Type.TYPE_TOP_HEADER.ordinal()) {
+            return new TopHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_top_header, parent, false));
+        } else if (viewType == Type.TYPE_HEADER.ordinal()) {
+            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_header, parent, false));
+        } else {
+            return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof TopHeaderViewHolder) {
+            ((TopHeaderViewHolder) holder).bind();
+        } else if (holder instanceof HeaderViewHolder) {
+            ((HeaderViewHolder) holder).bind((Header) mItems.get(position).getItem(), position);
+        } else {
+            ((RecordViewHolder) holder).bind((Record) mItems.get(position).getItem(), position);
+        }
+    }
+
     /**
      * add header and item
      *
@@ -232,29 +255,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void headerDecrementPos(int pos, int value) {
         for (int i = pos; i < headers.size(); i++) headers.get(i).position -= value;
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == Type.TYPE_TOP_HEADER.ordinal()) {
-            return new TopHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_top_header, parent, false));
-        } else if (viewType == Type.TYPE_HEADER.ordinal()) {
-            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_header, parent, false));
-        } else {
-            return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false));
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof TopHeaderViewHolder) {
-            ((TopHeaderViewHolder) holder).bind();
-        } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).bind((Header) mItems.get(position).getItem(), position);
-        } else {
-            ((RecordViewHolder) holder).bind((Record) mItems.get(position).getItem(), position);
-        }
     }
 
     @Override
