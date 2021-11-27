@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -43,10 +44,11 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);//기관리스트 BottomSheet 생성
         recyclerView = bottomSheetView.findViewById(R.id.recyclerview);
 
-        //bottomSheetView.canScrollVertically(200);
         bottomSheetDialog = new BottomSheetDialog(container.getContext());//context
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+
+        Button questionButton = root.findViewById(R.id.btn_map_question);
 
         SharedPreferences pref =  this.getActivity().getSharedPreferences("isFirst", Context.MODE_PRIVATE);//화면 첫 입장이라면 설명 CustomDialog 생성
         boolean first = pref.getBoolean("isFirst", false);
@@ -61,6 +63,14 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
             CustomDialog customDialog = new CustomDialog(getActivity());
             customDialog.callFunction();
         }
+
+        questionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomDialog customDialog = new CustomDialog(getActivity());
+                customDialog.callFunction();
+            }
+        });
 
         return root;
     }
