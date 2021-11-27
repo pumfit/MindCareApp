@@ -35,6 +35,7 @@ public class Task implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
+        if (task.contents == null || contents == null) return true;
         return completed == task.completed && contents.equals(task.contents);
     }
 

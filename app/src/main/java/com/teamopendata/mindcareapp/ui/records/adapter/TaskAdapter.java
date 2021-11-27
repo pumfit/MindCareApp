@@ -54,6 +54,29 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return mItems;
     }
 
+    public boolean hasItem() {
+        if (mItems.isEmpty()) return false;
+        else {
+            for (Task mItem : mItems) {
+                if (!(mItem.getContents() == null))
+                    if (!mItem.getContents().equals("")) return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Task> removeBlankItem() {
+        List<Task> tasks = new ArrayList<>();
+        for (Task task : mItems) {
+            if (!(task.getContents() == null)) {
+                if (!task.getContents().equals("")) {
+                    tasks.add(task);
+                }
+            }
+        }
+        return tasks;
+    }
+
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         private final CheckBox cbCompletedTask;
         private final EditText etContentsTask;

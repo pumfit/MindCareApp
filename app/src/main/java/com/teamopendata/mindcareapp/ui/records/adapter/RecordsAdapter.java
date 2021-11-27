@@ -24,7 +24,6 @@ import com.teamopendata.mindcareapp.common.Utils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
@@ -95,6 +94,16 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         data.forEach(recordItem -> addHeaderAndItem((Record) recordItem.getItem()));
         Log.d(TAG, "addHeaderAndItem: headers(index) -> " + headers.toString());
+    }
+
+    /**
+     * add header and item
+     *
+     * @param newRecord
+     */
+    public void addItem(Record newRecord) {
+        addHeaderAndItem(newRecord);
+        notifyItemInserted(cachedAddPosition);
     }
 
     private void addHeaderAndItem(Record newRecord) {
@@ -171,6 +180,52 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return header.position + 1;
     }
 
+    /**
+     * remove Header and item
+     *
+     * @param position
+     */
+    private void removeItem(int position) {
+        removeHeaderAndItem(position);
+    }
+
+    private void removeHeaderAndItem(int position) {
+        mItems.remove(position);
+        notifyHeader(position);
+    }
+
+    private void notifyHeader(int position) {
+        Header prevHeader = headers.get(0);
+        if (headers.size() > 1) {
+            for (Header header : headers) {
+                if (header.position >= position) {
+                    headerDecrementPos(headers.indexOf(prevHeader) + 1, 1);
+                    if (header.position - prevHeader.position == 1)
+                        deleteHeader(prevHeader);
+                    return;
+                }
+                prevHeader = header;
+            }
+            if (mItems.size() - prevHeader.position == 1) {
+                deleteHeader(prevHeader);
+            }
+        } else {
+            if (mItems.size() < 3) {
+                headers.remove(0);
+                mItems.remove(1);
+                notifyItemRemoved(1);
+            }
+        }
+    }
+
+    private void deleteHeader(Header header) {
+        mItems.remove(header.position);
+        headerDecrementPos(headers.indexOf(header), 1);
+        headers.remove(header);
+        notifyItemRemoved(header.position);
+    }
+
+
     private void headerIncrementPos(int pos, int value) {
         for (int i = pos; i < headers.size(); i++) headers.get(i).position += value;
     }
@@ -218,10 +273,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.notifyDataSetChanged();
     }
 
-    public void addItem(Record newRecord) {
-        addHeaderAndItem(newRecord);
-        notifyItemInserted(cachedAddPosition);
-    }
 
     @Override
     public boolean isHeader(int position) {
@@ -252,16 +303,17 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void bindHeaderData(View view, int headerPosition) {
         String year, month;
+        LocalDate date;
 
         if (mItems.get(headerPosition).getType() == Type.TYPE_HEADER) {
             Header header = ((Header) mItems.get(headerPosition).getItem());
-            year = header.localDate.getYear() + "년";
-            month = header.localDate.getMonthValue() + "월";
+            date = header.localDate;
         } else {
             Record record = ((Record) mItems.get(headerPosition).getItem());
-            year = record.getDate().getYear() + "년";
-            month = record.getDate().getMonthValue() + "월";
+            date = record.getDate();
         }
+        year = date.getYear() + "년";
+        month = date.getMonthValue() + "월";
 
         view.findViewById(R.id.tv_text_sticky).setVisibility(View.VISIBLE);
         ((TextView) view.findViewById(R.id.tv_record_item_year)).setText(year);
@@ -309,42 +361,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
             ));
         }
-    }
-
-    private void removeItem(int position) {
-        mItems.remove(position);
-        notifyHeader(position);
-    }
-
-    private void notifyHeader(int position) {
-        Header prevHeader = headers.get(0);
-        if (headers.size() > 1) {
-            for (Header header : headers) {
-                if (header.position >= position) {
-                    headerDecrementPos(headers.indexOf(prevHeader) + 1, 1);
-                    if (header.position - prevHeader.position == 1)
-                        removeHeader(prevHeader);
-                    return;
-                }
-                prevHeader = header;
-            }
-            if (mItems.size() - prevHeader.position == 1) {
-                removeHeader(prevHeader);
-            }
-        } else {
-            if (mItems.size() < 2) {
-                headers.remove(0);
-                mItems.remove(1);
-                notifyItemRemoved(1);
-            }
-        }
-    }
-
-    private void removeHeader(Header header) {
-        mItems.remove(header.position);
-        headerDecrementPos(headers.indexOf(header), 1);
-        headers.remove(header);
-        notifyItemRemoved(header.position);
     }
 
     private static class HeaderViewHolder extends RecyclerView.ViewHolder {

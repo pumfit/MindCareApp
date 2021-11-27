@@ -34,7 +34,8 @@ import java.util.ArrayList;
 public class AddEditRecordFragment extends Fragment {
     public enum EventType {
         EVENT_ADD,
-        EVENT_EDIT;
+        EVENT_EDIT,
+        EVENT_DELETE;
 
         @NonNull
         @Override
@@ -47,7 +48,7 @@ public class AddEditRecordFragment extends Fragment {
     private FragmentAddEditRecordBinding binding;
     private TaskAdapter taskAdapter;
 
-    private final EventType mEventType;
+    private EventType mEventType;
 
     private Toast toastEvent;
 
@@ -148,6 +149,7 @@ public class AddEditRecordFragment extends Fragment {
     }
 
     private void deleteRecord() {
+        mEventType = EventType.EVENT_DELETE;
         getParentFragmentManager().popBackStack();
         new Thread(() -> {
             Log.d(TAG, "deleteRecord: " + mNewRecord.toString());
@@ -187,15 +189,19 @@ public class AddEditRecordFragment extends Fragment {
     }
 
     private boolean newRecord() {
-        if (!(binding.etRecordTitle.getText().toString().equals("")) && taskAdapter.getItemCount() != 0) {
+        if (!(binding.etRecordTitle.getText().toString().equals("")) && taskAdapter.hasItem()) {
             mNewRecord.setTitle(binding.etRecordTitle.getText().toString());
             mNewRecord.setDate(Utils.StringToLocalDate(binding.tvRecordPickDate.getText().toString()));
-            mNewRecord.setTasks(taskAdapter.getItem());
+            mNewRecord.setTasks(taskAdapter.removeBlankItem());
             Log.d(TAG, "newTask:" + taskAdapter.getItem());
             Log.d(TAG, "newRecord: " + mNewRecord.toString());
             return true;
         }
         return false;
+    }
+
+    private void removeBlankItem() {
+
     }
 
 
@@ -214,7 +220,7 @@ public class AddEditRecordFragment extends Fragment {
     @Override
     public void onPause() {
         if (mEventType == EventType.EVENT_ADD) addRecord();
-        else updateRecord();
+        else if (mEventType == EventType.EVENT_EDIT) updateRecord();
         super.onPause();
         Log.d(TAG, "onPause: ");
     }
