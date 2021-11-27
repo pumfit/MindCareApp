@@ -1,10 +1,5 @@
 package com.teamopendata.mindcareapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +7,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.Objects;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -26,12 +24,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(int layoutResID) {
-        LinearLayout baseLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
-        FrameLayout layoutContainer = baseLayout.findViewById(R.id.container_base);
-        getLayoutInflater().inflate(layoutResID, layoutContainer, true);
-        super.setContentView(baseLayout);
+            LinearLayout baseLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
+            FrameLayout layoutContainer = baseLayout.findViewById(R.id.container_base);
+            getLayoutInflater().inflate(layoutResID, layoutContainer, true);
+            super.setContentView(baseLayout);
 
-        initToolbar();
+            initToolbar();
     }
 
     protected boolean useToolbar() {
@@ -57,6 +55,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void displayHomeAsUpEnabled(boolean isVisible) {
         actionBar.setDisplayHomeAsUpEnabled(isVisible);
+    }
+
+    public void displayActionBarUndabled() {
+        actionBar.hide();
     }
 
     @Override

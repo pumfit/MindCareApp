@@ -3,7 +3,6 @@ package com.teamopendata.mindcareapp.ui.map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapFragment extends Fragment implements GoogleMapFragment.CustomMapListener{
@@ -27,9 +28,13 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
 
     public RecyclerView recyclerView = null;
     private GoogleMapFragment googleMapFragment = null;
+    private BottomSheetDialog bottomSheetDialog = null;
     private MapListAdapter adapter;
 
-    private List<MedicalInstitution> list = null;
+    public List<MedicalInstitution> list = null;
+
+    public double latitude = 37.65373464975277;
+    public double longitude= 127.06081718059411;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,8 +43,8 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);//기관리스트 BottomSheet 생성
         recyclerView = bottomSheetView.findViewById(R.id.recyclerview);
 
-        bottomSheetView.canScrollVertically(200);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(container.getContext());//context
+        //bottomSheetView.canScrollVertically(200);
+        bottomSheetDialog = new BottomSheetDialog(container.getContext());//context
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
@@ -73,21 +78,33 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
 
     @Override
     public void callBackMapReady() {
-        googleMapFragment.addMarker(list);
+        googleMapFragment.addMediInfoMarker(list);
     }
 
+    @Override
+    public void callBackClickMarker(LatLng position) {
+        ArrayList<MedicalInstitution> m = new ArrayList<MedicalInstitution>();
+        for (int i=0;i<list.size();i++)
+        {
+            if(list.get(i).latitude==position.latitude&&list.get(i).longitude== position.longitude)
+            {
+                m.add(list.get(i));
+                break;
+            }
+        }
+
+        MapListAdapter adapter = new MapListAdapter(m);
+        recyclerView.setAdapter(adapter);
+        bottomSheetDialog.show();
+    }
 
     class dataThread extends Thread{
         public void run(){
             MindChargeDB db = MindChargeDB.getInstance(getContext());
-            list = db.getMedicalInstitutionDao().getAll();
+            list = db.getMedicalInstitutionDao().getCurrentList(latitude,longitude);
             adapter = new MapListAdapter(list);
             recyclerView.setAdapter(adapter);
         }
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
 }

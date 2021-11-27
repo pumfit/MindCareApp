@@ -50,7 +50,10 @@ public class MainActivity extends BaseActivity {
             Log.d(TAG, "itemSelected: " + destination);
             if (destination.getId() == R.id.navigation_home) {
                 displayHomeAsUpEnabled(false);
-            } else {
+            } else if(destination.getId() == R.id.navigation_map)
+            {
+                displayActionBarUndabled();
+            }{
                 displayHomeAsUpEnabled(true);
             }
         });

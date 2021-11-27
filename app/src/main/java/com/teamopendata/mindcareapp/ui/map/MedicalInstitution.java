@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "medicalinstitution")
 public class MedicalInstitution {
 
-    public MedicalInstitution(long id, @NonNull String name, @NonNull String type, int grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
+    public MedicalInstitution(long id, @NonNull String name, @NonNull String type, String grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -20,7 +20,7 @@ public class MedicalInstitution {
         this.longitude = longitude;
     }
 
-    public MedicalInstitution(@NonNull String name, @NonNull String type, int grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
+    public MedicalInstitution(@NonNull String name, @NonNull String type, String grade, @NonNull String address, @NonNull String tel, @NonNull String url, double latitude, double longitude) {
         this.name = name;
         this.type = type;
         this.grade = grade;
@@ -44,7 +44,7 @@ public class MedicalInstitution {
     public String type;
 
     @ColumnInfo(name="grade")//평가등급
-    public int grade;
+    public String grade;
 
     @ColumnInfo(name="address")//주소
     public String address;

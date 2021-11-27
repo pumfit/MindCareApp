@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -20,11 +20,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamopendata.mindcareapp.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GoogleMapFragment extends Fragment
 {
@@ -38,6 +42,18 @@ public class GoogleMapFragment extends Fragment
 
     public double latitude = 37.65373464975277;
     public double longitude= 127.06081718059411;
+
+    public static Map<String,Float> colormap = new HashMap(){
+        {
+             put("광역형정신건강증진센터",BitmapDescriptorFactory.HUE_RED);
+             put("기초정신건강증진센터",BitmapDescriptorFactory.HUE_ORANGE);
+             put("자살예방센터",BitmapDescriptorFactory.HUE_YELLOW);
+             put("중독관리통합지원센터",BitmapDescriptorFactory.HUE_GREEN);
+             put("사회복귀시설",BitmapDescriptorFactory.HUE_BLUE);
+             put("정신의료기관",255.0f);
+             put("정신요양시설",BitmapDescriptorFactory.HUE_VIOLET);
+        }
+    };
 
     private CustomMapListener listener;
 
@@ -59,7 +75,7 @@ public class GoogleMapFragment extends Fragment
         } else {
             checkRunTimePermission();
         }
-        getCurrentAddress();
+        //getCurrentAddress();
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -73,6 +89,20 @@ public class GoogleMapFragment extends Fragment
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPlace));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
                 listener.callBackMapReady();
+
+                gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+                    @Override
+                    public boolean onMarkerClick(@NonNull Marker marker) {
+//                        BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.locationblue);
+//                        Bitmap b = bitmapDrawable.getBitmap();
+//                        Bitmap newMarker = Bitmap.createScaledBitmap(b,150,150,false);
+//                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(newMarker));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                        listener.callBackClickMarker(marker.getPosition());//TODO: marker가 반환하는 정보는 위경도인데 해당되는 정보를 전달하면 어떻게 해야할까요?
+                        return true;
+                    }
+                });
             }
         });
         return v;
@@ -80,14 +110,16 @@ public class GoogleMapFragment extends Fragment
 
     public interface CustomMapListener{
         void callBackMapReady();
+        void callBackClickMarker(LatLng position);
     }
 
-    public void addMarker(List<MedicalInstitution> list)
+    public void addMediInfoMarker(List<MedicalInstitution> list)
     {
         MarkerOptions markerOptions = new MarkerOptions();
         for(int i=0;i<list.size();i++)
         {
             markerOptions.position(new LatLng(list.get(i).latitude,list.get(i).longitude));
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colormap.get(list.get(i).type)));
             markerOptions.title("기관");
             markerOptions.snippet("간단한 설명");
             gMap.addMarker(markerOptions);
