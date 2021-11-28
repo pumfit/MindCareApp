@@ -2,25 +2,24 @@ package com.teamopendata.mindcareapp.common.model.entity;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "record_table")
-public class Record {
+public class Record implements Cloneable {
     @PrimaryKey(autoGenerate = true)
     private long id;
-    @ColumnInfo(name = "title")
     private String title;
-    @ColumnInfo(name = "date")
     private LocalDate date;
     private List<Task> tasks;
+
     public Record(long id, String title, LocalDate date, List<Task> tasks) {
         this.id = id;
         this.title = title;
@@ -41,18 +40,47 @@ public class Record {
         this.date = date;
     }
 
+    @Ignore
+    public Record() {
+    }
+
     @Override
-    public boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Record record = (Record) o;
+        return Objects.equals(title, record.title) && Objects.equals(date, record.date) && tasks.equals(record.tasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, date, tasks);
     }
 
     @NonNull
     @Override
     public String toString() {
         if (tasks == null) {
-            return "기록 제목:" + title + "날짜:";
+            return "id:" + id + " 기록 제목:" + title + " 날짜:";
         } else {
-            return "기록 제목:" + title + "날짜:" + date.toString() + "할 일:" + tasks.toString();
+            return "id:" + id + " 기록 제목:" + title + " 날짜:" + date.toString() + " 할 일:" + tasks.toString();
+        }
+    }
+
+
+    @NonNull
+    @Override
+    public Record clone() {
+        try {
+            Record record = (Record) super.clone();
+            ArrayList<Task> tasks = new ArrayList<>();
+            for (Task task : record.tasks) {
+                tasks.add(task.clone());
+            }
+            record.setTasks(tasks);
+            return record;
+        } catch (CloneNotSupportedException e) {
+            return new Record();
         }
     }
 

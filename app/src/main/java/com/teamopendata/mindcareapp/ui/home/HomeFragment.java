@@ -1,57 +1,133 @@
 package com.teamopendata.mindcareapp.ui.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
+import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.databinding.FragmentHomeBinding;
-import com.teamopendata.mindcareapp.ui.home.model.TaskDTO;
+import com.teamopendata.mindcareapp.ui.home.adapter.KeywordAdapter;
+import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        return view;
+    private KeywordAdapter keywordAdapter;
+    private TaskAdapter taskAdapter;
+
+    private final String TAG = "HomeFragment";
+
+    private int mindChargeFlag = -1;
+
+    @Overrideg
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getTodayTask();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // dummy data
-        ArrayList<TaskDTO> dummyTasks = new ArrayList<>();
-        dummyTasks.add(new TaskDTO("오늘 병원 가기"));
-        dummyTasks.add(new TaskDTO("1시간 명상 하기"));
-        dummyTasks.add(new TaskDTO("즐거운 생각 하기"));
-        dummyTasks.add(new TaskDTO("길게 적으면 글자가 짤려요@@@@@@@@@@@@"));
+        binding.appbarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            Log.d(TAG, "verticalOffset: " + verticalOffset);
+            updateViews(Math.abs(((float) verticalOffset) / ((float) appBarLayout.getTotalScrollRange())));
+        });
 
-        ArrayList<String> dummyKeywords = new ArrayList<>();
-        dummyKeywords.add("불면");
-        dummyKeywords.add("스트레스");
-        dummyKeywords.add("외래,입원(입소)");
-        dummyKeywords.add("공포증");
+        keywordAdapter = new KeywordAdapter(getKeyword());
+        binding.rvHomeKeyword.setEmptyView(binding.tvKeywordEmptyView);
+        binding.rvHomeKeyword.setAdapter(keywordAdapter);
 
-        // listView
-        binding.lvKeywords
-                .setAdapter(new ArrayAdapter<>(requireContext(), R.layout.item_home_keywords, dummyKeywords));
+        binding.rvHomeTasks.setEmptyView(binding.tvTaskEmptyView);
+        binding.rvHomeTasks.setAdapter(taskAdapter);
+        binding.rvHomeTasks.addItemDecoration(new DividerItemDecoration(requireContext(), 1));
+    }
 
-        // recyclerView
-        TodayTaskAdapter adapter = new TodayTaskAdapter(dummyTasks);
-        binding.rvTodayTask.setAdapter(adapter);
-        // binding.rvTodayTask.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+    private void getTodayTask() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        new Thread(() -> {
+            LocalDate today = LocalDate.now();
+            LocalDate yesterday = LocalDate.now().minus(Period.ofDays(1));
+
+            // Log.d(TAG, "getTodayTask: " + today.toString() + "," + yesterday.toString());
+            Record record = MindChargeDB.getInstance(getContext()).getRecordDao().getTasks(today, yesterday);
+
+            if (record != null) {
+                Log.d(TAG, "getTodayTask: " + record.toString());
+                tasks.addAll(record.getTasks());
+
+                new Handler(Looper.getMainLooper()).post(() -> taskAdapter.initItems(tasks));
+            }
+        }).start();
+
+        taskAdapter = new TaskAdapter(this::updateMindChargeView);
+        taskAdapter.setEditable(false);
+    }
+
+    private ArrayList<String> getKeyword() {
+        ArrayList<String> list = new ArrayList<>();
+        /*list.add("우울");
+        list.add("건강관리");
+        list.add("스트레스");
+        list.add("도박 중독");*/
+        return list;
+    }
+
+    private void updateViews(float offset) {
+        Log.d(TAG, "updateViews: " + offset);
+        if (mindChargeFlag != taskAdapter.getMindCharge()) {
+            int mindCharge = taskAdapter.getMindCharge();
+            mindChargeFlag = mindCharge;
+            updateMindChargeView(mindCharge);
+        }
+
+        LinearLayout llHomeContainerCollapsed = binding.llHomeContainerCollapsed;
+        if (offset > 0.25f) {
+            llHomeContainerCollapsed.animate().alpha(1.0f);
+            llHomeContainerCollapsed.setVisibility(View.VISIBLE);
+        } else {
+            llHomeContainerCollapsed.animate().alpha(0.0f);
+            llHomeContainerCollapsed.setVisibility(View.GONE);
+        }
+    }
+
+    public void updateMindChargeView(int progress) {
+
+        int collapseBitmapId = getResources().getIdentifier("icon_mind_charge_collapsed_" + progress, "drawable", requireContext().getPackageName());
+        int expandedBitmapId = getResources().getIdentifier("icon_mind_charge_expanded_" + progress, "drawable", requireContext().getPackageName());
+
+        binding.ivHomeMindChargeExpanded.setImageDrawable(AppCompatResources.getDrawable(requireContext(), expandedBitmapId));
+        binding.ivHomeMindChargeCollapsed.setImageDrawable(AppCompatResources.getDrawable(requireContext(), collapseBitmapId));
+
+        int collapseTextId = getResources().getIdentifier("mind_charge_home_collapsed_" + progress, "string", requireContext().getPackageName());
+        int expandedTextId = getResources().getIdentifier("mind_charge_home_expanded_" + progress, "string", requireContext().getPackageName());
+
+        binding.tvHomeMindChargeExpended.setText(getResources().getString(expandedTextId));
+        binding.tvHomeMindChargeCollapsed.setText(getResources().getString(collapseTextId));
     }
 
     @Override
@@ -59,6 +135,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 }

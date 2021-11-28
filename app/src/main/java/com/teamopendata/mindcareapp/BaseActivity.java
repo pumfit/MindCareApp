@@ -53,6 +53,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         actionBar.setTitle(title);
     }
 
+    protected void hideActionBar() {
+        this.actionBar.hide();
+    }
+
+    public void showActionBar() {
+        this.actionBar.show();
+    }
+
+
     public void displayHomeAsUpEnabled(boolean isVisible) {
         actionBar.setDisplayHomeAsUpEnabled(isVisible);
     }
