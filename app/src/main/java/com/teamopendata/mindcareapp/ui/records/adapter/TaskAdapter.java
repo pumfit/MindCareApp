@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.mikephil.charting.utils.Utils;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.ui.home.listener.OnChangedTaskCompleteListener;
@@ -118,7 +117,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void initItems(List<Task> tasks) {
         mItems = tasks;
         setMindCharge();
-        notifyDataSetChanged();
+        if (!mItems.isEmpty())
+            notifyDataSetChanged();
     }
 
     public void setMindCharge() {
