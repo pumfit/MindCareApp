@@ -54,7 +54,7 @@ public class RecordsFragment extends Fragment implements OnAddEditRecordClickLis
         fragmentFactory.setEvent(type).setData(record, listener);
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         if (type == AddEditRecordFragment.EventType.EVENT_ADD) {
-           // fragmentTransaction.setCustomAnimations(R.anim.from_down, R.anim.to_up, R.anim.from_up, R.anim.to_down);
+            // fragmentTransaction.setCustomAnimations(R.anim.from_down, R.anim.to_up, R.anim.from_up, R.anim.to_down);
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         } else {
             fragmentTransaction.setCustomAnimations(R.anim.from_right, R.anim.to_left, R.anim.from_left, R.anim.to_right);

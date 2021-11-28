@@ -29,7 +29,6 @@ public abstract class MindChargeDB extends RoomDatabase {
 
     public abstract RecordDao getRecordDao();
 
-
     public static MindChargeDB getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
