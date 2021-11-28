@@ -16,4 +16,5 @@
     <dimen name="home_show_button_size">64dp</dimen>
     <dimen name="home_contents_size">20sp</dimen>
     <dimen name="home_bottom_view_mg">16dp</dimen>
+    <dimen name="layout_design_dp">1dp</dimen>
 </resources>
