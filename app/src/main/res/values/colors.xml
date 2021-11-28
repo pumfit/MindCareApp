@@ -25,6 +25,7 @@
 
     <!-- home colors-->
     <color name="default_background">#ffffff</color>
+    <color name="home_background">#90caf9</color>
     <color name="home_dark">#0D47A1</color>
     <color name="home_light">#90CAF9</color>
     <color name="white">#FFFFFF</color>

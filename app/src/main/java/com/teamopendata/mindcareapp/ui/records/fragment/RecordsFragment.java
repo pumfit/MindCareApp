@@ -24,6 +24,7 @@ public class RecordsFragment extends Fragment implements OnAddEditRecordClickLis
     private FragmentRecordsBinding binding;
 
     FragmentFactoryImpl fragmentFactory;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         fragmentFactory = new FragmentFactoryImpl();
@@ -52,6 +53,12 @@ public class RecordsFragment extends Fragment implements OnAddEditRecordClickLis
     public void onAddEditRecordClick(AddEditRecordFragment.EventType type, Record record, OnAddEditRecordEventListener listener) {
         fragmentFactory.setEvent(type).setData(record, listener);
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        if (type == AddEditRecordFragment.EventType.EVENT_ADD) {
+            // fragmentTransaction.setCustomAnimations(R.anim.from_down, R.anim.to_up, R.anim.from_up, R.anim.to_down);
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
+        } else {
+            fragmentTransaction.setCustomAnimations(R.anim.from_right, R.anim.to_left, R.anim.from_left, R.anim.to_right);
+        }
         fragmentTransaction.replace(R.id.fl_records_container,
                 getParentFragmentManager().getFragmentFactory().instantiate(
                         ClassLoader.getSystemClassLoader(), AddEditRecordFragment.class.getName())

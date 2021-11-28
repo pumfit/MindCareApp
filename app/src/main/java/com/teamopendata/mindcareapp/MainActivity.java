@@ -1,11 +1,13 @@
 package com.teamopendata.mindcareapp;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
@@ -59,9 +61,17 @@ public class MainActivity extends BaseActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "itemSelected: " + destination);
             displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);
+            if (destination.getId() == R.id.navigation_home) {
+                hideActionBar();
+            } else {
+                new Handler().postDelayed(this::showActionBar, 100);
+            }
+
         });
 
     }
+
+
 
 
     /**
@@ -76,6 +86,8 @@ public class MainActivity extends BaseActivity {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     v.clearFocus();
                 }
             }
