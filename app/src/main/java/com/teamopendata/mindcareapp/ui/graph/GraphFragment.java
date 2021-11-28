@@ -94,9 +94,11 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         setDatePickerDialog();
         form = new DecimalFormat("#");
 
-        //선택 안했을 때 가리기
-        binding.graph.setVisibility(GONE);
-        disappearArrow();
+
+        //creatView 시 초기 세팅
+        setDefault();
+
+
 
         // left버튼(일주일 전으로 )
         btnListener(binding.leftArrowBtnGraph);
@@ -131,7 +133,81 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         // !-- onCreateEnd
     }
 
+    public void setDefault() {
 
+        Calendar cal = Calendar.getInstance();
+        long currentTimeMill = System.currentTimeMillis();
+
+        int weekDay = cal.get(Calendar.DAY_OF_WEEK);
+
+
+
+        if(weekDay == 1){
+            //일요일
+            millSec =currentTimeMill - 60*60*24*1000*6;
+        }
+        else if(weekDay == 2){
+            //월요일
+            millSec =currentTimeMill;
+        }
+        else if(weekDay == 3){
+            //화요일
+            millSec =currentTimeMill - 60*60*24*1000;
+        }
+        else if(weekDay == 4){
+            //수요일
+            millSec =currentTimeMill - 60*60*24*1000*2;
+        }
+        else if(weekDay == 5){
+            //목요일
+            millSec =currentTimeMill - 60*60*24*1000*3;
+        }else if(weekDay == 6){
+            //금요일
+            millSec =currentTimeMill - 60*60*24*1000*4;
+        }else if(weekDay == 7){
+            //토요일
+            millSec =currentTimeMill - 60*60*24*1000*5;
+        }
+
+        millSec2 = millSec+ 60*60*24*1000; //화
+        millSec3 = millSec+ 60*60*24*1000*2;//수
+        millSec4 = millSec + 60*60*24*1000*3;//목
+        millSec5 = millSec + 60*60*24*1000*4;//금
+        millSec6 = millSec + 60*60*24*1000*5;//토
+        millSec7 = millSec + 60*60*24*1000*6;//일
+
+
+        //바로 구현
+        monday = converters.LongFromLocalDate(millSec);
+        tuesday = converters.LongFromLocalDate(millSec2);
+        wednesday = converters.LongFromLocalDate(millSec3);
+        thursday = converters.LongFromLocalDate(millSec4);
+        friday = converters.LongFromLocalDate(millSec5);
+        saturday = converters.LongFromLocalDate(millSec6);
+        sunday = converters.LongFromLocalDate(millSec7);
+
+
+        //!-- 날짜 쓰기
+        Calendar calWeek = Calendar.getInstance();
+        calWeek.set(Calendar.YEAR,monday.getYear());
+
+        calWeek.set(Calendar.MONTH,monday.getMonthValue());
+        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+        Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
+        String writeDateFirst =  monday +" - "+sunday;
+        binding.tvDate.setText(writeDateFirst);
+
+        //!-- DB -----------
+        startBackgroundThread();
+
+        setChart(binding.graph);
+
+        //!--controlSum
+        controlSum();
+    }
 
 
     //! -- 메소드 시작
@@ -154,7 +230,11 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
                 }
 
                 else {
-                    if(System.currentTimeMillis() >= millSec + 60*60*24*1000*6){
+                    Log.d(TAG,"system.currentMills: "+System.currentTimeMillis());
+                    Log.d(TAG,"millSec7: "+millSec7);
+
+
+                    if(System.currentTimeMillis() > millSec7+60*60*24*1000 ){
 
                         millSec = millSec + 60*60*24*1000*7; //후 월
                         millSec2 = millSec+ 60*60*24*1000; //화
@@ -178,6 +258,15 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
                 //!-- 날짜 쓰기
+                Calendar calWeek = Calendar.getInstance();
+                calWeek.set(Calendar.YEAR,monday.getYear());
+
+                calWeek.set(Calendar.MONTH,monday.getMonthValue());
+                calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+                int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+                Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+                binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
                 String writeDateFirst =  monday +" - "+sunday;
                 binding.tvDate.setText(writeDateFirst);
 
@@ -244,7 +333,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         chart.setFitBars(true);
         chart.setData(barData);
         chart.getDescription().setText(" ");
-        chart.animateY(800);
+        chart.animateX(500);
         chart.getLegend().setEnabled(false); //하단부 없애기
 
         //!--x축 라벨 설정하기
@@ -280,12 +369,14 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             label_day.set(6,"Sun");
         }
 
-         isDataNone =0;
+        isDataNone =0;
         for(int i =0;i<label_day.size();i++){
             if(label_day.get(i) == "x"){
                 isDataNone ++;
             }
         }
+
+        //기록 없을 때
         if(isDataNone == 7){
             binding.tvWeek.setVisibility(GONE);
             binding.tvProgressbar2.setVisibility(GONE);
@@ -329,7 +420,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             millSec = format1.getTime();
         }
 
-        //2일 뒤 날짜의 milSec
+        // 날짜의 milSec
         millSec2 = millSec+ 60*60*24*1000; //화
         millSec3 = millSec+ 60*60*24*1000*2;//수
         millSec4 = millSec + 60*60*24*1000*3;//목
@@ -348,7 +439,16 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
         //!-- 날짜 쓰기
-        String writeDateFirst =  monday +" ~ "+sunday;
+        Calendar calWeek = Calendar.getInstance();
+        calWeek.set(Calendar.YEAR,monday.getYear());
+
+        calWeek.set(Calendar.MONTH,monday.getMonthValue());
+        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+        Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
+        String writeDateFirst =  monday +" - "+sunday;
         binding.tvDate.setText(writeDateFirst);
 
         //!-- DB -----------
@@ -356,7 +456,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //차트 그리기
         setChart(binding.graph);
-        binding.graph.setVisibility(View.VISIBLE);
+//        binding.graph.setVisibility(View.VISIBLE);
         appearArrow();
 
         //달성률 관리하기
@@ -433,10 +533,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 //                    Task task3 = new Task("영화보기",true);
 //                    Task task4 = new Task("맛있는 거먹기",true);
 //                    Task task5 = new Task("맛있는 거먹기",true);
-//                    Task task6 = new Task("취미생활 하기",true);
-//                    Task task7 = new Task("하루종일 공부하기",false);
-//                    Task task8 = new Task("하루종일 독서하기",true);
-//                    Task task9 = new Task("하루종일 명상하기",true);
+//                    Task task6 = new Task("취미생활 하기",false);
+//                    Task task8 = new Task("하루종일 독서하기",false);
 //
 //
 //                    tasks.add(task1);
@@ -445,23 +543,23 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 //                    tasks.add(task4);
 //                    tasks.add(task5);
 //                    tasks.add(task6);
-//                    tasks.add(task7);
+//
 //                    tasks.add(task8);
-//                    tasks.add(task9);
+//
 //
 //
 //
 //
 //
 ////
-//                    Record record8 = new Record(LocalDate.of(2021,11,13),"ff병원 방문하기",tasks);
+//                    Record record8 = new Record(LocalDate.of(2021,11,28),"kk병원 방문하기",tasks);
 ////                    Record record2 = new Record(LocalDate.of(2021,11,02),"ㅇㅇ병원 방문하기",tasks2);
 //
 //
 //
 //
 //                    db.getRecordDao().insert(record8);
-//
+
 
                 }
                 catch (Exception e){
@@ -488,7 +586,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         Log.d(TAG,"convertedDay: "+convertedDay);
 
         Record selectedRecordDay = db.getRecordDao().
-                getDateRecord(LocalDate.of(convertedDay.getYear(),convertedDay.getMonth(),convertedDay.getDayOfMonth()));
+                getDateRecord(convertedDay);
 
 
 
@@ -496,7 +594,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         if(selectedRecordDay != null){
             //라벨을 위해
             datesList.add(selectedRecordDay.getDate());
-           Log.d(TAG,"selectedRecordDate: "+String.valueOf(selectedRecordDay.getDate()));
+            Log.d(TAG,"selectedRecordDate: "+String.valueOf(selectedRecordDay.getDate()));
 
             List<Task> tasksList = selectedRecordDay.getTasks();
             taskTrueNum = 0;
@@ -573,10 +671,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                binding.tvDate.setText("날짜를 선택해주세요");
-                binding.graph.setVisibility(GONE);
-                binding.leftArrowBtnGraph.setVisibility(GONE);
-                binding.rightArrowBtnGraph.setVisibility(GONE);
+                binding.tvDate.setText(monday+"-"+sunday);
+                binding.leftArrowBtnGraph.setVisibility(View.VISIBLE);
+                binding.rightArrowBtnGraph.setVisibility(View.VISIBLE);
             }
         });
     }
