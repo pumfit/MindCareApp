@@ -18,13 +18,13 @@
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_records"
         android:name="com.teamopendata.mindcareapp.ui.records.RecordsFragment"
         android:label="@string/title_records"
-        tools:layout="@layout/fragment_graph" />
+        tools:layout="@layout/fragment_records" />
 
     <fragment
-        android:id="@+id/navigation_setting"
+        android:id="@+id/navigation_graph"
         android:name="com.teamopendata.mindcareapp.ui.graph.GraphFragment"
         android:label="@string/title_graph"
         tools:layout="@layout/fragment_graph" />
