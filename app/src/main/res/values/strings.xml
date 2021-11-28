@@ -65,5 +65,6 @@
     <string name="mind_charge_home_expanded_25">이번 주는 25% 마음충전되었습니다.</string>
     <string name="mind_charge_home_expanded_50">이번 주는 50% 마음충전되었습니다.</string>
     <string name="mind_charge_home_expanded_75">이번 주는 75% 마음충전되었습니다.</string>
+    <string name="title_setting">세팅</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.teamopendata.mindcareapp;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.amitshekhar.DebugDB;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ public class MainActivity extends BaseActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "itemSelected: " + destination);
             displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);
-            if (destination.getId() == R.id.navigation_home) {
+            if (destination.getId() == R.id.navigation_home || destination.getId() == R.id.navigation_map) {
                 hideActionBar();
             } else {
                 new Handler().postDelayed(this::showActionBar, 100);

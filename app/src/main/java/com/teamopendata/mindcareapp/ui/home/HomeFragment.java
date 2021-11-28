@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
 
     private int mindChargeFlag = -1;
 
-    @Overrideg
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getTodayTask();
