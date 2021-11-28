@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/icon_mind_charge_expanded_50" />
+                    android:src="@drawable/icon_mind_charge_expanded_0" />
 
                 <TextView
                     android:id="@+id/tv_home_mind_charge_expended"
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_vertical|center_horizontal|center"
                     android:layout_marginBottom="8dp"
-                    android:text="마음충전이 필요해요."
+                    android:text="@string/mind_charge_home_expanded_0"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -75,7 +75,7 @@
                     android:maxHeight="64dp"
                     android:minHeight="48dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/icon_mind_charge_collapsed_50" />
+                    android:src="@drawable/icon_mind_charge_collapsed_0" />
 
                 <TextView
                     android:id="@+id/tv_home_mind_charge_collapsed"
@@ -84,7 +84,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="6"
                     android:gravity="center"
-                    android:text="마음충전률 50%"
+                    android:text="@string/mind_charge_home_collapsed_0"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -149,19 +149,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_home_keyword" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/border_round_rectangle_grey"
                 android:clipToPadding="false"
+                android:orientation="horizontal"
                 android:paddingHorizontal="8dp"
                 app:layout_constraintEnd_toEndOf="@+id/btn_home_keyword_setting"
                 app:layout_constraintStart_toStartOf="@+id/tv_home_keyword"
                 app:layout_constraintTop_toBottomOf="@+id/tv_home_keyword">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.teamopendata.mindcareapp.common.observer.KeywordRVEmptySupport
                     android:id="@+id/rv_home_keyword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -169,7 +170,18 @@
                     android:orientation="horizontal"
                     android:padding="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_keyword_empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:text="선택된 키워드가 없습니다."
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_home_today_task"
@@ -183,7 +195,7 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_home_keyword"
                 app:layout_constraintTop_toBottomOf="@+id/ll_container" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.teamopendata.mindcareapp.common.observer.TaskRVEmptySupport
                 android:id="@+id/rv_home_tasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,6 +210,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_home_today_task"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_task" />
+
+            <TextView
+                android:id="@+id/tv_task_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="할 일을 추가해보세요!"
+                android:textSize="16sp"
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

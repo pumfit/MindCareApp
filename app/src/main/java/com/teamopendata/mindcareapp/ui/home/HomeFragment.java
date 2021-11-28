@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.databinding.FragmentHomeBinding;
@@ -35,7 +36,7 @@ public class HomeFragment extends Fragment {
 
     private int mindChargeFlag = -1;
 
-    @Override
+    @Overrideg
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getTodayTask();
@@ -55,8 +56,12 @@ public class HomeFragment extends Fragment {
             Log.d(TAG, "verticalOffset: " + verticalOffset);
             updateViews(Math.abs(((float) verticalOffset) / ((float) appBarLayout.getTotalScrollRange())));
         });
+
         keywordAdapter = new KeywordAdapter(getKeyword());
+        binding.rvHomeKeyword.setEmptyView(binding.tvKeywordEmptyView);
         binding.rvHomeKeyword.setAdapter(keywordAdapter);
+
+        binding.rvHomeTasks.setEmptyView(binding.tvTaskEmptyView);
         binding.rvHomeTasks.setAdapter(taskAdapter);
         binding.rvHomeTasks.addItemDecoration(new DividerItemDecoration(requireContext(), 1));
     }
@@ -68,13 +73,15 @@ public class HomeFragment extends Fragment {
             LocalDate today = LocalDate.now();
             LocalDate yesterday = LocalDate.now().minus(Period.ofDays(1));
 
-            Log.d(TAG, "getTodayTask: " + today.toString() + "," + yesterday.toString());
+            // Log.d(TAG, "getTodayTask: " + today.toString() + "," + yesterday.toString());
             Record record = MindChargeDB.getInstance(getContext()).getRecordDao().getTasks(today, yesterday);
 
-            Log.d(TAG, "getTodayTask: " + record.toString());
-            tasks.addAll(record.getTasks());
+            if (record != null) {
+                Log.d(TAG, "getTodayTask: " + record.toString());
+                tasks.addAll(record.getTasks());
 
-            new Handler(Looper.getMainLooper()).post(() -> taskAdapter.initItems(tasks));
+                new Handler(Looper.getMainLooper()).post(() -> taskAdapter.initItems(tasks));
+            }
         }).start();
 
         taskAdapter = new TaskAdapter(this::updateMindChargeView);
@@ -83,10 +90,10 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<String> getKeyword() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("우울");
+        /*list.add("우울");
         list.add("건강관리");
         list.add("스트레스");
-        list.add("도박 중독");
+        list.add("도박 중독");*/
         return list;
     }
 
