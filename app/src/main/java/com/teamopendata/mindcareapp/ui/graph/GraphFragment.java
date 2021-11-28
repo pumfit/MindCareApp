@@ -26,12 +26,14 @@ import com.github.mikephil.charting.charts.BarChart;
 
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
 import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
@@ -309,7 +311,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //!--1단계
         ArrayList<BarEntry> arrayList = new ArrayList<>();
-//        arrayList.add(new BarEntry(0,mondayData));
+//
         arrayList.add(new BarEntry(0,new float[]{mondayData,100-mondayData}));
         arrayList.add(new BarEntry(1,new float[]{tuesDayData,100-tuesDayData}));
         arrayList.add(new BarEntry(2,new float[]{wednesdayData,100-wednesdayData}));
@@ -339,34 +341,47 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
 
-        setDay(label_day,"x");
-        setDay(label_day,"x");
-        setDay(label_day,"x");
-        setDay(label_day,"x");
-        setDay(label_day,"x");
-        setDay(label_day,"x");
-        setDay(label_day,"x");
+        List<Integer> colors = new ArrayList<>();
 
+        for(int i = 0;i<7;i++){
+            colors.add(Color.rgb(200,200,200));
+        }
+
+
+
+        chart.setXAxisRenderer(new ColoredLabelXAxisRenderer(chart.getViewPortHandler(),chart.getXAxis(),chart.getTransformer(YAxis.AxisDependency.LEFT),colors));
+
+
+        setDay(label_day,"Mon");
+        setDay(label_day,"Tue");
+        setDay(label_day,"wed");
+        setDay(label_day,"Thu");
+        setDay(label_day,"Fri");
+        setDay(label_day,"Sat");
+        setDay(label_day,"Sun");
+
+
+        //DB에 요일이 있는지 없는지 체크
         if(datesList.contains(converters.LongFromLocalDate(millSec))) {
-            label_day.set(0,"Mon");
+            colors.set(0,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec2))) {
-            label_day.set(1,"Tue");
+            colors.set(1,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec3))) {
-            label_day.set(2,"Wen");
+            colors.set(2,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec4))) {
-            label_day.set(3,"Thu");
+            colors.set(3,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec5))) {
-            label_day.set(4,"Fri");
+            colors.set(4,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec6))) {
-            label_day.set(5,"Sat");
+            colors.set(5,Color.rgb(0,0,0));
         }
         if(datesList.contains(converters.LongFromLocalDate(millSec7))) {
-            label_day.set(6,"Sun");
+            colors.set(6,Color.rgb(0,0,0));
         }
 
         isDataNone =0;
@@ -400,8 +415,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //!--차트 기타 관리
         chart.setTouchEnabled(false); //터치막음
-
-    }
+         }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
