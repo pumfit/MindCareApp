@@ -28,12 +28,11 @@ public abstract class MindChargeDB extends RoomDatabase {
     }
 
     public abstract RecordDao getRecordDao();
+
     public abstract MedicalInstitutionDao getMedicalInstitutionDao();
 
     public static MindChargeDB getInstance(Context context) {
         if (INSTANCE == null) {
-//            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-//                    MindChargeDB.class, "medicalinstitution.db").build();
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     MindChargeDB.class, "medicalinstitution.db").createFromAsset("database/medicalinstitution.db").build();
         }

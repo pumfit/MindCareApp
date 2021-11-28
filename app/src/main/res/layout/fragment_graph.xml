@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/default_background"
+    android:orientation="vertical"
     tools:context=".ui.Graph.GraphFragment">
 
     <LinearLayout
@@ -14,9 +14,9 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -30,11 +30,11 @@
 
 
             <ImageButton
-                android:layout_marginRight="30dp"
-                android:layout_alignParentRight="true"
                 android:id="@+id/calenderButton_graph"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ioncalendar" />
@@ -49,15 +49,12 @@
             android:orientation="vertical">
 
 
-
-
-
             <RelativeLayout
-                android:background="@drawable/layoutdesign_graph"
-                android:layout_marginTop="10dp"
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:background="@drawable/layoutdesign_graph">
 
                 <TextView
                     android:id="@+id/tv_top_week"
@@ -116,40 +113,38 @@
 
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/layoutdesign_graph"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/layoutdesign_graph"
                 android:orientation="horizontal">
+
                 <com.github.mikephil.charting.charts.BarChart
 
                     android:id="@+id/graph"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp" />
 
             </LinearLayout>
 
 
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/achievementrate_graph"
-                >
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/achievementrate_graph">
 
 
                 <ImageButton
-                    android:scaleType="fitCenter"
-                    android:background="@android:color/transparent"
                     android:id="@+id/btn_alyak_graph"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_alyak0"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_mind_charge_expanded_0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.497"
@@ -223,10 +218,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
-
-
-
 
 
     </LinearLayout>

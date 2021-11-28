@@ -2,31 +2,22 @@ package com.teamopendata.mindcareapp.ui.graph;
 
 import static android.view.View.GONE;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.github.mikephil.charting.charts.BarChart;
 
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -36,27 +27,20 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
-import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.converters.Converters;
 import com.teamopendata.mindcareapp.databinding.FragmentGraphBinding;
-import com.teamopendata.mindcareapp.ui.records.RecordsFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.sql.Array;
-import java.sql.Time;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
 
 
 public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
@@ -485,19 +469,19 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         //getTheme 안되는데 뭐 써야하는지
         if((int)sum >=0 && (int)sum <25){
 
-            binding.btnAlyakGraph.setImageResource(R.drawable.icon_alyak0);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);
         }
         else if((int)sum >=25 && (int)sum <50){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak25));
+            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_25));
         }
         else if((int)sum >=50 && (int)sum <75){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak50));
+            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_50));
         }
         else if((int)sum >=75 && (int)sum <100){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak75));
+            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_75));
         }
         else if((int)sum == 100){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_alyak100));
+            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_100));
         }
 
         //기록 없을 때

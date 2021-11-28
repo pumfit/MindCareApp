@@ -28,4 +28,7 @@ public interface RecordDao {
     @Query("Select * FROM record_table WHERE record_table.date LIKE :localdate")
     Record getDateRecord(LocalDate localdate);
 
+    @Query("SELECT * FROM record_table WHERE date <= :today AND date > :yesterday")
+    Record getTasks(LocalDate today, LocalDate yesterday);
+
 }

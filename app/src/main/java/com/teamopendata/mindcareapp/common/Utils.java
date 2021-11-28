@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -22,12 +23,12 @@ public final class Utils {
     private Utils() {
     }
 
+
     public static String getDayString(DayOfWeek day) {
         return day.getDisplayName(TextStyle.SHORT, Locale.KOREAN);
     }
 
     public static long localDateToMilli(LocalDate date) {
-
         return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
@@ -44,8 +45,14 @@ public final class Utils {
         return toast;
     }
 
+    public static String LocalDateToString(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     public static LocalDate StringToLocalDate(String text) {
         String[] date = text.split("-");
         return LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
     }
+
+
 }
