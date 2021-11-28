@@ -53,8 +53,9 @@
 
 
             <RelativeLayout
+                android:background="@drawable/layoutdesign_graph"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -114,25 +115,37 @@
             </RelativeLayout>
 
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/graph"
+            <LinearLayout
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/layoutdesign_graph"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginBottom="30dp"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <com.github.mikephil.charting.charts.BarChart
+
+                    android:id="@+id/graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
 
 
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:background="@drawable/achievementrate_graph"
                 >
 
 
-                <ImageView
-                    android:id="@+id/icon_alyak_graph"
+                <ImageButton
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/btn_alyak_graph"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -195,7 +208,7 @@
                         android:id="@+id/tv_charge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="마음 충전되었습니다."
+                        android:text="마음충전되었습니다."
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:textStyle="bold"
