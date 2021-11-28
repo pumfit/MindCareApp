@@ -30,9 +30,9 @@
         android:textSize="16sp" />
 
     <ImageView
+        android:id="@+id/iv_task_item_drag"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginEnd="4dp"
         android:src="@drawable/icon_drag_handle" />
-
 </LinearLayout>

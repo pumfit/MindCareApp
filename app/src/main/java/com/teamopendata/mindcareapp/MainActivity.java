@@ -61,9 +61,17 @@ public class MainActivity extends BaseActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "itemSelected: " + destination);
             displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);
+            if (destination.getId() == R.id.navigation_home) {
+                hideActionBar();
+            } else {
+                new Handler().postDelayed(this::showActionBar, 100);
+            }
+
         });
 
     }
+
+
 
 
     /**

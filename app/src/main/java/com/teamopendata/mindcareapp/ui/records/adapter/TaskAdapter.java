@@ -8,42 +8,62 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.utils.Utils;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
+import com.teamopendata.mindcareapp.ui.home.listener.OnChangedTaskCompleteListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-    List<Task> mItems;
     private Task cachedItem;
-    private int cachedPosition = -1;
+
+    private int cachedPosition;
+    private boolean editFlag = true;
+
+    private List<Task> mItems;
+
+    private final OnChangedTaskCompleteListener mListener;
+    private int mindCharge = -1;
 
     public TaskAdapter(List<Task> item) {
         mItems = item;
+        mListener = null;
+    }
+
+    public TaskAdapter(OnChangedTaskCompleteListener listener) {
+        mItems = new ArrayList<>();
+        mListener = listener;
     }
 
     @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new TaskViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false)
-        );
+    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.bind(mItems.get(position), position);
+    public void onBindViewHolder(TaskViewHolder holder, int position) {
+        holder.bind(holder, mItems.get(position), position);
     }
 
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public void setEditable(boolean editable) {
+        editFlag = editable;
+    }
+
+    public int getMindCharge() {
+        return mindCharge;
     }
 
     public void addTask(Task task) {
@@ -55,11 +75,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public boolean hasItem() {
-        if (mItems.isEmpty()) return false;
-
+        if (mItems.isEmpty()) {
+            return false;
+        }
         for (Task mItem : mItems) {
-            if (!(mItem.getContents() == null))
-                if (!mItem.getContents().equals("")) return true;
+            if (!(mItem.getContents() == null || mItem.getContents().equals(""))) {
+                return true;
+            }
         }
         return false;
     }
@@ -67,22 +89,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public List<Task> removeBlankItem() {
         List<Task> tasks = new ArrayList<>();
         for (Task task : mItems) {
-            if (!(task.getContents() == null)) {
-                if (!task.getContents().equals("")) {
-                    tasks.add(task);
-                }
+            if (task.getContents() != null && !task.getContents().equals("")) {
+                tasks.add(task);
             }
         }
         return tasks;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void removeItem(int position) {
         cachedItem = mItems.get(position);
         cachedPosition = position;
         mItems.remove(position);
-        //notifyItemRemoved(position);
-       // notifyItemRangeChanged(position, mItems.size());
-        // notifyItemRemoved()는 뭔가 잘안됨..
         notifyDataSetChanged();
     }
 
@@ -96,45 +114,85 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyItemMoved(fromPos, toPos);
     }
 
-    public class TaskViewHolder extends RecyclerView.ViewHolder {
-        private final CheckBox cbCompletedTask;
-        private final EditText etContentsTask;
+    @SuppressLint("NotifyDataSetChanged")
+    public void initItems(List<Task> tasks) {
+        mItems = tasks;
+        setMindCharge();
+        notifyDataSetChanged();
+    }
 
-        public TaskViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cbCompletedTask = itemView.findViewById(R.id.cb_completed_task);
-            etContentsTask = itemView.findViewById(R.id.et_contents_task);
+    public void setMindCharge() {
+        int completeTask = 0;
+        for (Task task : mItems) {
+            if (task.isCompleted()) {
+                completeTask++;
+            }
         }
-
-        public void bind(Task task, int position) {
-            etContentsTask.setText(task.getContents());
-            cbCompletedTask.setChecked(task.isCompleted());
-
-            cbCompletedTask.setOnCheckedChangeListener((buttonView, isChecked) -> mItems.get(position).setCompleted(isChecked));
-            etContentsTask.addTextChangedListener(new ContentsTextWatcher(position));
+        float charge = (float) completeTask / mItems.size();
+        if (charge >= 0f && charge < 0.25f) {
+            mindCharge = 0;
+        } else if (charge >= 0.25f && charge < 0.5f) {
+            mindCharge = 25;
+        } else if (charge >= 0.5f && charge < 0.75f) {
+            mindCharge = 50;
+        } else if (charge >= 0.75f && charge < 1.0d) {
+            mindCharge = 75;
+        } else {
+            mindCharge = 100;
         }
     }
 
-    class ContentsTextWatcher implements TextWatcher {
+    public class TaskViewHolder extends RecyclerView.ViewHolder {
+        private final CheckBox cbCompletedTask;
+        private final EditText etContentsTask;
+        private final ImageView ivTaskDrag;
+
+        public TaskViewHolder(View itemView) {
+            super(itemView);
+            cbCompletedTask = itemView.findViewById(R.id.cb_completed_task);
+            etContentsTask = itemView.findViewById(R.id.et_contents_task);
+            ivTaskDrag = itemView.findViewById(R.id.iv_task_item_drag);
+        }
+
+        public void bind(RecyclerView.ViewHolder holder, Task task, int position) {
+            if (!editFlag) {
+                etContentsTask.setFocusable(false);
+                ivTaskDrag.setVisibility(View.GONE);
+            }
+            etContentsTask.setText(task.getContents());
+            cbCompletedTask.setChecked(task.isCompleted());
+            cbCompletedTask.setOnCheckedChangeListener((buttonView, isChecked) -> updateCharge(position, isChecked));
+            etContentsTask.addTextChangedListener(new ContentsTextWatcher(position, holder));
+        }
+
+        public void updateCharge(int position, boolean isChecked) {
+            mItems.get(position).setCompleted(isChecked);
+            setMindCharge();
+            if (mListener != null)
+                mListener.onChanged(mindCharge);
+        }
+    }
+
+    public class ContentsTextWatcher implements TextWatcher {
+        RecyclerView.ViewHolder holder;
         int mPosition;
 
-        public ContentsTextWatcher(int position) {
+        public ContentsTextWatcher(int position, RecyclerView.ViewHolder vh) {
             mPosition = position;
+            holder = vh;
         }
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            mItems.get(mPosition).setContents(s.toString());
+            mItems.get(holder.getAdapterPosition()).setContents(s.toString());
         }
     }
 }

@@ -61,26 +61,39 @@
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide3.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide4.xml" value="0.1" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable-mdpi/border_round_rectangle_grey.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/background_home_drag.xml" value="0.1609375" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/background_home_toolbar.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/border_round_rectangle_light.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/buttonselected.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/checked_custom_check_box.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/custom_check_box.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle.xml" value="0.28615384615384615" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_date.xml" value="0.1609375" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_date_light.xml" value="0.1609375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/fill_round_rectangle_light.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ic_delete_24dp.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ic_grill.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ic_icon_mind_charge_collapsed_0.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ic_saly_26.xml" value="0.2869791666666667" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ic_test.xml" value="0.6" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_add.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_add_32dp.xml" value="0.15416666666666667" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_calender_24dp.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_delete.xml" value="0.809375" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_mind_charge_collapsed_100.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_recrod_box.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/round_rectangle_keywords.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/unchecked_custom_check_box.xml" value="0.290625" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_select.xml" value="0.264" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_add_edit_record.xml" value="0.4" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_add_record.xml" value="0.7077625570776256" />
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.2703804347826087" />
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.13171225937183384" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.4107560405300078" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records.xml" value="0.264" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_records_home.xml" value="0.4" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_keywords.xml" value="0.72" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_today_task.xml" value="0.2644927536231884" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_record.xml" value="1.0" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_records_header.xml" value="0.8800000000000001" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/item_records_top_header.xml" value="0.72" />

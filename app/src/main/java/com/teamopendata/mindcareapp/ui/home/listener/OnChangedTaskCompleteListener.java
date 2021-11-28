@@ -1,2 +1,5 @@
-package com.teamopendata.mindcareapp.ui.home.listener;public interface onChangedTaskCompleteListener {
+package com.teamopendata.mindcareapp.ui.home.listener;
+
+public interface OnChangedTaskCompleteListener {
+    void onChanged(int position);
 }
