@@ -4,9 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.content.Context;
 import android.graphics.Rect;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,14 +15,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.amitshekhar.DebugDB;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends BaseActivity {
@@ -46,8 +43,6 @@ public class MainActivity extends BaseActivity {
         } else {
             checkRunTimePermission();
         }
-        DebugDB.getAddressLog();
-
 
         //!-- fragment 네이게이션 만드는 코드
         // Passing each menu ID as a set of Ids because each
@@ -105,10 +100,12 @@ public class MainActivity extends BaseActivity {
                         PERMISSIONS_REQUEST_CODE);
             }
         }
-    /**
-     * 현재 포커싱된 EditText range외의 view를 클릭하면 포커스 해제
-     * {@link com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter}
-     */
+        /**
+         * 현재 포커싱된 EditText range외의 view를 클릭하면 포커스 해제
+         * {@link com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter}
+         */
+
+    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -125,4 +122,5 @@ public class MainActivity extends BaseActivity {
         }
         return super.dispatchTouchEvent(event);
     }
+
 }
