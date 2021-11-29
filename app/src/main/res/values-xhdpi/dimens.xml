@@ -18,5 +18,10 @@
     <dimen name="home_bottom_view_mg">16dp</dimen>
     <dimen name="layout_design_dp">1dp</dimen>
 
+    <dimen name="graph_week_text_size">12sp</dimen>
+    <dimen name="graph_bar_height">250dp</dimen>
+    <dimen name="graph_alyak_img_size">250dp</dimen>
     <dimen name="layout_alyak">250dp</dimen>
+
+
 </resources>

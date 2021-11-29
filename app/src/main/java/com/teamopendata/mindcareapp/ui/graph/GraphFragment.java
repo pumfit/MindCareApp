@@ -2,10 +2,14 @@ package com.teamopendata.mindcareapp.ui.graph;
 
 import static android.view.View.GONE;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Picture;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +54,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     private FragmentGraphBinding binding;
     long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
-
+    float density;
+    int standardSize_X;
+    int standardSize_Y;
     LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;
     DatePickerDialog datePickerDialog;
     int Year, Month, Day, Hour, Minute;
@@ -76,6 +82,8 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         converters = new Converters();
 
@@ -213,6 +221,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     //! -- 메소드 시작
 
 
+
     public void btnListener(ImageButton imgBtn){
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,12 +295,16 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     public void disappearArrow(){
         binding.leftArrowBtnGraph.setVisibility(GONE);
         binding.rightArrowBtnGraph.setVisibility(GONE);
+        binding.tvTopWeek.setVisibility(GONE);
+        binding.tvWeekOfMonth.setVisibility(GONE);
     }
 
     // !-- 보여줘 메소드
     public void appearArrow(){
         binding.leftArrowBtnGraph.setVisibility(View.VISIBLE);
         binding.rightArrowBtnGraph.setVisibility(View.VISIBLE);
+        binding.tvTopWeek.setVisibility(View.VISIBLE);
+        binding.tvWeekOfMonth.setVisibility(View.VISIBLE);
     }
 
 
