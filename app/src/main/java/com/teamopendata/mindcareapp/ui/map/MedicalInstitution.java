@@ -61,4 +61,16 @@ public class MedicalInstitution {
     @ColumnInfo(name="longitude")//경도
     public double longitude;
 
+    public String keyword1;
+
+    public String keyword2;
+
+    public String keyword3;
+
+    public String keyword4;
+
+    public String keyword5;
+
+    public String keyword6;
+
 }

@@ -1,9 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/white"/>
-    <corners
-        android:topLeftRadius="20dp"
-        android:topRightRadius="20dp" />
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <layer-list xmlns:aapt="http://schemas.android.com/aapt" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item>
+
+
+    <shape android:shape="rectangle">
+
+    <solid android:color="#ffffff"/>
+
+    <corners android:topRightRadius="15dp" android:topLeftRadius="15dp"/>
 
 </shape>
+
+</item>
+
+
+    <item>
+
+
+    <shape android:shape="rectangle">
+
+    <gradient android:centerColor="#00ff0000" android:centerY="0.02" android:angle="270" android:endColor="#00ff0000" android:startColor="#1b000000"/>
+
+    <corners android:topRightRadius="15dp" android:topLeftRadius="15dp"/>
+
+</shape>
+
+</item>
+
+</layer-list>

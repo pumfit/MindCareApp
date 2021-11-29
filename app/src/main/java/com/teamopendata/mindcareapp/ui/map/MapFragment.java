@@ -1,120 +1,146 @@
 package com.teamopendata.mindcareapp.ui.map;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.teamopendata.mindcareapp.BtnPrefMgr;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements GoogleMapFragment.CustomMapListener{
 
-    FrameLayout map_container;
+
+public class MapFragment extends Fragment implements GoogleMapFragment.CustomMapListener {
+
+    public MapListAdapter adapter;
+
+    public BottomSheetDialog bottomSheetDialog = null;
+    private GoogleMapFragment googleMapFragment = null;
+    private GpsTracker gpsTracker;
+    public double latitude = 37.65373464975277d;
+    public List<MedicalInstitution> list = null;
+    public double longitude = 127.06081718059411d;
 
     public RecyclerView recyclerView = null;
-    private GoogleMapFragment googleMapFragment = null;
-    private BottomSheetDialog bottomSheetDialog = null;
-    private MapListAdapter adapter;
+    public ArrayList<String> userKeywordList = null;
 
-    public List<MedicalInstitution> list = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    public double latitude = 37.65373464975277;
-    public double longitude= 127.06081718059411;
+        View root = inflater.inflate(R.layout.fragment_map_main, container, false);
+        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, (ViewGroup) null);
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+        this.recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.recyclerview);
+        this.userKeywordList = new ArrayList<>();
+        this.userKeywordList = BtnPrefMgr.getStringArrayPref(container.getContext(), BtnPrefMgr.BTN_PREF_KEY);
 
-        View root = inflater.inflate(R.layout.fragment_map_mian, container, false);
-        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);//기관리스트 BottomSheet 생성
-        recyclerView = bottomSheetView.findViewById(R.id.recyclerview);
+        BottomSheetDialog bottomSheetDialog2 = new BottomSheetDialog(container.getContext());
+        this.bottomSheetDialog = bottomSheetDialog2;
+        bottomSheetDialog2.setContentView(bottomSheetView);
+        this.bottomSheetDialog.show();
 
-        bottomSheetDialog = new BottomSheetDialog(container.getContext());//context
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.show();
+        getCurrentAddress();
 
-        Button questionButton = root.findViewById(R.id.btn_map_question);
+        new dataThread().start();
 
-        SharedPreferences pref =  this.getActivity().getSharedPreferences("isFirst", Context.MODE_PRIVATE);//화면 첫 입장이라면 설명 CustomDialog 생성
-        boolean first = pref.getBoolean("isFirst", false);
-
-        Thread th = new dataThread();
-        th.start();
-
-        if(first==false){
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirst",true);
-            editor.commit();
-            CustomDialog customDialog = new CustomDialog(getActivity());
-            customDialog.callFunction();
-        }
-
-        questionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+        ((ImageButton) root.findViewById(R.id.btn_map_question)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                CustomDialog customDialog = new CustomDialog(getActivity());
-                customDialog.callFunction();
+                new CustomDialog(MapFragment.this.getActivity()).callFunction();
             }
         });
-
+        ((ImageButton) root.findViewById(R.id.btn_map_bookmark)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                new bookmarkThread().start();
+                MapFragment.this.bottomSheetDialog.show();
+            }
+        });
+        ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+            }
+        });
         return root;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {//구글맵 fragment를 불러오기 위함
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        map_container = (FrameLayout) view.findViewById(R.id.fl_map_container) ;
-
-        googleMapFragment = new GoogleMapFragment(this);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_map_container, googleMapFragment).commit();
+        this.googleMapFragment = new GoogleMapFragment(this);
+        getChildFragmentManager().beginTransaction().replace(R.id.fl_map_container, this.googleMapFragment).commit();
     }
 
-    @Override
     public void callBackMapReady() {
-        googleMapFragment.addMediInfoMarker(list);
+        this.googleMapFragment.addMediInfoMarker(this.list);
     }
 
-    @Override
     public void callBackClickMarker(LatLng position) {
-        ArrayList<MedicalInstitution> m = new ArrayList<MedicalInstitution>();
-        for (int i=0;i<list.size();i++)
-        {
-            if(list.get(i).latitude==position.latitude&&list.get(i).longitude== position.longitude)
-            {
-                m.add(list.get(i));
+        ArrayList<MedicalInstitution> m = new ArrayList<>();
+        int i = 0;
+        while (true) {
+            if (i < this.list.size()) {
+                if (this.list.get(i).latitude == position.latitude && this.list.get(i).longitude == position.longitude) {
+                    m.add(this.list.get(i));
+                    break;
+                }
+                i++;
+            } else {
                 break;
             }
         }
-
-        MapListAdapter adapter = new MapListAdapter(m);
-        recyclerView.setAdapter(adapter);
-        bottomSheetDialog.show();
+        this.recyclerView.setAdapter(new MapListAdapter(m));
+        this.bottomSheetDialog.show();
     }
 
-    class dataThread extends Thread{
-        public void run(){
-            MindChargeDB db = MindChargeDB.getInstance(getContext());
-            list = db.getMedicalInstitutionDao().getCurrentList(latitude,longitude);
-            adapter = new MapListAdapter(list);
-            recyclerView.setAdapter(adapter);
+    public void getCurrentAddress() {
+        GpsTracker gpsTracker2 = new GpsTracker(getContext());
+        this.gpsTracker = gpsTracker2;
+        this.latitude = gpsTracker2.getLatitude();
+        this.longitude = this.gpsTracker.getLongitude();
+    }
+
+    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapFragment$dataThread */
+    class dataThread extends Thread {
+        dataThread() {
+        }
+
+        public void run() {
+            MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
+            MapFragment.this.list = db.getMedicalInstitutionDao().getCurrentList(MapFragment.this.latitude, MapFragment.this.longitude);
+            ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
+            for (int idx = 0; idx < list.size(); idx++)
+            {
+                for(int i=0;i<userKeywordList.size();i++)
+                {
+                    if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
+                    {
+                        recommedList.add(MapFragment.this.list.get(idx));
+                        break;
+                    }
+                }
+
+            }
+            MapFragment.this.list = recommedList;
+            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
+            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
         }
     }
 
+    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapFragment$bookmarkThread */
+    class bookmarkThread extends Thread {
+        bookmarkThread() {
+        }
+
+        public void run() {
+            MapFragment.this.adapter = new MapListAdapter(MindChargeDB.getInstance(MapFragment.this.getContext()).getBookMarkDao().getBookmarkList());
+            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+        }
+    }
 }

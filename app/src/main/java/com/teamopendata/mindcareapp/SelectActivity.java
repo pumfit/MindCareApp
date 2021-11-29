@@ -2,9 +2,7 @@ package com.teamopendata.mindcareapp;
 
 import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -389,83 +381,80 @@ public class SelectActivity extends AppCompatActivity {
                 Intent intent = new Intent(SelectActivity.this, MainActivity.class);
 
                 // !-- 첫번째 버튼
-                if( btn_depress_anxiety_status == 1){
-                    btnList.add("btn_depress_anxiety");
+                if (SelectActivity.this.btn_depress_anxiety_status == 1) {
+                    btnList.add("우울·불안");
                 }
-                if(btn_sleeplessness_status == 1){
-                    btnList.add("btn_sleeplessness");
+                if (SelectActivity.this.btn_sleeplessness_status == 1) {
+                    btnList.add("불면");
                 }
-                if(btn_stress_status == 1){
-                    btnList.add("btn_stress");
+                if (SelectActivity.this.btn_stress_status == 1) {
+                    btnList.add("스트레스");
                 }
-                if(btn_phobia_status == 1){
-                    btnList.add("btn_phobia");
+                if (SelectActivity.this.btn_phobia_status == 1) {
+                    btnList.add("공포증");
                 }
-                if(btn_mental_illness_status == 1){
-                    btnList.add("btn_mental_illness");
+                if (SelectActivity.this.btn_mental_illness_status == 1) {
+                    btnList.add("정신질환");
                 }
-                if(btn_suicide_thinking_status == 1){
-                    btnList.add("btn_suicide_thinking");
+                if (SelectActivity.this.btn_suicide_thinking_status == 1) {
+                    btnList.add("자살생각");
                 }
-                if(btn_left_people_status == 1){
-                    btnList.add("btn_left_people");
+                if (SelectActivity.this.btn_left_people_status == 1) {
+                    btnList.add("자살유족");
                 }
-                if(btn_self_injury_status == 1){
-                    btnList.add("btn_self_injury");
+                if (SelectActivity.this.btn_self_injury_status == 1) {
+                    btnList.add("자해 및 자살시도");
                 }
-
-                // !-- 두번째 버튼
-                if(btn_adult_status == 1){
-                    btnList.add("btn_adult");
+                if (SelectActivity.this.btn_adult_status == 1) {
+                    btnList.add("성인");
                 }
-                if(btn_kids_status == 1){
-                    btnList.add("btn_kids");
+                if (SelectActivity.this.btn_kids_status == 1) {
+                    btnList.add("노인(치매)");
                 }
-                if(btn_elders_status == 1){
-                    btnList.add("btn_elders");
+                if (SelectActivity.this.btn_elders_status == 1) {
+                    btnList.add("노인");
                 }
-                if(btn_parents_family_status == 1){
-                    btnList.add("btn_parents_family");
+                if (SelectActivity.this.btn_parents_family_status == 1) {
+                    btnList.add("부모, 가족");
                 }
-                if(btn_healthcare_status == 1){
-                    btnList.add("btn_healthcare");
+                if (SelectActivity.this.btn_healthcare_status == 1) {
+                    btnList.add("건강관리");
                 }
-
-                if(btn_out_clinic_status == 1){
-                    btnList.add("btn_out_clinic");
+                if (SelectActivity.this.btn_out_clinic_status == 1) {
+                    btnList.add("외래·입원(입소)");
                 }
-                if(btn_rehabilitation_status == 1){
-                    btnList.add("btn_rehabilitation");
+                if (SelectActivity.this.btn_rehabilitation_status == 1) {
+                    btnList.add("재활");
                 }
-                if(btn_residence_status == 1){
-                    btnList.add("btn_residence");
+                if (SelectActivity.this.btn_residence_status == 1) {
+                    btnList.add("주거");
                 }
-                if(btn_guidance_status == 1){
-                    btnList.add("btn_guidance");
+                if (SelectActivity.this.btn_guidance_status == 1) {
+                    btnList.add("생활지도");
                 }
-                if(btn_vocation_training_status == 1){
-                    btnList.add("btn_vocation_training");
+                if (SelectActivity.this.btn_vocation_training_status == 1) {
+                    btnList.add("직업교육");
                 }
-                if(btn_mental_retardation_status == 1){
-                    btnList.add("btn_mental_retardation");
+                if (SelectActivity.this.btn_mental_retardation_status == 1) {
+                    btnList.add("정신지체");
                 }
-                if(btn_disaster_status == 1){
-                    btnList.add("btn_disaster");
+                if (SelectActivity.this.btn_disaster_status == 1) {
+                    btnList.add("재난");
                 }
-                if(btn_adjust_status == 1){
-                    btnList.add("btn_adjust");
+                if (SelectActivity.this.btn_adjust_status == 1) {
+                    btnList.add("사회복귀·적응");
                 }
-                if(btn_alcohol_addicted_status == 1){
-                    btnList.add("btn_alcohol_addicted");
+                if (SelectActivity.this.btn_alcohol_addicted_status == 1) {
+                    btnList.add("알코올 중독");
                 }
-                if(btn_gambling_addicted_status == 1){
-                    btnList.add("btn_gambling_addicted");
+                if (SelectActivity.this.btn_gambling_addicted_status == 1) {
+                    btnList.add("도박 중독");
                 }
-                if(btn_drug_addicted_status == 1){
-                    btnList.add("btn_drug_addicted");
+                if (SelectActivity.this.btn_drug_addicted_status == 1) {
+                    btnList.add("약물(마약) 중독");
                 }
-                if(btn_smartphone_addicted_status == 1){
-                    btnList.add("btn_smartphone_addicted");
+                if (SelectActivity.this.btn_smartphone_addicted_status == 1) {
+                    btnList.add("인터넷(스마트폰) 중독");
                 }
 
 
