@@ -9,24 +9,20 @@ import androidx.appcompat.app.AppCompatActivity;
 public class IntroActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override public void run() {
-                Intent intent = new Intent(IntroActivity.this, WelcomeActivity.class);
-                startActivity(intent); finish();
-            }
-        },800);
+        setContentView(R.layout.view_intro);
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(IntroActivity.this, UserGuideActivity.class);
+            startActivity(intent);
+            finish();
+        }, 800);
     }
 
 
     @Override
-    protected  void onPause(){
+    protected void onPause() {
         super.onPause();
         finish();
     }
