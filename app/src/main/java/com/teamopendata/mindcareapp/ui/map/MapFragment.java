@@ -1,7 +1,6 @@
 package com.teamopendata.mindcareapp.ui.map;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map_main, container, false);
-        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, (ViewGroup) null);
+        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, (ViewGroup) container.findViewById(R.id.cl_map_bottomsheet));
 
         this.recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.recyclerview);
         this.userKeywordList = new ArrayList<>();
@@ -99,6 +98,15 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         this.bottomSheetDialog.show();
     }
 
+    @Override
+    public void callBackClickRefresh(LatLng position) {
+        longitude = position.longitude;
+        latitude = position.latitude;
+        new dataThread().start();
+        this.bottomSheetDialog.show();
+        googleMapFragment.addMediInfoMarker(this.list);
+    }
+
     public void getCurrentAddress() {
         GpsTracker gpsTracker2 = new GpsTracker(getContext());
         this.gpsTracker = gpsTracker2;
@@ -114,7 +122,6 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         public void run() {
             MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
             MapFragment.this.list = db.getMedicalInstitutionDao().getCurrentList(MapFragment.this.latitude, MapFragment.this.longitude);
-            Log.d("dd",list.size()+"!!!!!!!!!!!!!!!!!!"+userKeywordList.size());
             ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
             for (int idx = 0; idx < list.size(); idx++)
             {
@@ -128,7 +135,6 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
                 }
 
             }
-            Log.d("dd",recommedList.size()+"!!!!!!!!!!!!!!!!!!");
             MapFragment.this.list = recommedList;
             MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
             MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);

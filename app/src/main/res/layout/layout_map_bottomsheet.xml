@@ -1,18 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <androidx.constraintlayout.widget.ConstraintLayout app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" app:behavior_hideable="true" app:behavior_draggable="true" android:layout_marginBottom="100dp" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/bottomSheetDashBoardLayout" xmlns:aapt="http://schemas.android.com/aapt" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheetDashBoardLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="100dp"
+    app:behavior_draggable="true"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="0dp" android:id="@+id/linearLayout" app:layout_constraintTop_toTopOf="0" app:layout_constraintStart_toStartOf="0" app:layout_constraintEnd_toEndOf="0" android:layout_marginVertical="24dp" android:layout_marginTop="24dp" android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="396dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <View android:layout_height="8px" android:layout_width="60dp" android:background="#aab2bf" android:layout_gravity="center"/>
+        <View
+            android:layout_width="60dp"
+            android:layout_height="8px"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:background="#aab2bf" />
 
-    <TextView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/textView5" android:layout_marginTop="6dp" android:paddingVertical="4dp" android:layout_marginHorizontal="12dp" android:text="@string/map_list" android:textColor="#0920a1" android:textStyle="bold" android:textSize="28dp"/>
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="6dp"
+            android:paddingVertical="4dp"
+            android:text="@string/map_list"
+            android:textColor="#0920a1"
+            android:textSize="28dp"
+            android:textStyle="bold" />
 
-    <androidx.recyclerview.widget.RecyclerView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/recyclerview" android:layout_marginTop="6dp" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <View android:layout_height="40dp" android:layout_width="wrap_content" android:id="@+id/view" android:background="#00ffffff" android:layout_gravity="center"/>
-
-</LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
