@@ -2,7 +2,6 @@ package com.teamopendata.mindcareapp.ui.map;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -43,15 +42,15 @@ public class GoogleMapFragment extends Fragment
     public double latitude = 37.65373464975277;
     public double longitude= 127.06081718059411;
 
-    public static Map<String,Float> colormap = new HashMap(){
+    public static Map<String, Float> colormap = new HashMap() {
         {
-             put("광역형정신건강증진센터",BitmapDescriptorFactory.HUE_RED);
-             put("기초정신건강증진센터",BitmapDescriptorFactory.HUE_ORANGE);
-             put("자살예방센터",BitmapDescriptorFactory.HUE_YELLOW);
-             put("중독관리통합지원센터",BitmapDescriptorFactory.HUE_GREEN);
-             put("사회복귀시설",BitmapDescriptorFactory.HUE_BLUE);
-             put("정신의료기관",255.0f);
-             put("정신요양시설",BitmapDescriptorFactory.HUE_VIOLET);
+            put("광역형정신건강증진센터", Float.valueOf(0.0f));
+            put("기초정신건강증진센터", Float.valueOf(30.0f));
+            put("자살예방센터", Float.valueOf(60.0f));
+            put("중독관리통합지원센터", Float.valueOf(120.0f));
+            put("사회복귀시설", Float.valueOf(240.0f));
+            put("정신의료기관", Float.valueOf(255.0f));
+            put("정신요양시설", Float.valueOf(270.0f));
         }
     };
 
@@ -68,13 +67,6 @@ public class GoogleMapFragment extends Fragment
         mMap = (MapView) v.findViewById(R.id.mv_mapview);
         mMap.onCreate(savedInstanceState);
 
-        if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인
-            Intent callGPSSettingIntent
-                    = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);//아닌경우 Dialog 생성
-            startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
-        } else {
-            checkRunTimePermission();
-        }
         //getCurrentAddress();
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -93,10 +85,6 @@ public class GoogleMapFragment extends Fragment
                 gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
                     @Override
                     public boolean onMarkerClick(@NonNull Marker marker) {
-//                        BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.locationblue);
-//                        Bitmap b = bitmapDrawable.getBitmap();
-//                        Bitmap newMarker = Bitmap.createScaledBitmap(b,150,150,false);
-//                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(newMarker));
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                         googleMap.animateCamera(CameraUpdateFactory.zoomTo(18));
                         listener.callBackClickMarker(marker.getPosition());//TODO: marker가 반환하는 정보는 위경도인데 해당되는 정보를 전달하면 어떻게 해야할까요?

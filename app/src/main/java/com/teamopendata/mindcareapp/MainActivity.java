@@ -1,10 +1,15 @@
 package com.teamopendata.mindcareapp;
 
-import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
-
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -12,11 +17,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    String[] REQUIRED_PERMISSIONS = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +30,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        ArrayList<String> a = new ArrayList<String>();
-        a = BtnPrefMgr.getStringArrayPref(MainActivity.this,BTN_PREF_KEY);
-        for(int i = 0; i< a.size();i++){
-            Log.d("keyValues", a.get(i));
+        if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인
+            Intent callGPSSettingIntent
+                    = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);//아닌경우 Dialog 생성
+            startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
+        } else {
+            checkRunTimePermission();
         }
-
 
 
         //!-- fragment 네이게이션 만드는 코드
@@ -54,5 +61,41 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private static final int REQUEST_PERMISSIONS = 1;
+    private static final String[] MY_PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+    public boolean checkLocationServicesStatus() { //GPS기능 사용가능한지 판단
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    void checkRunTimePermission() {//RunTimePermission 처리
+
+        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+        } else {
+
+            if (shouldShowRequestPermissionRationale(REQUIRED_PERMISSIONS[0])) {
+                Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+                requestPermissions(REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);//위치 정보 퍼미션 재요청
+
+            } else {
+                requestPermissions(REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);
+            }
+        }
     }
 }

@@ -9,7 +9,13 @@
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_today_task.xml" value="0.2" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/welcome_slide1.xml" value="0.2" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/drawable/ic_icon_location_fill_green.xml" value="0.14375" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/drawable/ic_icon_map_bookmark_starfilled.xml" value="0.20104166666666667" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/drawable/ic_icon_web.xml" value="0.20104166666666667" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/dialog_map_list_subinfo.xml" value="0.1213768115942029" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/dialog_map_question.xml" value="0.1" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_map_main.xml" value="0.1213768115942029" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_map_mian.xml" value="0.176" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/image_map_question.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/kimta/.gradle/caches/transforms-2/files-2.1/63dac4b0f8ef13947ce880083f712369/jetified-appcompat-resources-1.2.0/res/drawable/abc_vector_test.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/achievementrate_graph.xml" value="0.1140625" />
