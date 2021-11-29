@@ -113,12 +113,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         }
     }
 
-    public class ViewHolderNoList extends ViewHolder {
-        public ViewHolderNoList(View itemView) {
-            super(itemView);
-        }
-    }
-
     public void checkBookmarkList() {
         for (int i = 0; i < this.medicalList.size(); i++) {
             for (int j = 0; j < this.bookmarkList.size(); j++) {

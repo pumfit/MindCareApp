@@ -1,6 +1,7 @@
 package com.teamopendata.mindcareapp.ui.map;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         getCurrentAddress();
 
         new dataThread().start();
+
         ((ImageButton) root.findViewById(R.id.btn_map_question)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new CustomDialog(MapFragment.this.getActivity()).callFunction();
@@ -112,19 +114,21 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         public void run() {
             MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
             MapFragment.this.list = db.getMedicalInstitutionDao().getCurrentList(MapFragment.this.latitude, MapFragment.this.longitude);
+            Log.d("dd",list.size()+"!!!!!!!!!!!!!!!!!!"+userKeywordList.size());
             ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
-            for (int idx = 0; idx < MapFragment.this.list.size(); idx++) {
-                int i = 0;
-                while (true) {
-                    if (i >= MapFragment.this.userKeywordList.size()) {
-                        break;
-                    } else if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i))) {
+            for (int idx = 0; idx < list.size(); idx++)
+            {
+                for(int i=0;i<userKeywordList.size();i++)
+                {
+                    if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
+                    {
                         recommedList.add(MapFragment.this.list.get(idx));
-                    } else {
-                        i++;
+                        break;
                     }
                 }
+
             }
+            Log.d("dd",recommedList.size()+"!!!!!!!!!!!!!!!!!!");
             MapFragment.this.list = recommedList;
             MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
             MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
