@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheetDashBoardLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="80dp"
     android:layout_marginBottom="100dp"
     app:behavior_draggable="true"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-
     <LinearLayout
         android:id="@+id/linearLayout"
+        android:paddingBottom="80dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="24dp"

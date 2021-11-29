@@ -67,7 +67,7 @@ public class GoogleMapFragment extends Fragment
         mMap = (MapView) v.findViewById(R.id.mv_mapview);
         mMap.onCreate(savedInstanceState);
 
-        //getCurrentAddress();
+        getCurrentAddress();
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
