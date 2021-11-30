@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class MainActivity extends BaseActivity {
 
@@ -23,6 +25,9 @@ public class MainActivity extends BaseActivity {
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
+
+    private ConstraintLayout bottomSheetParentLayout;
+    private BottomSheetBehavior mBottomSheetBehaviour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +43,18 @@ public class MainActivity extends BaseActivity {
             checkRunTimePermission();
         }
 
+        bottomSheetParentLayout = findViewById(R.id.bottom_sheet_parent);
+        mBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetParentLayout);
 
+        if (navView != null) {
+
+            mBottomSheetBehaviour.setPeekHeight(navView.getHeight() + 90);
+
+        }
         //!-- fragment 네이게이션 만드는 코드
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_map, R.id.navigation_graph, R.id.navigation_records)
                 .build();

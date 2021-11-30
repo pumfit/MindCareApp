@@ -37,16 +37,14 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map_main, container, false);
-        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, (ViewGroup) container.findViewById(R.id.cl_map_bottomsheet));
+        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);
+        bottomSheetDialog = new BottomSheetDialog(container.getContext());
+        bottomSheetDialog.setContentView(bottomSheetView);
+        this.bottomSheetDialog.show();
 
         this.recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.recyclerview);
         this.userKeywordList = new ArrayList<>();
         this.userKeywordList = BtnPrefMgr.getStringArrayPref(container.getContext(), BtnPrefMgr.BTN_PREF_KEY);
-
-        BottomSheetDialog bottomSheetDialog2 = new BottomSheetDialog(container.getContext());
-        this.bottomSheetDialog = bottomSheetDialog2;
-        bottomSheetDialog2.setContentView(bottomSheetView);
-        this.bottomSheetDialog.show();
 
         getCurrentAddress();
 

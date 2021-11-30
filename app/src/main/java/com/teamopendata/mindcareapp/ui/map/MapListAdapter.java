@@ -57,10 +57,16 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         String name = this.medicalList.get(position).name;
         String type = this.medicalList.get(position).type;
         String address = this.medicalList.get(position).address;
+        String grade = this.medicalList.get(position).grade.equals("0등급")?"등급없음":this.medicalList.get(position).grade;
+//        String keyword = "#"+this.medicalList.get(position).keyword1+" #"+this.medicalList.get(position).keyword2+" #"+this.medicalList.get(position).keyword3+" #"+
+//                this.medicalList.get(position).keyword4+" #"+this.medicalList.get(position).keyword5+" #"+this.medicalList.get(position).keyword6;
+
 
         holder.tvName.setText(name);
         holder.tvType.setText(type);
         holder.tvAddress.setText(address);
+        holder.tvGrade.setText(grade);
+        //holder.tvKeyword.setText(keyword);
         holder.ivIcon.setImageResource(colormap.get(this.medicalList.get(position).type).intValue());
         if (this.bookmarkStatus[position]) {
             buttonClicked(holder.btnBookmark);
@@ -96,6 +102,8 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         public TextView tvAddress;
         public TextView tvName;
         public TextView tvType;
+        public TextView tvGrade;
+        public TextView tvKeyword;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,6 +112,8 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
             this.tvAddress = (TextView) itemView.findViewById(R.id.tv_map_address);
             this.btnBookmark = (ImageButton) itemView.findViewById(R.id.ib_map_bookmark_star);
             this.ivIcon = (ImageView) itemView.findViewById(R.id.iv_map_marker);
+            this.tvGrade = itemView.findViewById(R.id.tv_map_grade);
+            this.tvKeyword = itemView.findViewById(R.id.tv_map_keyword);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();

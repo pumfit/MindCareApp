@@ -15,11 +15,13 @@
         android:id="@+id/fab_map_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="32dp"
         android:layout_weight="1"
         android:clickable="true"
-        app:srcCompat="@drawable/addicon"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="28dp"
+        app:backgroundTint="#FFFFFF"
+        app:rippleColor="#FFFFFF"
+        app:srcCompat="@drawable/ic_icon_map_crosshair_alt"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
