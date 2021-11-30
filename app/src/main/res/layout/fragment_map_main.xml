@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent" android:layout_width="match_parent" android:id="@+id/cl_map_layout" xmlns:aapt="http://schemas.android.com/aapt" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout android:layout_height="match_parent" android:layout_width="match_parent" android:id="@+id/fl_map_container"/>
@@ -9,42 +9,42 @@
     <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:layout_margin="18dp" android:orientation="vertical">
 
 
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_margin="12dp" android:orientation="horizontal" android:paddingVertical="8dp" android:paddingHorizontal="16dp" android:backgroundTint="#ccffffff" android:background="@drawable/dialog_rounded_background">
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_margin="12dp" android:orientation="horizontal" android:paddingVertical="8dp" android:paddingHorizontal="16dp" android:backgroundTint="#ccffffff" android:background="@drawable/dialog_rounded_background">
 
-    <ImageButton
-        android:id="@+id/btn_map_back"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_icon_map_back"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+            <ImageButton
+                android:id="@+id/btn_map_back"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_back_border"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView3" android:text="@string/map_title" android:layout_marginLeft="8dp" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="30dp"/>
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView3" android:text="@string/map_title" android:layout_marginLeft="8dp" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="30dp"/>
 
 
-    <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="horizontal" android:gravity="end">
+            <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="horizontal" android:gravity="end">
 
-    <ImageButton
-        android:id="@+id/btn_map_question"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/ic_icon_map_question"
-        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                <ImageButton
+                    android:id="@+id/btn_map_question"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/ic_icon_map_question"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-    <ImageButton
-        android:id="@+id/btn_map_bookmark"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_icon__map_bookmark_star"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                <ImageButton
+                    android:id="@+id/btn_map_bookmark"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_icon__map_bookmark_star"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-</LinearLayout>
+            </LinearLayout>
 
-</LinearLayout>
+        </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

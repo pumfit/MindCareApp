@@ -75,9 +75,10 @@ public class AddEditRecordFragment extends Fragment {
     public AddEditRecordFragment(EventType type, Record record, OnAddEditRecordEventListener listener) {
         mEventType = type;
         mCachedRecord = record;
+        mSaveListener = listener;
+
         if (mEventType == EventType.EVENT_EDIT) mNewRecord = record.clone();
         else mNewRecord = new Record();
-        mSaveListener = listener;
 
         Log.d(TAG, "AddEditRecordFragment: " + "eventType-> " + mEventType.toString() + "Record-> " + mNewRecord.toString());
     }

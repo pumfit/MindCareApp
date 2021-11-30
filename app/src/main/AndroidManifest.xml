@@ -28,7 +28,7 @@
         <activity
             android:name=".BaseActivity"
             android:exported="true" />
-        <activity android:name=".IntroActivity"
+        <activity android:name=".ui.intro.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,8 +36,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".SelectActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".ui.intro.SelectActivity" />
+        <activity android:name=".ui.intro.UserGuideActivity" />
     </application>
 
 </manifest>
