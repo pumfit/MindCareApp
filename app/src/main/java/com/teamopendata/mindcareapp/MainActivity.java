@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity {
 
         bottomSheetParentLayout = findViewById(R.id.bottom_sheet_parent);
         mBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetParentLayout);
+
         if (navView != null) {
 
             mBottomSheetBehaviour.setPeekHeight(navView.getHeight() + 90);

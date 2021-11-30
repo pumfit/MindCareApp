@@ -63,6 +63,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         });
         ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
             }
         });
         return root;

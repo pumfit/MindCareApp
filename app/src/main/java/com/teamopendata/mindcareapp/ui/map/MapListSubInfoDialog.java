@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -100,18 +102,30 @@ public class MapListSubInfoDialog {
                     MapListSubInfoDialog.this.buttonClickedList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog = MapListSubInfoDialog.this;
                     new bookmarkInsertThread(mapListSubInfoDialog.mediInfo).start();
-                    Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기에 추가되었습니다.", 1).show();
+                    customToast("즐겨찾기에 추가되었습니다.");
                     MapListSubInfoDialog.this.isMarked = true;
                 } else if (MapListSubInfoDialog.this.isMarked) {
                     MapListSubInfoDialog.this.buttonDefault(bookMarkButton);
                     MapListSubInfoDialog.this.buttonDefaultList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog2 = MapListSubInfoDialog.this;
                     new bookmarkDeleteThread(mapListSubInfoDialog2.mediInfo).start();
-                    Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기가 취소되었습니다.", 1).show();
+                    customToast("즐겨찾기가 취소되었습니다.");
                     MapListSubInfoDialog.this.isMarked = false;
                 }
             }
         });
+    }
+
+    public void customToast(String message){
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.toast_map_bookmark, null);
+        TextView toast_textview  = layout.findViewById(R.id.tv_toast_message);
+        toast_textview.setText(String.valueOf(message));
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT); //메시지 표시 시간
+        toast.setView(layout);
+        toast.show();
     }
 
     /* access modifiers changed from: private */

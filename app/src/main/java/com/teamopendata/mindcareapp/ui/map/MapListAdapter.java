@@ -3,6 +3,7 @@ package com.teamopendata.mindcareapp.ui.map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,13 +80,13 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
                     MapListAdapter.this.buttonClicked(holder.btnBookmark);
                     MapListAdapter mapListAdapter = MapListAdapter.this;
                     new bookmarkInsertThread((MedicalInstitution) mapListAdapter.medicalList.get(position)).start();
-                    Toast.makeText(v.getContext(), "즐겨찾기에 추가되었습니다.",1).show();
+                    customToast("즐겨찾기가 추가되었습니다.");
                     MapListAdapter.this.bookmarkStatus[position] = true;
                 } else if (MapListAdapter.this.bookmarkStatus[position]) {
                     MapListAdapter.this.buttonDefault(holder.btnBookmark);
                     MapListAdapter mapListAdapter2 = MapListAdapter.this;
                     new bookmarkDeleteThread((MedicalInstitution) mapListAdapter2.medicalList.get(position)).start();
-                    Toast.makeText(v.getContext(), "즐겨찾기가 취소되었습니다.", 1).show();
+                    customToast("즐겨찾기가 취소되었습니다.");
                     MapListAdapter.this.bookmarkStatus[position] = false;
                 }
             }
@@ -133,6 +134,18 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
                 }
             }
         }
+    }
+
+    public void customToast(String message){
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.toast_map_bookmark, null);
+        TextView toast_textview  = layout.findViewById(R.id.tv_toast_message);
+        toast_textview.setText(String.valueOf(message));
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT); //메시지 표시 시간
+        toast.setView(layout);
+        toast.show();
     }
 
     /* access modifiers changed from: private */
