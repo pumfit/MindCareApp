@@ -31,6 +31,7 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
@@ -482,20 +483,61 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         //getTheme 안되는데 뭐 써야하는지
         if((int)sum >=0 && (int)sum <25){
-
+            binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvPercent.setAlpha(0.0f);
+            binding.tvCharge.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
         }
         else if((int)sum >=25 && (int)sum <50){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_25));
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_25);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvPercent.setAlpha(0.0f);
+            binding.tvCharge.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+
         }
         else if((int)sum >=50 && (int)sum <75){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_50));
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_50);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvWeek.setAlpha(0.0f);
+            binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvPercent.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvProgressbar2.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvCharge.setAlpha(0.0f);
+            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
         }
         else if((int)sum >=75 && (int)sum <100){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_75));
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_75);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvPercent.setAlpha(0.0f);
+            binding.tvCharge.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
         }
         else if((int)sum == 100){
-            binding.btnAlyakGraph.setImageDrawable(getResources().getDrawable(R.drawable.icon_mind_charge_expanded_100));
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_100);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            binding.tvPercent.setAlpha(0.0f);
+            binding.tvCharge.setAlpha(0.0f);
+            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
         }
 
         //기록 없을 때
@@ -503,6 +545,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
             binding.tvWeek.setVisibility(GONE);
             binding.tvProgressbar2.setVisibility(GONE);
+
             binding.tvPercent.setText("기록을 ");
             binding.tvCharge.setText("입력해주세요!");
 
