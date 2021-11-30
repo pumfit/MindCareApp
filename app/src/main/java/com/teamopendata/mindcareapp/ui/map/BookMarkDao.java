@@ -15,7 +15,7 @@ public interface BookMarkDao {
     @Query("DELETE FROM bookmark WHERE :j = bookmark.medi_id")
     void deleteById(long j);
 
-    @Query("SELECT * FROM medicalInstitution INNER JOIN bookmark ON medicalInstitution.id = bookmark.medi_id")
+    @Query("SELECT * FROM bookmark INNER JOIN medicalInstitution ON bookmark.medi_id = medicalInstitution.id")
     List<MedicalInstitution> getBookmarkList();
 
     @Insert

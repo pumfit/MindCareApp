@@ -34,12 +34,14 @@ public class MapListSubInfoDialog {
 
     public Context context;
     public boolean isMarked;
+    public ImageButton bookMarkListButton;
     public MedicalInstitution mediInfo;
 
-    public MapListSubInfoDialog(Context context, MedicalInstitution mediInfo, boolean isMarked) {
+    public MapListSubInfoDialog(Context context, MedicalInstitution mediInfo, boolean isMarked,ImageButton btnBookmark) {
         this.context = context;
         this.mediInfo = mediInfo;
         this.isMarked = isMarked;
+        this.bookMarkListButton = btnBookmark;
     }
 
     public void callFunction() {
@@ -95,12 +97,14 @@ public class MapListSubInfoDialog {
             public void onClick(View view) {
                 if (!MapListSubInfoDialog.this.isMarked) {
                     MapListSubInfoDialog.this.buttonClicked(bookMarkButton);
+                    MapListSubInfoDialog.this.buttonClickedList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog = MapListSubInfoDialog.this;
                     new bookmarkInsertThread(mapListSubInfoDialog.mediInfo).start();
                     Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기에 추가되었습니다.", 1).show();
                     MapListSubInfoDialog.this.isMarked = true;
                 } else if (MapListSubInfoDialog.this.isMarked) {
                     MapListSubInfoDialog.this.buttonDefault(bookMarkButton);
+                    MapListSubInfoDialog.this.buttonDefaultList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog2 = MapListSubInfoDialog.this;
                     new bookmarkDeleteThread(mapListSubInfoDialog2.mediInfo).start();
                     Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기가 취소되었습니다.", 1).show();
@@ -117,15 +121,25 @@ public class MapListSubInfoDialog {
 
     /* access modifiers changed from: private */
     public void buttonDefault(ImageButton button) {
-        button.setImageDrawable(button.getResources().getDrawable(R.drawable.ic_icon__map_bookmark_star));
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.ic_icon_map_bookmark_starunfilled));
+    }
+
+    /* access modifiers changed from: private */
+    public void buttonClickedList(ImageButton button) {
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.starfilled));
+    }
+
+    /* access modifiers changed from: private */
+    public void buttonDefaultList(ImageButton button) {
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.star));
     }
 
     /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListSubInfoDialog$bookmarkInsertThread */
     class bookmarkInsertThread extends Thread {
         private MedicalInstitution medi;
 
-        bookmarkInsertThread(MedicalInstitution medi2) {
-            this.medi = medi2;
+        bookmarkInsertThread(MedicalInstitution medi) {
+            this.medi = medi;
         }
 
         public void run() {

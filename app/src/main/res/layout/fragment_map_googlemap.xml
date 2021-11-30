@@ -22,6 +22,7 @@
         app:backgroundTint="#FFFFFF"
         app:rippleColor="#FFFFFF"
         app:srcCompat="@drawable/ic_icon_map_crosshair_alt"
+        app:tint="#90CAF9"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

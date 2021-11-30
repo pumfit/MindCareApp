@@ -2,6 +2,7 @@ package com.teamopendata.mindcareapp.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +118,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
-                MapListSubInfoDialog subInfoDialog = new MapListSubInfoDialog(context,medicalList.get(pos),bookmarkStatus[pos]);
+                MapListSubInfoDialog subInfoDialog = new MapListSubInfoDialog(context,medicalList.get(pos),bookmarkStatus[pos],btnBookmark);
                 subInfoDialog.callFunction();
             });
         }
@@ -126,6 +127,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
     public void checkBookmarkList() {
         for (int i = 0; i < this.medicalList.size(); i++) {
             for (int j = 0; j < this.bookmarkList.size(); j++) {
+                Log.d("dd",this.medicalList.get(i).id +" "+ this.bookmarkList.get(j).id+"!!!!!!!!!!");
                 if (this.medicalList.get(i).id == this.bookmarkList.get(j).id) {
                     this.bookmarkStatus[i] = true;
                 }
@@ -174,6 +176,7 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
         public void run() {
             MapListAdapter.this.bookmarkList = MindChargeDB.getInstance(MapListAdapter.this.context).getBookMarkDao().getBookmarkList();
+            Log.d("dd",bookmarkList.size()+"!!");
             MapListAdapter.this.checkBookmarkList();
         }
     }
