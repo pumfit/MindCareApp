@@ -133,10 +133,12 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onPause() {
-        new Thread(() -> {
-            Log.d(TAG, "updateRecord: " + cachedRecord.toString());
-            MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord);
-        }).start();
+        Log.d(TAG, "onPause: ");
+        if (cachedRecord != null) {
+            new Thread(() -> {
+                MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord);
+            }).start();
+        }
         super.onPause();
     }
 
