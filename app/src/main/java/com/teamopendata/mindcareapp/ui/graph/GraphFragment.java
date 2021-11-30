@@ -1,6 +1,7 @@
 package com.teamopendata.mindcareapp.ui.graph;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -112,7 +113,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 disappearArrow();
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
                 binding.tvDate.setText("");
             }
         });
@@ -121,7 +122,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 disappearArrow();
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
                 binding.tvDate.setText("");
             }
         });
@@ -301,10 +302,10 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     // !-- 보여줘 메소드
     public void appearArrow(){
-        binding.leftArrowBtnGraph.setVisibility(View.VISIBLE);
-        binding.rightArrowBtnGraph.setVisibility(View.VISIBLE);
-        binding.tvTopWeek.setVisibility(View.VISIBLE);
-        binding.tvWeekOfMonth.setVisibility(View.VISIBLE);
+        binding.leftArrowBtnGraph.setVisibility(VISIBLE);
+        binding.rightArrowBtnGraph.setVisibility(VISIBLE);
+        binding.tvTopWeek.setVisibility(VISIBLE);
+        binding.tvWeekOfMonth.setVisibility(VISIBLE);
     }
 
 
@@ -507,9 +508,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         }
         else{
-            binding.tvWeek.setVisibility(View.VISIBLE);
-            binding.tvProgressbar2.setVisibility(View.VISIBLE);
-            binding.tvPercent.setVisibility(View.VISIBLE);
+            binding.tvWeek.setVisibility(VISIBLE);
+            binding.tvProgressbar2.setVisibility(VISIBLE);
+            binding.tvPercent.setVisibility(VISIBLE);
             binding.tvPercent.setText("% ");
             binding.tvCharge.setText("마음충전되었습니다.");
             binding.tvProgressbar2.setText(form.format(sum));
@@ -691,8 +692,10 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onCancel(DialogInterface dialog) {
                 binding.tvDate.setText(monday+"-"+sunday);
-                binding.leftArrowBtnGraph.setVisibility(View.VISIBLE);
-                binding.rightArrowBtnGraph.setVisibility(View.VISIBLE);
+                binding.leftArrowBtnGraph.setVisibility(VISIBLE);
+                binding.rightArrowBtnGraph.setVisibility(VISIBLE);
+                binding.tvWeekOfMonth.setVisibility(VISIBLE);
+                binding.tvTopWeek.setVisibility(VISIBLE);
             }
         });
     }
