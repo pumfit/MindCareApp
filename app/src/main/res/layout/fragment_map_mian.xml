@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_map_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.map.MapFragment">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fl_map_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="123dp">
+        android:layout_height="match_parent" />
 
-    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,23 +20,24 @@
         android:layout_margin="18dp"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:background="@drawable/dialog_rounded_background"
-            android:backgroundTint="#CCFFFFFF"
+            android:backgroundTint="#ccffffff"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_map_back"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:background="@drawable/icon_back_border"
-                tools:ignore="DuplicateIds,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                android:background="@drawable/ic_icon_map_back"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -49,32 +49,33 @@
                 android:textSize="30dp"
                 android:textStyle="bold" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="end"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_map_question"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/ic_icon_map_question"
-                    tools:ignore="DuplicateIds,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_map_bookmark"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_icon__map_bookmark_star"
-                    tools:ignore="DuplicateIds,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
             </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 
