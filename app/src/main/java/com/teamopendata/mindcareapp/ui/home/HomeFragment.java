@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.teamopendata.mindcareapp.MindChargeDB;
-import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.databinding.FragmentHomeBinding;
@@ -36,10 +35,12 @@ public class HomeFragment extends Fragment {
 
     private int mindChargeFlag = -1;
 
+    private Record cachedRecord;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getTodayTask();
+        getTodayTasks();
     }
 
     @Override
@@ -67,18 +68,18 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void getTodayTask() {
+    private void getTodayTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         new Thread(() -> {
             LocalDate today = LocalDate.now();
             LocalDate yesterday = LocalDate.now().minus(Period.ofDays(1));
 
-            // Log.d(TAG, "getTodayTask: " + today.toString() + "," + yesterday.toString());
-            Record record = MindChargeDB.getInstance(getContext()).getRecordDao().getTasks(today, yesterday);
+            // Log.d(TAG, "getTodayTasks: " + today.toString() + "," + yesterday.toString());
+            cachedRecord = MindChargeDB.getInstance(getContext()).getRecordDao().getTasks(today, yesterday);
 
-            if (record != null) {
-                Log.d(TAG, "getTodayTask: " + record.toString());
-                tasks.addAll(record.getTasks());
+            if (cachedRecord != null) {
+                Log.d(TAG, "getTodayTasks: " + cachedRecord.toString());
+                tasks.addAll(cachedRecord.getTasks());
 
                 new Handler(Looper.getMainLooper()).post(() -> taskAdapter.initItems(tasks));
             }
@@ -128,6 +129,15 @@ public class HomeFragment extends Fragment {
 
         binding.tvHomeMindChargeExpended.setText(getResources().getString(expandedTextId));
         binding.tvHomeMindChargeCollapsed.setText(getResources().getString(collapseTextId));
+    }
+
+    @Override
+    public void onPause() {
+        new Thread(() -> {
+            Log.d(TAG, "updateRecord: " + cachedRecord.toString());
+            MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord);
+        }).start();
+        super.onPause();
     }
 
     @Override
