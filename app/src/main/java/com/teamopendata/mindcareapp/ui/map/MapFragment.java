@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.teamopendata.mindcareapp.BtnPrefMgr;
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package com.teamopendata.mindcareapp.common;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 

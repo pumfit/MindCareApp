@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.teamopendata.mindcareapp.MainActivity;
+import com.teamopendata.mindcareapp.ui.MainActivity;
 import com.teamopendata.mindcareapp.R;
 
 public class IntroActivity extends AppCompatActivity {

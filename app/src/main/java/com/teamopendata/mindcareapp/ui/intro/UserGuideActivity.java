@@ -16,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.teamopendata.mindcareapp.ui.MainActivity;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
 import com.teamopendata.mindcareapp.databinding.ActivityUserGuideBinding;
@@ -95,7 +96,7 @@ public class UserGuideActivity extends AppCompatActivity implements View.OnClick
 
     private void showKeywordDialog() {
         SharedPreferencesManager.setFirstTimeLaunch(this, false);
-        startActivity(new Intent(UserGuideActivity.this, SelectActivity.class));
+        startActivity(new Intent(UserGuideActivity.this, MainActivity.class));
         finish();
     }
 
@@ -140,7 +141,7 @@ public class UserGuideActivity extends AppCompatActivity implements View.OnClick
         }
 
         private class UserGuideViewHolder extends RecyclerView.ViewHolder {
-            ItemUserGuideBinding mBinding;
+            private final ItemUserGuideBinding mBinding;
 
             private UserGuideViewHolder(ItemUserGuideBinding binding) {
                 super(binding.getRoot());

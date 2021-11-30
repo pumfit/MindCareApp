@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp;
+package com.teamopendata.mindcareapp.ui;
 
 import android.Manifest;
 import android.content.Context;
@@ -22,6 +22,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.ui.keyword.KeywordDialogFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -34,6 +36,11 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // keyword dialog show
+        KeywordDialogFragment keywordDialogFragment = new KeywordDialogFragment();
+        keywordDialogFragment.show(getSupportFragmentManager(), "Keyword");
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인
@@ -71,6 +78,7 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
+
     public boolean checkLocationServicesStatus() { //GPS기능 사용가능한지 판단
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -106,6 +114,7 @@ public class MainActivity extends BaseActivity {
          */
 
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
