@@ -21,6 +21,7 @@ public abstract class SharedPreferencesManager {
 
     /**
      * 앱의 처음 실행 여부 설정
+     *
      * @param isFirstTime 앱 처음 실행 여부
      */
     public static void setFirstTimeLaunch(Context context, boolean isFirstTime) {
@@ -32,6 +33,7 @@ public abstract class SharedPreferencesManager {
 
     /**
      * 앱이 처음 실행되었는지 여부
+     *
      * @return true or false
      */
     public static boolean isFirstTimeLaunch(Context context) {

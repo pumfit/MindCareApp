@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             setToolbarTitle("");
             displayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.backpress_icon);
+            actionBar.setHomeAsUpIndicator(R.drawable.icon_back_border);
         }
     }
 

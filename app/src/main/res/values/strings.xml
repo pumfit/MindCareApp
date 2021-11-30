@@ -54,7 +54,7 @@
     <string name="record_delete">삭제</string>
 
     <!-- home -->
-    <string name="keyword_home">My KeyWord</string>
+    <string name="keyword_home">My Keyword</string>
     <string name="mind_charge_home_collapsed_0">마음충전이 필요해요!</string>
     <string name="mind_charge_home_collapsed_100">마음충전완료!</string>
     <string name="mind_charge_home_collapsed_25">마음충전률25%</string>

@@ -36,7 +36,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_icon_map_back"
+                android:background="@drawable/icon_back_border"
                 tools:ignore="DuplicateIds,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView

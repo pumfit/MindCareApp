@@ -1,10 +1,8 @@
-package com.teamopendata.mindcareapp;
+package com.teamopendata.mindcareapp.ui.intro;
 
 import static com.teamopendata.mindcareapp.BtnPrefMgr.BTN_PREF_KEY;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.teamopendata.mindcareapp.BtnPrefMgr;
+import com.teamopendata.mindcareapp.MainActivity;
+import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
 
