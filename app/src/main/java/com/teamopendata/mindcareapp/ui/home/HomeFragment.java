@@ -15,18 +15,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.teamopendata.mindcareapp.common.MindChargeDB;
+import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.databinding.FragmentHomeBinding;
 import com.teamopendata.mindcareapp.ui.home.adapter.KeywordAdapter;
+import com.teamopendata.mindcareapp.ui.keyword.KeywordContainerAdapter;
+import com.teamopendata.mindcareapp.ui.keyword.KeywordDialogFragment;
 import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
+    private KeywordDialogFragment keywordDialogFragment;
 
     private KeywordAdapter keywordAdapter;
     private TaskAdapter taskAdapter;
@@ -40,6 +45,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> keywords = SharedPreferencesManager.getUserKeywords(requireContext());
+        keywordAdapter = new KeywordAdapter();
+
+        if (keywords == null) showKeywordDialog();
+        else keywordAdapter.updateItem(keywords);
+
         getTodayTasks();
     }
 
@@ -54,19 +65,25 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.appbarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            Log.d(TAG, "verticalOffset: " + verticalOffset);
+            //Log.d(TAG, "verticalOffset: " + verticalOffset);
             updateViews(Math.abs(((float) verticalOffset) / ((float) appBarLayout.getTotalScrollRange())));
         });
 
-        keywordAdapter = new KeywordAdapter(getKeyword());
         binding.rvHomeKeyword.setEmptyView(binding.tvKeywordEmptyView);
         binding.rvHomeKeyword.setAdapter(keywordAdapter);
 
         binding.rvHomeTasks.setEmptyView(binding.tvTaskEmptyView);
         binding.rvHomeTasks.setAdapter(taskAdapter);
         binding.rvHomeTasks.addItemDecoration(new DividerItemDecoration(requireContext(), 1));
+
+        binding.btnHomeKeywordSetting.setOnClickListener(v -> showKeywordDialog());
     }
 
+    private void showKeywordDialog() {
+        keywordDialogFragment = new KeywordDialogFragment();
+        keywordDialogFragment.setOnFinishedListener((keywords) -> keywordAdapter.updateItem(keywords));
+        keywordDialogFragment.show(getParentFragmentManager(), "KeywordDialog");
+    }
 
     private void getTodayTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -89,17 +106,7 @@ public class HomeFragment extends Fragment {
         taskAdapter.setEditable(false);
     }
 
-    private ArrayList<String> getKeyword() {
-        ArrayList<String> list = new ArrayList<>();
-        /*list.add("우울");
-        list.add("건강관리");
-        list.add("스트레스");
-        list.add("도박 중독");*/
-        return list;
-    }
-
     private void updateViews(float offset) {
-        Log.d(TAG, "updateViews: " + offset);
         if (mindChargeFlag != taskAdapter.getMindCharge()) {
             int mindCharge = taskAdapter.getMindCharge();
             mindChargeFlag = mindCharge;
@@ -135,11 +142,21 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         Log.d(TAG, "onPause: ");
         if (cachedRecord != null) {
-            new Thread(() -> {
-                MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord);
-            }).start();
+            new Thread(() -> MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord)).start();
         }
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 
     @Override

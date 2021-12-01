@@ -37,10 +37,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // keyword dialog show
-        KeywordDialogFragment keywordDialogFragment = new KeywordDialogFragment();
-        keywordDialogFragment.show(getSupportFragmentManager(), "Keyword");
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인

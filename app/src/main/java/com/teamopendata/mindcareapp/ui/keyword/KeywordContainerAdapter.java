@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
 import com.teamopendata.mindcareapp.common.object.ItemType;
 import com.teamopendata.mindcareapp.common.object.Keyword;
 import com.teamopendata.mindcareapp.common.object.KeywordType;
@@ -24,22 +26,45 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @implNote private inner class KeywordContainerAdapter
- * protected inner class KeywordChipViewHolder
- * RecyclerView<ChipGroup<Chips>>
+ * @implNote protected inner class {@link KeywordChipViewHolder}
+ * protected inner class{@link KeywordBottomViewHolder}
+ * RecyclerView<ChipGroup<Chips>> Adds chips dynamically to a chip group.
  */
 public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected final String TAG = "KeywordContainerAdapter";
-    List<KeywordItem> mItems;
-    WeakReference<Context> mContext;
 
-    public KeywordContainerAdapter(Context context) {
+    /**
+     * 사용자가 선택할 수 있는 키워드 최대 갯수
+     */
+    public static final int MAX_CHOICE = 4;
+
+    private int KEYWORD_TOTAL_NUMBER = 0;
+
+    private List<KeywordItem> mItems;
+    private WeakReference<Context> mContext;
+
+    private List<String> cachedKeywords = new ArrayList<>(4);
+
+    private final List<Chip> chips = new ArrayList<>();
+
+    private Button saveButton;
+    private final OnSaveFinishedListener mListener;
+
+    public interface OnSaveFinishedListener {
+        void onFinished(List<String> keywords);
+    }
+
+    public KeywordContainerAdapter(Context context, OnSaveFinishedListener listener) {
         mContext = new WeakReference<>(context);
+        mListener = listener;
         initKeywords();
     }
 
-    public KeywordContainerAdapter(List<KeywordItem> mItems) {
-        this.mItems = mItems;
+    public KeywordContainerAdapter(Context context, List<String> keywords, OnSaveFinishedListener listener) {
+        mContext = new WeakReference<>(context);
+        cachedKeywords = keywords;
+        mListener = listener;
+        initKeywords();
     }
 
     private void initKeywords() {
@@ -53,6 +78,7 @@ public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void addKeyword(KeywordType keywordType) {
         String[] keywords = mContext.get().getResources().getStringArray(keywordType.resId());
+        KEYWORD_TOTAL_NUMBER += keywords.length;
         mItems.add(new KeywordItem(keywordType.toEnglish(), Arrays.asList(keywords)));
     }
 
@@ -61,18 +87,14 @@ public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ItemType.TYPE_ITEM.ordinal()) {
             return new KeywordChipViewHolder(
-                    ItemKeywordContainerBinding.bind(
-                            LayoutInflater.from(parent.getContext()).inflate(
-                                    R.layout.item_keyword_container, parent, false
-                            )
+                    ItemKeywordContainerBinding.bind(LayoutInflater.from(parent.getContext()).inflate(
+                            R.layout.item_keyword_container, parent, false)
                     )
             );
         } else {
             return new KeywordBottomViewHolder(
-                    ItemKeywordSaveBinding.bind(
-                            LayoutInflater.from(parent.getContext()).inflate(
-                                    R.layout.item_keyword_save, parent, false
-                            )
+                    ItemKeywordSaveBinding.bind(LayoutInflater.from(parent.getContext()).inflate(
+                            R.layout.item_keyword_save, parent, false)
                     )
             );
         }
@@ -97,6 +119,36 @@ public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.V
         return mItems.get(position).getType().ordinal();
     }
 
+    private boolean isChoiceFinished() {
+        return cachedKeywords.size() == MAX_CHOICE;
+    }
+
+    private boolean validationKeyword() {
+
+        return false;
+    }
+
+    private void setAllCheckable(boolean checkable) {
+        for (Chip chip : chips) {
+            if (!chip.isChecked()) {
+                chip.setCheckable(checkable);
+            }
+        }
+    }
+
+    private void updateView() {
+        Log.d(TAG, "cachedKeywords.size: " + cachedKeywords.size());
+        if (saveButton != null) {
+            int textId = mContext.get().getResources().getIdentifier(
+                    "keyword_choice_" + (cachedKeywords.size() != 0 ? cachedKeywords.size() : 0) + "_4", "string", mContext.get().getPackageName());
+
+            String s = mContext.get().getResources().getString(textId);
+            Log.d(TAG, "keywordUpdateView: " + s);
+            saveButton.setText(s);
+
+            //saveButton.setClickable(cachedKeywords.size() == MAX_CHOICE);
+        }
+    }
 
     protected class KeywordChipViewHolder extends RecyclerView.ViewHolder {
         private final ItemKeywordContainerBinding mBinding;
@@ -109,15 +161,42 @@ public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.V
         public void bind(KeywordItem item) {
             mBinding.tvKeywordHeader.setText(item.getHeader());
             for (Keyword keyword : item.getKeywords()) {
+                if (chips.size() == KEYWORD_TOTAL_NUMBER)
+                    mBinding.cgKeywordContainer.addView(chips.get(keyword.ordinal()));
                 mBinding.cgKeywordContainer.addView(newKeywordChip(keyword));
             }
         }
 
         private View newKeywordChip(Keyword keyword) {
+            Log.d(TAG, "newKeywordChip: " + keyword.toKorean());
             Chip chip = (Chip) LayoutInflater.from(mBinding.getRoot().getContext()).inflate(R.layout.item_chip, mBinding.cgKeywordContainer, false);
-            chip.setOnCheckedChangeListener((buttonView, isChecked) -> Log.d(TAG, "newKeywordChip: " + buttonView.getText() + " isChecked->" + isChecked));
             chip.setText(keyword.toKorean());
+
+            if (cachedKeywords.contains(keyword.toKorean())) chip.setChecked(true);
+
+            chip.setOnCheckedChangeListener(this::onCheckedChange);
+
+            /*
+            for (String cachedKeyword : cachedKeywords) {
+                if (cachedKeyword.equals(keyword.toKorean())) chip.setChecked(true);
+            }*/
+
+            if (chips.size() != KEYWORD_TOTAL_NUMBER) chips.add(keyword.ordinal(), chip);
+            if (isChoiceFinished()) setAllCheckable(false);
             return chip;
+        }
+
+        private void onCheckedChange(android.widget.CompoundButton buttonView, boolean isChecked) {
+            Log.d(TAG, "newKeywordChip: " + buttonView.getText() + " isChecked->" + isChecked);
+
+            if (isChecked) {
+                cachedKeywords.add(buttonView.getText().toString());
+            } else cachedKeywords.remove(buttonView.getText().toString());
+
+            if (isChoiceFinished()) setAllCheckable(false);
+            else setAllCheckable(true);
+
+            updateView();
         }
     }
 
@@ -130,7 +209,19 @@ public class KeywordContainerAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         public void bind() {
-            mBinding.btnKeywordSave.setOnClickListener(v -> Log.d(TAG, "saveClick"));
+            Log.d(TAG, "button: save");
+            saveButton = mBinding.btnKeywordSave;
+            updateView();
+
+            mBinding.btnKeywordSave.setOnClickListener(v -> {
+                for (String keyword : cachedKeywords) {
+                    Log.d(TAG, "save: " + keyword);
+                }
+                SharedPreferencesManager.saveUserKeywords(mContext.get(), cachedKeywords);
+                mListener.onFinished(cachedKeywords);
+            });
         }
+
+
     }
 }

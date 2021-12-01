@@ -67,10 +67,13 @@
     <string name="mind_charge_home_expanded_50">오늘은 50% 마음충전되었습니다.</string>
     <string name="mind_charge_home_expanded_75">오늘은 75% 마음충전되었습니다.</string>
     <string name="title_setting">세팅</string>
-    <string name="choice_1_4">선택하기 1/4</string>
-    <string name="choice_2_4">선택하기 2/4</string>
-    <string name="choice_3_4">선택하기 3/4</string>
-    <string name="choice_4_4">선택완료</string>
+
+
+    <string name="keyword_choice_0_4">선택하기 0/4</string>
+    <string name="keyword_choice_1_4">선택하기 1/4</string>
+    <string name="keyword_choice_2_4">선택하기 2/4</string>
+    <string name="keyword_choice_3_4">선택하기 3/4</string>
+    <string name="keyword_choice_4_4">선택완료</string>
 
     <!-- keyword -->
     <string-array name="keywords_symptom">

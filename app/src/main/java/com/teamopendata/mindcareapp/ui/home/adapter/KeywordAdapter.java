@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.home.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,13 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.ItemHomeKeywordsBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<String> mItems;
+    private List<String> mItems;
 
     public KeywordAdapter(List<String> item) {
         mItems = item;
+    }
+
+    public KeywordAdapter() {
+        mItems = new ArrayList<>();
     }
 
     @NonNull
@@ -34,6 +40,17 @@ public class KeywordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public boolean isChanged() {
+        return false;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateItem(List<String> keywords) {
+        // TODO 일단 급하니까 이렇게 하고 다음에 최적화 하기
+        mItems = keywords;
+        notifyDataSetChanged();
     }
 
     static class KeywordViewHolder extends RecyclerView.ViewHolder {

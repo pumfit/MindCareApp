@@ -38,7 +38,7 @@ public class UserGuideActivity extends AppCompatActivity implements View.OnClick
 
         binding = ActivityUserGuideBinding.inflate(getLayoutInflater());
 
-        // if (SharedPreferencesManager.isFirstTimeLaunch(this)) showKeywordDialog();
+        if (SharedPreferencesManager.isFirstTimeLaunch(this)) showKeywordDialog();
         setContentView(binding.getRoot());
 
         adapter = new UserGuideAdapter();

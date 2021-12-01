@@ -10,11 +10,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
 import com.teamopendata.mindcareapp.databinding.FragmentDailogKeywordBinding;
+
+import java.util.List;
 
 public class KeywordDialogFragment extends DialogFragment {
     private FragmentDailogKeywordBinding binding;
+
     private KeywordContainerAdapter adapter;
+    private KeywordContainerAdapter.OnSaveFinishedListener parentListener;
+
+    private final KeywordContainerAdapter.OnSaveFinishedListener listener = keywords -> {
+        parentListener.onFinished(keywords);
+        dismiss();
+    };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        List<String> keywords = SharedPreferencesManager.getUserKeywords(requireContext());
+        if (keywords == null)
+            adapter = new KeywordContainerAdapter(requireContext(), listener);
+        else
+            adapter = new KeywordContainerAdapter(requireContext(), keywords, listener);
+    }
 
     @Nullable
     @Override
@@ -26,13 +46,16 @@ public class KeywordDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new KeywordContainerAdapter(requireContext());
         binding.rvKeywords.setAdapter(adapter);
     }
 
     @Override
     public int getTheme() {
         return R.style.KeywordDialogFragmentTheme;
+    }
+
+    public void setOnFinishedListener(KeywordContainerAdapter.OnSaveFinishedListener listener) {
+        parentListener = listener;
     }
 
 }

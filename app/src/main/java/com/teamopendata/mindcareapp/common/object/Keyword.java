@@ -4,7 +4,7 @@ import android.util.Log;
 
 public enum Keyword {
     /**
-     * @see com.teamopendata.mindcareapp.R.string
+     * @see com.teamopendata.mindcareapp.R.array
      * keywords_symptom
      */
 
@@ -18,7 +18,7 @@ public enum Keyword {
     MENTAL_RETARDATION("정신지체"),
 
     /**
-     * @see com.teamopendata.mindcareapp.R.string
+     * @see com.teamopendata.mindcareapp.R.array
      * keywords_state
      */
     ADULT("성인"),
@@ -30,7 +30,7 @@ public enum Keyword {
     CALAMITY("재난"),
 
     /**
-     * @see com.teamopendata.mindcareapp.R.string
+     * @see com.teamopendata.mindcareapp.R.array
      * keywords_facility
      */
     OUTPATIENT_HOSPITALIZATION("외래 · 입원(입소)"),
@@ -41,14 +41,13 @@ public enum Keyword {
     RETURN_SOCIETY_AND_ADAPTATION("사회복귀 · 적응"),
 
     /**
-     * @see com.teamopendata.mindcareapp.R.string
+     * @see com.teamopendata.mindcareapp.R.array
      * keywords_addiction
      */
     ALCOHOLISM("알코올 중독"),
     GAMBLING_ADDICTION("도박 중독"),
     DRUG_ADDICTION("약물(마약) 중독"),
     INTERNET_SMARTPHONE_ADDICTION("인터넷(스마트폰) 중독");
-
 
     private final String korean;
 
