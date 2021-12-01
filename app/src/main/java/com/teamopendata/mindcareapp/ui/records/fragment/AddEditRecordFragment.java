@@ -262,9 +262,8 @@ public class AddEditRecordFragment extends Fragment {
         if (mRegisteredDate != null) {
             calendars = new Calendar[mRegisteredDate.size()];
             int i = 0;
-            for (LocalDate localDate : mRegisteredDate) {
+            for (LocalDate localDate : mRegisteredDate)
                 calendars[i++] = Utils.LocalDateToCalender(localDate);
-            }
             datePickerDialog.setDisabledDays(calendars);
         }
 
