@@ -2,7 +2,6 @@ package com.teamopendata.mindcareapp.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,15 +59,12 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         String type = this.medicalList.get(position).type;
         String address = this.medicalList.get(position).address;
         String grade = this.medicalList.get(position).grade.equals("0등급")?"등급없음":this.medicalList.get(position).grade;
-//        String keyword = "#"+this.medicalList.get(position).keyword1+" #"+this.medicalList.get(position).keyword2+" #"+this.medicalList.get(position).keyword3+" #"+
-//                this.medicalList.get(position).keyword4+" #"+this.medicalList.get(position).keyword5+" #"+this.medicalList.get(position).keyword6;
-
 
         holder.tvName.setText(name);
         holder.tvType.setText(type);
         holder.tvAddress.setText(address);
         holder.tvGrade.setText(grade);
-        //holder.tvKeyword.setText(keyword);
+
         holder.ivIcon.setImageResource(colormap.get(this.medicalList.get(position).type).intValue());
         if (this.bookmarkStatus[position]) {
             buttonClicked(holder.btnBookmark);
@@ -97,7 +93,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         return this.medicalList.size();
     }
 
-    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListAdapter$ViewHolder */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageButton btnBookmark;
         public ImageView ivIcon;
@@ -128,7 +123,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
     public void checkBookmarkList() {
         for (int i = 0; i < this.medicalList.size(); i++) {
             for (int j = 0; j < this.bookmarkList.size(); j++) {
-                Log.d("dd",this.medicalList.get(i).id +" "+ this.bookmarkList.get(j).id+"!!!!!!!!!!");
                 if (this.medicalList.get(i).id == this.bookmarkList.get(j).id) {
                     this.bookmarkStatus[i] = true;
                 }
@@ -158,7 +152,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         button.setImageDrawable(button.getResources().getDrawable(R.drawable.star));
     }
 
-    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListAdapter$bookmarkInsertThread */
     class bookmarkInsertThread extends Thread {
         private MedicalInstitution medi;
 
@@ -189,7 +182,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
 
         public void run() {
             MapListAdapter.this.bookmarkList = MindChargeDB.getInstance(MapListAdapter.this.context).getBookMarkDao().getBookmarkList();
-            Log.d("dd",bookmarkList.size()+"!!");
             MapListAdapter.this.checkBookmarkList();
         }
     }

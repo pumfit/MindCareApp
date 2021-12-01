@@ -14,7 +14,19 @@
 
     <LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="horizontal" android:layout_weight="1">
 
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="0" android:id="@+id/tv_map_name" android:text="기관명" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/tv_map_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:autoSizeMaxTextSize="18dp"
+            android:autoSizeMinTextSize="12dp"
+            android:autoText="true"
+            android:text="기관명"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck" />
 
     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/tv_map_grade" android:layout_marginStart="6dp" android:text="1등급" android:textColor="#64b5f6" android:textStyle="bold" android:textSize="10dp" android:layout_marginEnd="4dp"/>
 

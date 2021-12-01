@@ -101,7 +101,11 @@ public class GoogleMapFragment extends Fragment
                 gMap.clear();
                 latitude = gMap.getCameraPosition().target.latitude;
                 longitude = gMap.getCameraPosition().target.longitude;
-                listener.callBackClickRefresh(gMap.getCameraPosition().target);
+                try {
+                    listener.callBackClickRefresh(gMap.getCameraPosition().target);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return v;
@@ -110,7 +114,7 @@ public class GoogleMapFragment extends Fragment
     public interface CustomMapListener{
         void callBackMapReady();
         void callBackClickMarker(LatLng position);
-        void callBackClickRefresh(LatLng position);
+        void callBackClickRefresh(LatLng position) throws InterruptedException;
     }
 
     public void addMediInfoMarker(List<MedicalInstitution> list)

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,8 +27,8 @@ public class MainActivity extends BaseActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
-    private ConstraintLayout bottomSheetParentLayout;
-    private BottomSheetBehavior mBottomSheetBehaviour;
+    public ConstraintLayout bottomSheetParentLayout;
+    public BottomSheetBehavior mBottomSheetBehaviour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,9 @@ public class MainActivity extends BaseActivity {
 
         bottomSheetParentLayout = findViewById(R.id.bottom_sheet_parent);
         mBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetParentLayout);
+        mBottomSheetBehaviour.setPeekHeight(100);
+        bottomSheetParentLayout.setVisibility(View.GONE);
 
-        if (navView != null) {
-
-            mBottomSheetBehaviour.setPeekHeight(navView.getHeight() + 90);
-
-        }
         //!-- fragment 네이게이션 만드는 코드
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -66,11 +64,13 @@ public class MainActivity extends BaseActivity {
             Log.d(TAG, "itemSelected: " + destination);
             if (destination.getId() == R.id.navigation_home) {
                 displayHomeAsUpEnabled(false);
+                bottomSheetParentLayout.setVisibility(View.GONE);
             } else if(destination.getId() == R.id.navigation_map)
             {
                 displayActionBarUndabled();
-            }{
+            }else{
                 displayHomeAsUpEnabled(true);
+                bottomSheetParentLayout.setVisibility(View.GONE);
             }
         });
 

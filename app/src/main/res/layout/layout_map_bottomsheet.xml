@@ -6,8 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheetDashBoardLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="100dp"
+    android:layout_height="match_parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_gravity="bottom"
     app:behavior_draggable="true"
     app:behavior_hideable="true"
     android:background="@drawable/bottom_sheet_background"
@@ -15,8 +16,8 @@
 
 
     <LinearLayout
-        android:layout_width="396dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +47,14 @@
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
             android:layout_marginTop="6dp"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

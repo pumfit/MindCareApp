@@ -1,6 +1,8 @@
 package com.teamopendata.mindcareapp.ui.map;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.teamopendata.mindcareapp.BtnPrefMgr;
+import com.teamopendata.mindcareapp.MainActivity;
 import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
@@ -34,15 +38,29 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     public RecyclerView recyclerView = null;
     public ArrayList<String> userKeywordList = null;
 
+    public final Handler handler = new Handler()
+    {
+        public void handleMessage(Message msg)
+        {
+            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
+            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+        }
+    };
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map_main, container, false);
-        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);
-        bottomSheetDialog = new BottomSheetDialog(container.getContext());
-        bottomSheetDialog.setContentView(bottomSheetView);
-        this.bottomSheetDialog.show();
+       // View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);
 
-        this.recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.recyclerview);
+
+//        this.bottomSheetDialog.show();
+        View view = ((MainActivity)getActivity()).bottomSheetParentLayout;
+        view.setVisibility(View.VISIBLE);
+//        view = inflater.inflate(R.layout.layout_map_bottomsheet, null);
+//        bottomSheetDialog.setContentView(view);
+ //       bottomSheetDialog = new BottomSheetDialog(container.getContext());
+
+        this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         this.userKeywordList = new ArrayList<>();
         this.userKeywordList = BtnPrefMgr.getStringArrayPref(container.getContext(), BtnPrefMgr.BTN_PREF_KEY);
 
@@ -63,7 +81,6 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         });
         ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
             }
         });
         return root;
@@ -93,17 +110,21 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
                 break;
             }
         }
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
         this.recyclerView.setAdapter(new MapListAdapter(m));
-        this.bottomSheetDialog.show();
+
     }
 
     @Override
-    public void callBackClickRefresh(LatLng position) {
+    public void callBackClickRefresh(LatLng position) throws InterruptedException {
         longitude = position.longitude;
         latitude = position.latitude;
-        new dataThread().start();
-        this.bottomSheetDialog.show();
-        googleMapFragment.addMediInfoMarker(this.list);
+        Thread th = new dataThread();
+        th.start();
+        th.join();
+        googleMapFragment.addMediInfoMarker(MapFragment.this.list);
+
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public void getCurrentAddress() {
@@ -135,10 +156,12 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
 
             }
             MapFragment.this.list = recommedList;
-            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
-            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            Message msg = handler.obtainMessage();
+            handler.sendMessage(msg);
         }
     }
+
+
 
     /* renamed from: com.teamopendata.mindcareapp.ui.map.MapFragment$bookmarkThread */
     class bookmarkThread extends Thread {
