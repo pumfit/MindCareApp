@@ -1,4 +1,4 @@
-package com.teamopendata.mindcareapp;
+package com.teamopendata.mindcareapp.common;
 
 import android.content.Context;
 

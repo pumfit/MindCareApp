@@ -27,7 +27,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.converters.Converters;
 import com.teamopendata.mindcareapp.common.model.entity.Record;

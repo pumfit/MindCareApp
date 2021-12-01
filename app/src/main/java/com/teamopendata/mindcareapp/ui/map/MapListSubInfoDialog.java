@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.HashMap;

@@ -7,14 +7,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -30,7 +27,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.databinding.FragmentAddEditRecordBinding;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
@@ -72,8 +69,8 @@ public class AddEditRecordFragment extends Fragment {
      */
     private final OnAddEditRecordEventListener mSaveListener;
 
-    public AddEditRecordFragment(EventType type, Record record, OnAddEditRecordEventListener listener) {
-        mEventType = type;
+    public AddEditRecordFragment(EventType itemType, Record record, OnAddEditRecordEventListener listener) {
+        mEventType = itemType;
         mCachedRecord = record;
         mSaveListener = listener;
 

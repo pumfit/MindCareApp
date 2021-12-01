@@ -55,4 +55,9 @@ public final class Utils {
     }
 
 
+    public static String toUpperCaseFirst(String s) {
+        char[] arr = s.toCharArray();
+        arr[0] = Character.toUpperCase(arr[0]);
+        return new String(arr);
+    }
 }
