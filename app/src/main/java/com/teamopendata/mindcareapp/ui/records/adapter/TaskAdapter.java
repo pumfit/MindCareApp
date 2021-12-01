@@ -3,6 +3,7 @@ package com.teamopendata.mindcareapp.ui.records.adapter;
 import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.util.List;
 
 // TODO 기록 하루에 하나만 작성가능 validation
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
+    private final String TAG = "TaskAdapter";
     private Task cachedItem;
 
     private int cachedPosition;
@@ -31,7 +33,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private List<Task> mItems;
 
     private final OnChangedTaskCompleteListener mListener;
-    private int mindCharge = -1;
+    private float mindCharge = 0;
 
     public TaskAdapter(List<Task> item) {
         mItems = item;
@@ -62,8 +64,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         editFlag = editable;
     }
 
-    public int getMindCharge() {
-        return mindCharge;
+    public float getMindCharge() {
+        return mindCharge * 100;
     }
 
     public void addTask(Task task) {
@@ -130,16 +132,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             }
         }
         float charge = (float) completeTask / mItems.size();
+        Log.d(TAG, "setMindCharge: " + charge);
         if (charge >= 0f && charge < 0.25f) {
-            mindCharge = 0;
+            mindCharge = charge;
         } else if (charge >= 0.25f && charge < 0.5f) {
-            mindCharge = 25;
+            mindCharge = charge;
         } else if (charge >= 0.5f && charge < 0.75f) {
-            mindCharge = 50;
+            mindCharge = charge;
         } else if (charge >= 0.75f && charge < 1.0d) {
-            mindCharge = 75;
+            mindCharge = charge;
         } else {
-            mindCharge = 100;
+            mindCharge = charge;
         }
     }
 

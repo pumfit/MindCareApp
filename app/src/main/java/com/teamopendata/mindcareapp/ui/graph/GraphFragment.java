@@ -104,7 +104,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 disappearArrow();
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
                 binding.tvDate.setText("");
             }
         });
@@ -113,7 +113,7 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 disappearArrow();
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
                 binding.tvDate.setText("");
             }
         });

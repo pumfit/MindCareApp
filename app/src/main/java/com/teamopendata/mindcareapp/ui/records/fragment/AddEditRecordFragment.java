@@ -1,6 +1,5 @@
 package com.teamopendata.mindcareapp.ui.records.fragment;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -36,9 +34,14 @@ import com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.common.Utils;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordEventListener;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class AddEditRecordFragment extends Fragment {
     public enum EventType {
@@ -63,6 +66,7 @@ public class AddEditRecordFragment extends Fragment {
 
     private Record mNewRecord;
     private final Record mCachedRecord;
+    private List<LocalDate> mRegisteredDate = null;
 
     /**
      * @see HomeRecordsFragment called after being saved record
@@ -90,6 +94,8 @@ public class AddEditRecordFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new Thread(() -> mRegisteredDate = MindChargeDB.getInstance(requireContext()).getRecordDao().getAllRecordDate()).start();
+
         Log.d(TAG, "onCreate: ");
     }
 
@@ -237,15 +243,32 @@ public class AddEditRecordFragment extends Fragment {
      */
     private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mNewRecord.setDate(LocalDate.of(year, month + 1, dayOfMonth));
+        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+            mNewRecord.setDate(LocalDate.of(year, monthOfYear + 1, dayOfMonth));
             binding.tvRecordPickDate.setText(Utils.LocalDateToString(mNewRecord.getDate()));
         }
     };
 
+    /**
+     * DatePickerDialog
+     */
     private void showDatePickerDialog() {
         LocalDate date = mNewRecord.getDate();
-        new DatePickerDialog(requireContext(), mDateSetListener, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth()).show();
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(mDateSetListener, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+        datePickerDialog.setLocale(Locale.KOREA);
+        datePickerDialog.setMaxDate(Calendar.getInstance());
+
+        Calendar[] calendars;
+        if (mRegisteredDate != null) {
+            calendars = new Calendar[mRegisteredDate.size()];
+            int i = 0;
+            for (LocalDate localDate : mRegisteredDate) {
+                calendars[i++] = Utils.LocalDateToCalender(localDate);
+            }
+            datePickerDialog.setDisabledDays(calendars);
+        }
+
+        datePickerDialog.show(getParentFragmentManager(), "DatePickerDialog");
     }
 
     private boolean newRecord() {
