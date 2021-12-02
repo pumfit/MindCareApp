@@ -112,7 +112,8 @@ public class UserGuideActivity extends AppCompatActivity implements View.OnClick
                 R.drawable.image_guide1,
                 R.drawable.image_guide2,
                 R.drawable.image_guide3,
-                R.drawable.image_guide4
+                R.drawable.image_guide4,
+                R.drawable.image_guide5
         );
 
         @NonNull

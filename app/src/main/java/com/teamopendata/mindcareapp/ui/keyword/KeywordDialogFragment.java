@@ -47,6 +47,9 @@ public class KeywordDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.rvKeywords.setAdapter(adapter);
+        binding.btnKeywordDescription.setOnClickListener(v -> {
+            new CenterDescriptionDialogFragment().show(getChildFragmentManager(),"CenterDescription");
+        });
     }
 
     @Override
