@@ -613,45 +613,55 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
 
-    public float  setDayData(long millSecDate){
+    public float  setDayData(long millSecDate) {
         float dayData;
         MindChargeDB db = MindChargeDB.getInstance(getContext());
         LocalDate convertedDay = converters.LongFromLocalDate(millSecDate); //화요일
-        Log.d(TAG,"convertedDay: "+convertedDay);
+        Log.d(TAG, "convertedDay: " + convertedDay);
 
         Record selectedRecordDay = db.getRecordDao().
                 getDateRecord(convertedDay);
 
 
+        List<Record> recordList = db.getRecordDao().getAllLocalDate(convertedDay);
 
-        //선택한 날짜에 값이 들어있는지 여부 체크
-        if(selectedRecordDay != null){
-            //라벨을 위해
-            datesList.add(selectedRecordDay.getDate());
-            Log.d(TAG,"selectedRecordDate: "+String.valueOf(selectedRecordDay.getDate()));
+        //task 개수 초기화
+        taskNum = 0;
+        taskTrueNum = 0;
 
-            List<Task> tasksList = selectedRecordDay.getTasks();
-            taskTrueNum = 0;
-            // !--true인 task 개수 구하기
-            for(int i =0 ;i<tasksList.size();i++){
-                if( tasksList.get(i).isCompleted()){
-                    taskTrueNum ++;
+        if (recordList.size() != 0) {
+
+            //라벨 체크용 flag
+            datesList.add(recordList.get(0).getDate());
+
+            Log.d(TAG, "recordListSize: " + recordList.size());
+
+            for (int i = 0; i < recordList.size(); i++) {
+                Log.d(TAG, "-----------------");
+                List<Task> tasksList = recordList.get(i).getTasks();
+                Log.d(TAG, "tasksList: " + tasksList);
+                taskNum = tasksList.size() + taskNum; //task 크기
+                Log.d(TAG, "taskNum: " + taskNum);
+                Log.d(TAG, "tasksList.size(): " + tasksList.size());
+
+                //0 1
+                for (int j = 0; j < tasksList.size(); j++) {
+                    if (tasksList.get(j).isCompleted()) {
+                        taskTrueNum++;
+                        Log.d(TAG, "db taskTrueNum: " + taskTrueNum);
+                    }
                 }
             }
-            // task 개수 구하기
-            taskNum = tasksList.size();
-            Log.d(TAG, "db taskTrueNum: "+ taskTrueNum);
-            Log.d(TAG, "db taskNum: "+ taskNum);
 
-            dayData = (taskTrueNum*100 /taskNum);
-            Log.d(TAG,"DayDataSet: "+dayData);
-            Log.d(TAG,convertedDay+"날의 실천률 값: "+ dayData);
-            return  dayData;
-        }
-        else {
-            Log.d(TAG,convertedDay+"날에 기록이 없습니다.");
+
+            dayData = (taskTrueNum * 100 / taskNum);
+            Log.d(TAG, "DayDataSet: " + dayData);
+            Log.d(TAG, convertedDay + "날의 실천률 값: " + dayData);
+            return dayData;
+        } else {
+            Log.d(TAG, convertedDay + "날에 기록이 없습니다.");
             dayData = 0;
-            return  dayData;
+            return dayData;
         }
     }
 
