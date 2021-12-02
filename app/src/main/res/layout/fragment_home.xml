@@ -1,173 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/default_background"
-    tools:context=".ui.home.HomeFragment">
+    android:layout_height="match_parent">
 
-
-    <ImageButton
-        android:id="@+id/bt_show_map"
-        android:layout_width="@dimen/home_show_button_size"
-        android:layout_height="@dimen/home_show_button_size"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ripple_home_show_btn"
-        android:contentDescription="@string/map"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_map"
-        app:layout_constraintEnd_toStartOf="@+id/bt_show_record"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_middle_text" />
-
-    <ImageButton
-        android:id="@+id/bt_show_record"
-        android:layout_width="@dimen/home_show_button_size"
-        android:layout_height="@dimen/home_show_button_size"
-        android:background="@drawable/ripple_home_show_btn"
-        android:contentDescription="@string/record"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_record"
-        app:layout_constraintEnd_toStartOf="@+id/bt_show_graph"
-        app:layout_constraintStart_toEndOf="@+id/bt_show_map"
-        app:layout_constraintTop_toTopOf="@+id/bt_show_map" />
-
-
-    <ImageButton
-        android:id="@+id/bt_show_graph"
-        android:layout_width="@dimen/home_show_button_size"
-        android:layout_height="@dimen/home_show_button_size"
-        android:background="@drawable/ripple_home_show_btn"
-        android:contentDescription="@string/graph"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_graph"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bt_show_record"
-        app:layout_constraintTop_toTopOf="@+id/bt_show_map" />
-
-    <ListView
-        android:id="@+id/lv_keywords"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/home_bottom_view_mg"
-        android:layout_marginBottom="@dimen/home_bottom_view_mg"
-        android:background="@drawable/border_round_rectangle_dark"
-        android:divider="@color/white"
-        android:dividerHeight="4dp"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_something"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/rv_today_task"
-        app:layout_constraintTop_toTopOf="@+id/rv_today_task"
-        tools:listitem="@layout/item_home_keywords" />
-
-    <TextView
-        android:id="@+id/tv_home_middle_text"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="@string/home_middle_text"
-        android:textColor="@color/home_dark"
-        android:textSize="@dimen/home_contents_size"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
+        app:elevation="0dp">
 
-    <TextView
-        android:id="@+id/tv_home_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/title_home"
-        android:textColor="@color/home_dark"
-        android:textSize="@dimen/home_title_size"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/home_background"
+            app:collapsedTitleGravity="top"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitleTextStyle"
+            app:contentScrim="@color/home_background"
+            app:expandedTitleGravity="top"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleTextStyle"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:title="@string/title_home">
 
-    <TextView
-        android:id="@+id/tv_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/map"
-        android:textColor="@color/home_light"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/bt_show_map"
-        app:layout_constraintStart_toStartOf="@+id/bt_show_map"
-        app:layout_constraintTop_toBottomOf="@+id/bt_show_map" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/record"
-        android:textColor="@color/home_light"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/bt_show_record"
-        app:layout_constraintStart_toStartOf="@+id/bt_show_record"
-        app:layout_constraintTop_toBottomOf="@+id/bt_show_record" />
+                <ImageView
+                    android:id="@+id/iv_home_mind_charge_expanded"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/icon_mind_charge_expanded_0" />
 
-    <TextView
-        android:id="@+id/tv_graph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/graph"
-        android:textColor="@color/home_light"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/bt_show_graph"
-        app:layout_constraintStart_toStartOf="@+id/bt_show_graph"
-        app:layout_constraintTop_toBottomOf="@+id/bt_show_graph" />
+                <TextView
+                    android:id="@+id/tv_home_mind_charge_expended"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_vertical|center_horizontal|center"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/mind_charge_home_expanded_0"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_today_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/today_task"
-        android:textColor="@color/home_dark"
-        android:textSize="@dimen/home_contents_size"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tv_home_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_map" />
+            <Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:elevation="0dp"
+                android:paddingTop="8dp"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <TextView
-        android:id="@+id/tv_something"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/border_round_rectangle_dark"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/home_something"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_today_task"
-        app:layout_constraintEnd_toEndOf="@+id/lv_keywords"
-        app:layout_constraintStart_toStartOf="@+id/lv_keywords"
-        app:layout_constraintTop_toBottomOf="@+id/lv_keywords" />
+            <LinearLayout
+                android:id="@+id/ll_home_container_collapsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="4dp"
+                android:animateLayoutChanges="true"
+                android:visibility="visible">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_today_task"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/home_bottom_view_mg"
-        android:background="@drawable/border_round_rectangle_dark"
-        android:padding="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bt_show_record"
-        app:layout_constraintStart_toStartOf="@+id/tv_today_task"
-        app:layout_constraintTop_toBottomOf="@+id/tv_today_task"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_home_today_task" />
+                <ImageView
+                    android:id="@+id/iv_home_mind_charge_collapsed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="4"
+                    android:maxHeight="64dp"
+                    android:minHeight="48dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_mind_charge_collapsed_0" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_home_mind_charge_collapsed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:text="@string/mind_charge_home_collapsed_0"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
+            </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_background"
+        android:clipToPadding="false"
+        android:elevation="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingTop="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_home_drag"
+            android:descendantFocusability="blocksDescendants"
+            android:elevation="16dp"
+            android:paddingBottom="16dp">
+
+            <View
+                android:id="@+id/drag_home_card"
+                android:layout_width="52dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/icon_home_drag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_home_keyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/keyword_home"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/drag_home_card" />
+
+            <ImageButton
+                android:id="@+id/btn_home_keyword_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/ripple_image_btn"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/icon_keyword_setting"
+                app:layout_constraintBottom_toTopOf="@+id/ll_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_keyword" />
+
+            <RelativeLayout
+                android:id="@+id/ll_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_round_rectangle_grey"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/btn_home_keyword_setting"
+                app:layout_constraintStart_toStartOf="@+id/tv_home_keyword"
+                app:layout_constraintTop_toBottomOf="@+id/tv_home_keyword">
+
+                <com.teamopendata.mindcareapp.common.observer.KeywordRVEmptySupport
+                    android:id="@+id/rv_home_keyword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:paddingHorizontal="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/tv_keyword_empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:text="선택된 키워드가 없습니다."
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_home_today_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/today_task"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_home_keyword"
+                app:layout_constraintTop_toBottomOf="@+id/ll_container" />
+
+            <com.teamopendata.mindcareapp.common.observer.TaskRVEmptySupport
+                android:id="@+id/rv_home_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border_round_rectangle_grey"
+                android:overScrollMode="never"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_home_today_task"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_task" />
+
+            <TextView
+                android:id="@+id/tv_task_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="할 일을 추가해보세요!"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

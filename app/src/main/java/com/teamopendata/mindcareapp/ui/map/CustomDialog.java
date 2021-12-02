@@ -22,7 +22,7 @@ class CustomDialog {
 
         final Dialog dlg = new Dialog(context);
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dlg.setContentView(R.layout.map_question_dialog);
+        dlg.setContentView(R.layout.dialog_map_question);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dlg.show();
 

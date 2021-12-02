@@ -3,8 +3,9 @@
     <!-- Background -->
     <item>
         <shape>
-            <corners android:radius="12dp"/>
-            <solid android:color="#1A56BAEA" />
+            <corners android:topLeftRadius="12dp"
+                android:topRightRadius="12dp"/>
+            <solid android:color="#74C1FF" />
         </shape>
     </item>
 

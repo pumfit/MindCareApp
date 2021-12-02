@@ -1,143 +1,319 @@
 package com.teamopendata.mindcareapp.ui.graph;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Picture;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.util.Pair;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.github.mikephil.charting.charts.BarChart;
 
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
-import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.DateValidatorPointBackward;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
+import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.converters.Converters;
+import com.teamopendata.mindcareapp.common.model.entity.Record;
+import com.teamopendata.mindcareapp.common.model.entity.Task;
+import com.teamopendata.mindcareapp.databinding.FragmentGraphBinding;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 
-public class GraphFragment extends Fragment {
+public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
     private final String TAG = GraphFragment.class.getSimpleName();
+    DecimalFormat form;
+    int taskTrueNum,taskNum;
+    private FragmentGraphBinding binding;
+    long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;
+    float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
+    LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;
+    DatePickerDialog datePickerDialog;
+    int Year, Month, Day, Hour, Minute;
+    Calendar calendar ;
+    Calendar[] disabledDays;
+    Converters converters;
+    int isDataNone;
+    ArrayList<LocalDate> datesList;
 
-    TextView tvToday;
-    Date current_Time;
-    BarChart barchart;
-    ImageButton calenderButton_graph;
+    float sum;
 
-    String week_day,year,month,day;
-
-    private GraphViewModel graphViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        graphViewModel =
-                ViewModelProviders.of(this).get(GraphViewModel.class);
-        View GraphView = inflater.inflate(R.layout.fragment_graph, container, false);
+        binding = FragmentGraphBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        //!--변수
-        tvToday = GraphView.findViewById(R.id.tvToday);
-        calenderButton_graph = GraphView.findViewById(R.id.calenderButton_graph);
+        return view;
+    }
 
-        //!--현재 날짜 넣기
-        current_Time = Calendar.getInstance().getTime();
-
-        SimpleDateFormat weekFormat = new SimpleDateFormat("EE",Locale.getDefault());
-        SimpleDateFormat dayFormat = new SimpleDateFormat("dd",Locale.getDefault());
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MM",Locale.getDefault());
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy",Locale.getDefault());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-        week_day = weekFormat.format(current_Time);
-        year = yearFormat.format(current_Time);
-        month = monthFormat.format(current_Time);
-        day = dayFormat.format(current_Time);
 
-        String Date = "현재날짜: "+ year +"."+ month +"."+ day + " "+ week_day;
+        converters = new Converters();
 
-        tvToday.setText(Date);
+        //record 화면으로 이동
+        setAlYakClickListener();
+        // !-- datePickerDialog 세팅하기
+        setDatePickerDialog();
+        form = new DecimalFormat("#");
 
 
-        //DateRangePicker
-        calenderButton_graph.setOnClickListener(new View.OnClickListener() {
+        //creatView 시 초기 세팅
+        setDefault();
+
+
+
+        // left버튼(일주일 전으로 )
+        btnListener(binding.leftArrowBtnGraph);
+
+
+        // right버튼(일주일 후로)
+        btnListener(binding.rightArrowBtnGraph);
+
+
+        //DatePicker
+        binding.calenderButtonGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //요일 별 날짜 constraint
-                CalendarConstraints.Builder constrainBuilder =  new CalendarConstraints.Builder();
-
-                if(week_day.equals("월")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*6));
-                }
-                else if (week_day.equals("화")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*5));
-                }
-                else if (week_day.equals("수")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*4));
-                }
-                else if (week_day.equals("목")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*3));
-                }
-                else if (week_day.equals("금")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000*2));
-                }
-                else if (week_day.equals("토")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()+60*60*24*1000));
-                }
-                else if (week_day.equals("일")){
-                    constrainBuilder.setValidator(DateValidatorPointBackward.before(Calendar.getInstance().getTimeInMillis()));
-                }
-
-
-                //MaterialDatePicker
-                MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker().setTheme(R.style.ThemeOverlay_MaterialComponents_MaterialCalendar);
-                builder.setTitleText("날짜를 선택해주세요");
-                builder.setCalendarConstraints(constrainBuilder.build());
-
-                final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
-                materialDatePicker.show(getChildFragmentManager(),"DATE_PICKER");
-
-                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener(){
-                    @Override
-                    public void onPositiveButtonClick(Object selection) {
-
-                        Pair selectedDates = materialDatePicker.getSelection();
-                        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        String selectedDays = "선택 날짜 : "+ simpleFormat.format(selectedDates.first)+" ~ "+simpleFormat.format(selectedDates.second);
-                        tvToday.setText(selectedDays);
-                    }
-
-                });
-
+                disappearArrow();
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
+                binding.tvDate.setText("");
             }
         });
 
-        //!--차트 넣기
-        barchart = GraphView.findViewById(R.id.graph);
-        setChart(barchart);
+        binding.tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disappearArrow();
+                datePickerDialog.show(getParentFragmentManager(),"DatePickerDialog");
+                binding.tvDate.setText("");
+            }
+        });
 
 
-        return GraphView;
+
+
+        // !-- onCreateEnd
     }
+
+    public  void setAlYakClickListener(){
+        binding.btnAlyakGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavOptions options = new NavOptions.Builder()
+                        .setEnterAnim(R.anim.fade_in)
+                        .setExitAnim(R.anim.fade_out)
+                        .setPopEnterAnim(R.anim.fade_in)
+                        .setPopExitAnim(R.anim.fade_out)
+                        .build();
+
+                Navigation.findNavController(v).navigate(R.id.navigation_records,null,options);
+
+            }
+        });
+    }
+
+    public void setDefault() {
+
+        Calendar cal = Calendar.getInstance();
+        long currentTimeMill = System.currentTimeMillis();
+
+        int weekDay = cal.get(Calendar.DAY_OF_WEEK);
+
+
+
+        if(weekDay == 1){
+            //일요일
+            millSec =currentTimeMill - 60*60*24*1000*6;
+        }
+        else if(weekDay == 2){
+            //월요일
+            millSec =currentTimeMill;
+        }
+        else if(weekDay == 3){
+            //화요일
+            millSec =currentTimeMill - 60*60*24*1000;
+        }
+        else if(weekDay == 4){
+            //수요일
+            millSec =currentTimeMill - 60*60*24*1000*2;
+        }
+        else if(weekDay == 5){
+            //목요일
+            millSec =currentTimeMill - 60*60*24*1000*3;
+        }else if(weekDay == 6){
+            //금요일
+            millSec =currentTimeMill - 60*60*24*1000*4;
+        }else if(weekDay == 7){
+            //토요일
+            millSec =currentTimeMill - 60*60*24*1000*5;
+        }
+
+        millSec2 = millSec+ 60*60*24*1000; //화
+        millSec3 = millSec+ 60*60*24*1000*2;//수
+        millSec4 = millSec + 60*60*24*1000*3;//목
+        millSec5 = millSec + 60*60*24*1000*4;//금
+        millSec6 = millSec + 60*60*24*1000*5;//토
+        millSec7 = millSec + 60*60*24*1000*6;//일
+
+
+        //바로 구현
+        monday = converters.LongFromLocalDate(millSec);
+        tuesday = converters.LongFromLocalDate(millSec2);
+        wednesday = converters.LongFromLocalDate(millSec3);
+        thursday = converters.LongFromLocalDate(millSec4);
+        friday = converters.LongFromLocalDate(millSec5);
+        saturday = converters.LongFromLocalDate(millSec6);
+        sunday = converters.LongFromLocalDate(millSec7);
+
+
+        //!-- 날짜 쓰기
+        Calendar calWeek = Calendar.getInstance();
+        calWeek.set(Calendar.YEAR,monday.getYear());
+
+        calWeek.set(Calendar.MONTH,monday.getMonthValue());
+        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+        Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
+        String writeDateFirst =  monday +" - "+sunday;
+        binding.tvDate.setText(writeDateFirst);
+
+        //!-- DB -----------
+        startBackgroundThread();
+
+        setChart(binding.graph);
+
+        //!--controlSum
+        controlSum();
+    }
+
+
+    //! -- 메소드 시작
+
+
+
+    public void btnListener(ImageButton imgBtn){
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(imgBtn == binding.leftArrowBtnGraph){
+
+                    millSec = millSec - 60*60*24*1000*7; //전 월
+                    millSec2 = millSec+ 60*60*24*1000; //화
+                    millSec3 = millSec+ 60*60*24*1000*2;//수
+                    millSec4 = millSec + 60*60*24*1000*3;//목
+                    millSec5 = millSec + 60*60*24*1000*4;//금
+                    millSec6 = millSec + 60*60*24*1000*5;//토
+                    millSec7 = millSec + 60*60*24*1000*6;//일
+                }
+
+                else {
+                    Log.d(TAG,"system.currentMills: "+System.currentTimeMillis());
+                    Log.d(TAG,"millSec7: "+millSec7);
+
+
+                    if(System.currentTimeMillis() > millSec7+60*60*24*1000 ){
+
+                        millSec = millSec + 60*60*24*1000*7; //후 월
+                        millSec2 = millSec+ 60*60*24*1000; //화
+                        millSec3 = millSec+ 60*60*24*1000*2;//수
+                        millSec4 = millSec + 60*60*24*1000*3;//목
+                        millSec5 = millSec + 60*60*24*1000*4;//금
+                        millSec6 = millSec + 60*60*24*1000*5;//토
+                        millSec7 = millSec + 60*60*24*1000*6;//일
+                    }
+                }
+
+                //날짜형으로 형 변환
+//                monday = convertDate(millSec,"yyyy-MM-dd");
+                monday = converters.LongFromLocalDate(millSec);
+                tuesday = converters.LongFromLocalDate(millSec2);
+                wednesday = converters.LongFromLocalDate(millSec3);
+                thursday = converters.LongFromLocalDate(millSec4);
+                friday = converters.LongFromLocalDate(millSec5);
+                saturday = converters.LongFromLocalDate(millSec6);
+                sunday = converters.LongFromLocalDate(millSec7);
+
+
+                //!-- 날짜 쓰기
+                Calendar calWeek = Calendar.getInstance();
+                calWeek.set(Calendar.YEAR,monday.getYear());
+
+                calWeek.set(Calendar.MONTH,monday.getMonthValue());
+                calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+                int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+                Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+                binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
+                String writeDateFirst =  monday +" - "+sunday;
+                binding.tvDate.setText(writeDateFirst);
+
+                //!-- DB -----------
+                startBackgroundThread();
+
+                setChart(binding.graph);
+
+                //!--controlSum
+                controlSum();
+            }
+        });
+    }
+
+
+    // !-- 사라져 메소드
+    public void disappearArrow(){
+        binding.leftArrowBtnGraph.setVisibility(GONE);
+        binding.rightArrowBtnGraph.setVisibility(GONE);
+        binding.tvTopWeek.setVisibility(GONE);
+        binding.tvWeekOfMonth.setVisibility(GONE);
+    }
+
+    // !-- 보여줘 메소드
+    public void appearArrow(){
+        binding.leftArrowBtnGraph.setVisibility(VISIBLE);
+        binding.rightArrowBtnGraph.setVisibility(VISIBLE);
+        binding.tvTopWeek.setVisibility(VISIBLE);
+        binding.tvWeekOfMonth.setVisibility(VISIBLE);
+    }
+
 
     //!--라벨  메소드
     public void setDay(ArrayList<String> a, String day){
@@ -150,40 +326,92 @@ public class GraphFragment extends Fragment {
 
         //!--1단계
         ArrayList<BarEntry> arrayList = new ArrayList<>();
-        arrayList.add(new BarEntry(0,10));
-        arrayList.add(new BarEntry(1,50));
-        arrayList.add(new BarEntry(2,60));
-        arrayList.add(new BarEntry(3,30));
-        arrayList.add(new BarEntry(4,90));
-        arrayList.add(new BarEntry(5,40));
-        arrayList.add(new BarEntry(6,100));
+//
+        arrayList.add(new BarEntry(0,new float[]{mondayData,100-mondayData}));
+        arrayList.add(new BarEntry(1,new float[]{tuesDayData,100-tuesDayData}));
+        arrayList.add(new BarEntry(2,new float[]{wednesdayData,100-wednesdayData}));
+        arrayList.add(new BarEntry(3,new float[]{thursdayData,100-thursdayData}));
+        arrayList.add(new BarEntry(4,new float[]{fridayData,100-fridayData}));
+        arrayList.add(new BarEntry(5,new float[]{saturdayData,100-saturdayData}));
+        arrayList.add(new BarEntry(6,new float[]{sundayData,100-sundayData}));
 
         //!--2단계
         BarDataSet barDataSet = new BarDataSet(arrayList,"실천 점수");
-        barDataSet.setColor(Color.rgb(9,32,161));
+        barDataSet.setColors(Color.rgb(99,171,247),Color.argb(100,213,222,226));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(5F);
-        barDataSet.setDrawValues(false);
+        barDataSet.setDrawValues(true);
+
 
         //!--3단계
         BarData barData = new BarData(barDataSet);
+        barData.setBarWidth(0.5f);
 
         chart.setFitBars(true);
         chart.setData(barData);
         chart.getDescription().setText(" ");
-        chart.animateY(1000);
+        chart.animateX(500);
+        chart.getLegend().setEnabled(false); //하단부 없애기
+
+        chart.animate().alpha(0.0f);
+        chart.animate().alpha(1.0f).setDuration(1000);
 
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
 
+        //x라벨 컬러 세팅하기
+        List<Integer> colors = new ArrayList<>();
+        for(int i = 0;i<7;i++){
+            colors.add(Color.rgb(200,200,200));
+        }
+        chart.setXAxisRenderer(new ColoredLabelXAxisRenderer(chart.getViewPortHandler(),chart.getXAxis(),chart.getTransformer(YAxis.AxisDependency.LEFT),colors));
 
-        setDay(label_day,"월요일");
-        setDay(label_day,"화요일");
-        setDay(label_day,"수요일");
-        setDay(label_day,"목요일");
-        setDay(label_day,"금요일");
-        setDay(label_day,"토요일");
-        setDay(label_day,"일요일");
+
+        setDay(label_day,"Mon");
+        setDay(label_day,"Tue");
+        setDay(label_day,"wed");
+        setDay(label_day,"Thu");
+        setDay(label_day,"Fri");
+        setDay(label_day,"Sat");
+        setDay(label_day,"Sun");
+
+        isDataNone =0;
+
+        //DB에 요일이 있는지 없는지 체크
+        if(datesList.contains(converters.LongFromLocalDate(millSec))) {
+            colors.set(0,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec2))) {
+            colors.set(1,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec3))) {
+            colors.set(2,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec4))) {
+            colors.set(3,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec5))) {
+            colors.set(4,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec6))) {
+            colors.set(5,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+        if(datesList.contains(converters.LongFromLocalDate(millSec7))) {
+            colors.set(6,Color.rgb(0,0,0));
+            isDataNone++;
+        }
+
+        Log.d(TAG,"isDataNone: "+isDataNone);
+
+
+
+
 
         //!--x축 관리
         XAxis xAxis = chart.getXAxis();
@@ -192,15 +420,298 @@ public class GraphFragment extends Fragment {
         xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));
 
         //!-- y축 관리
-        chart.getAxisLeft().setEnabled(true); //y축 left 지우기
+        chart.getAxisLeft().setEnabled(false); //y축 left 지우기
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setAxisMaximum(100);
         chart.getAxisLeft().setAxisMinimum(0);
         chart.getAxisLeft().setLabelCount(5);
 
         //!--차트 기타 관리
-        chart.setTouchEnabled(false);
+        chart.setTouchEnabled(false); //터치막음
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+
+        // 날짜 변환
+        millSec = converters.LocalDateToLong(LocalDate.of(year,monthOfYear+1,dayOfMonth));
+
+        // 날짜의 milSec
+        millSec2 = millSec+ 60*60*24*1000; //화
+        millSec3 = millSec+ 60*60*24*1000*2;//수
+        millSec4 = millSec + 60*60*24*1000*3;//목
+        millSec5 = millSec + 60*60*24*1000*4;//금
+        millSec6 = millSec + 60*60*24*1000*5;//토
+        millSec7 = millSec + 60*60*24*1000*6;//일
+
+        //날짜형으로 형 변환
+        monday = converters.LongFromLocalDate(millSec);
+        tuesday = converters.LongFromLocalDate(millSec2);
+        wednesday = converters.LongFromLocalDate(millSec3);
+        thursday = converters.LongFromLocalDate(millSec4);
+        friday = converters.LongFromLocalDate(millSec5);
+        saturday = converters.LongFromLocalDate(millSec6);
+        sunday = converters.LongFromLocalDate(millSec7);
+
+
+        //!-- 날짜
+
+        //몇 주 째인지 계산하기.
+        Calendar calWeek = Calendar.getInstance();
+        calWeek.set(Calendar.YEAR,monday.getYear());
+
+        calWeek.set(Calendar.MONTH,monday.getMonthValue());
+        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());
+        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+
+        Log.d(TAG,"weekOfMonth: "+weekOfMonth);
+        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));
+
+        //월~일 날짜 쓰기
+        String writeDateFirst =  monday +" - "+sunday;
+        binding.tvDate.setText(writeDateFirst);
+
+        //!-- DB -----------
+        startBackgroundThread();
+
+        //차트 그리기
+        setChart(binding.graph);
+        appearArrow();
+
+        //달성률 관리하기
+        controlSum();
 
 
     }
+
+
+    //!--control sum
+    public void controlSum(){
+        sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+
+        //getTheme 안되는데 뭐 써야하는지
+        if((int)sum >=0 && (int)sum <25){
+
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            animation();
+        }
+        else if((int)sum >=25 && (int)sum <50){
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_25);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            animation();
+
+        }
+        else if((int)sum >=50 && (int)sum <75){
+
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_50);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            animation();
+        }
+        else if((int)sum >=75 && (int)sum <100){
+
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_75);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            animation();
+        }
+        else if((int)sum == 100){
+
+            binding.btnAlyakGraph.setAlpha(0.0f);
+            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_100);
+            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+
+            animation();
+        }
+
+        //기록 없을 때
+        if(isDataNone == 0){
+
+            binding.tvWeek.setVisibility(GONE);
+            binding.tvProgressbar2.setVisibility(GONE);
+
+            binding.tvPercent.setText("기록을 ");
+            binding.tvCharge.setText("입력해주세요!");
+
+        }
+        else{
+            binding.tvWeek.setVisibility(VISIBLE);
+            binding.tvProgressbar2.setVisibility(VISIBLE);
+            binding.tvPercent.setVisibility(VISIBLE);
+            binding.tvPercent.setText("% ");
+            binding.tvCharge.setText("마음충전되었습니다.");
+            binding.tvProgressbar2.setText(form.format(sum));
+        }
+
+    }
+
+    // !-- animation
+    public void animation(){
+        binding.tvWeek.setAlpha(0.0f);
+        binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvPercent.setAlpha(0.0f);
+        binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvProgressbar2.setAlpha(0.0f);
+        binding.tvProgressbar2.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvCharge.setAlpha(0.0f);
+        binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+    }
+
+    //!-- DB
+    public void startBackgroundThread(){
+        // BackgroundThread 구현하기
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try{
+
+                    // db 초기화
+                    MindChargeDB db = MindChargeDB.getInstance(getContext());
+
+                    datesList = new ArrayList<>();
+
+
+                    mondayData = setDayData(millSec);
+                    tuesDayData = setDayData(millSec2);
+                    wednesdayData = setDayData(millSec3);
+                    thursdayData = setDayData(millSec4);
+                    fridayData = setDayData(millSec5);
+                    saturdayData = setDayData(millSec6);
+                    sundayData = setDayData(millSec7);
+
+
+
+
+
+
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread backgroundThread = new Thread(runnable);
+        backgroundThread.start();
+        try {
+            backgroundThread.join();
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public float  setDayData(long millSecDate){
+        float dayData;
+        MindChargeDB db = MindChargeDB.getInstance(getContext());
+        LocalDate convertedDay = converters.LongFromLocalDate(millSecDate); //화요일
+        Log.d(TAG,"convertedDay: "+convertedDay);
+
+        Record selectedRecordDay = db.getRecordDao().
+                getDateRecord(convertedDay);
+
+
+
+        //선택한 날짜에 값이 들어있는지 여부 체크
+        if(selectedRecordDay != null){
+            //라벨을 위해
+            datesList.add(selectedRecordDay.getDate());
+            Log.d(TAG,"selectedRecordDate: "+String.valueOf(selectedRecordDay.getDate()));
+
+            List<Task> tasksList = selectedRecordDay.getTasks();
+            taskTrueNum = 0;
+            // !--true인 task 개수 구하기
+            for(int i =0 ;i<tasksList.size();i++){
+                if( tasksList.get(i).isCompleted()){
+                    taskTrueNum ++;
+                }
+            }
+            // task 개수 구하기
+            taskNum = tasksList.size();
+            Log.d(TAG, "db taskTrueNum: "+ taskTrueNum);
+            Log.d(TAG, "db taskNum: "+ taskNum);
+
+            dayData = (taskTrueNum*100 /taskNum);
+            Log.d(TAG,"DayDataSet: "+dayData);
+            Log.d(TAG,convertedDay+"날의 실천률 값: "+ dayData);
+            return  dayData;
+        }
+        else {
+            Log.d(TAG,convertedDay+"날에 기록이 없습니다.");
+            dayData = 0;
+            return  dayData;
+        }
+    }
+
+
+
+    //데이트피커 세팅하기 메소드
+    public void setDatePickerDialog(){
+
+        calendar = Calendar.getInstance();
+        Year = calendar.get(Calendar.YEAR) ;
+        Month = calendar.get(Calendar.MONTH);
+        Day = calendar.get(Calendar.DAY_OF_MONTH);
+        Hour = calendar.get(Calendar.HOUR_OF_DAY);
+        Minute = calendar.get(Calendar.MINUTE);
+
+        datePickerDialog = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(this, Year, Month, Day);
+
+        datePickerDialog.setThemeDark(false);
+        datePickerDialog.showYearPickerFirst(false);
+        datePickerDialog.setTitle("날짜를 선택해 주세요");
+
+        // min 날짜 제한
+        Calendar min_date_c = Calendar.getInstance();
+        min_date_c.set(Calendar.YEAR,Year-15); //과거 15년까지 가능 메모리 상의 후 얼마까지 가능하게 할 지 결정
+        datePickerDialog.setMinDate(min_date_c);
+
+
+        Calendar max_date_c = Calendar.getInstance();
+        datePickerDialog.setMaxDate(max_date_c);
+
+        // !-- 요일 제한하기 for 문이라 메모리 좀 많이씀...10 * 365 번 돌아감..
+        for (Calendar loopdate = min_date_c; min_date_c.before(max_date_c); min_date_c.add(Calendar.DATE, 1), loopdate = min_date_c) {
+            int dayOfWeek = loopdate.get(Calendar.DAY_OF_WEEK);
+            if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.TUESDAY || dayOfWeek == Calendar.WEDNESDAY || dayOfWeek == Calendar.THURSDAY || dayOfWeek == Calendar.FRIDAY  ) {
+                disabledDays =  new Calendar[1];
+                disabledDays[0] = loopdate;
+                datePickerDialog.setDisabledDays(disabledDays);
+            }
+        }
+
+        //!-- 현재날짜가 월요일이 아닌경우 뜨는 문제가 발생햇는데 그 오류를 해결하는 코드
+        if(max_date_c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+
+        }
+        else {
+            Log.d(TAG,"월요일이 아닙니다.");
+            disabledDays = new Calendar[1];
+            disabledDays[0] = max_date_c;
+            datePickerDialog.setDisabledDays(disabledDays);
+        }
+        datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                binding.tvDate.setText(monday+"-"+sunday);
+                binding.leftArrowBtnGraph.setVisibility(VISIBLE);
+                binding.rightArrowBtnGraph.setVisibility(VISIBLE);
+                binding.tvWeekOfMonth.setVisibility(VISIBLE);
+                binding.tvTopWeek.setVisibility(VISIBLE);
+            }
+        });
+    }
+    //!--end
 }

@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">MindCareApp</string>
+    <string name="app_name">MindCharge</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
     <string name="title_records">Records</string>
     <string name="title_graph">Graph</string>
+    <string name="title_keywords">Keywords</string>
 
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
@@ -37,4 +38,79 @@
     <string name="graph">그래프</string>
     <string name="today_task">Today\'s task</string>
     <string name="home_something">"오늘 하루도 수고했어요."</string>
+
+
+    <!-- record -->
+    <string name="title_records_box">기관을 다녀온 후\n실천리스트를 만들어\n매일 마음을 체크해보세요.</string>
+    <string name="hint_records">주차별, 월별의 기록을 쌓아 한눈에 볼 수 있어요.</string>
+    <string name="list_records">My list</string>
+    <string name="date_record">Date</string>
+    <string name="title_record">Title</string>
+    <string name="add_task_record">할 일 추가</string>
+    <string name="save_record">저장</string>
+    <string name="hint_task">할 일을 입력하세요!</string>
+    <string name="select_date_record">날짜 선택</string>
+    <string name="enter_title_record">제목 입력</string>
+    <string name="check_list_tasks">Check List</string>
+    <string name="record_delete">삭제</string>
+
+    <!-- home -->
+    <string name="keyword_home">My Keyword</string>
+    <string name="mind_charge_home_collapsed_0">마음충전이 필요해요!</string>
+    <string name="mind_charge_home_collapsed_100">마음충전완료!</string>
+    <string name="mind_charge_home_collapsed_25">마음충전률25%</string>
+    <string name="mind_charge_home_collapsed_50">마음충전률50%</string>
+    <string name="mind_charge_home_collapsed_75">마음충전률75%</string>
+    <string name="mind_charge_home_expanded_0">마음충전이 필요합니다.</string>
+    <string name="mind_charge_home_expanded_100">오늘 목표를 달성했습니다.</string>
+    <string name="mind_charge_home_expanded_25">오늘은 25% 마음충전되었습니다.</string>
+    <string name="mind_charge_home_expanded_50">오늘은 50% 마음충전되었습니다.</string>
+    <string name="mind_charge_home_expanded_75">오늘은 75% 마음충전되었습니다.</string>
+    <string name="title_setting">세팅</string>
+
+
+    <string name="keyword_choice_0_4">선택하기 0/4</string>
+    <string name="keyword_choice_1_4">선택하기 1/4</string>
+    <string name="keyword_choice_2_4">선택하기 2/4</string>
+    <string name="keyword_choice_3_4">선택하기 3/4</string>
+    <string name="keyword_choice_4_4">선택완료</string>
+
+    <!-- keyword -->
+    <string-array name="keywords_symptom">
+        <item>우울 · 불안</item>
+        <item>불면</item>
+        <item>스트레스</item>
+        <item>공포증</item>
+        <item>정신질환</item>
+        <item>자살생각</item>
+        <item>자해 · 자살시도</item>
+        <item>정신지체</item>
+    </string-array>
+
+    <string-array name="keywords_state">
+        <item>성인</item>
+        <item>아동 · 청소년</item>
+        <item>노인 · 치매</item>
+        <item>부모 · 가족</item>
+        <item>자살유족</item>
+        <item>건강관리</item>
+        <item>재난</item>
+    </string-array>
+
+    <string-array name="keywords_facility">
+        <item>외래 · 입원(입소)</item>
+        <item>재활</item>
+        <item>주거</item>
+        <item>생활지도</item>
+        <item>직업교육</item>
+        <item>사회복귀 · 적응</item>
+    </string-array>
+
+    <string-array name="keywords_addiction">
+        <item>알코올 중독</item>
+        <item>도박 중독</item>
+        <item>약물(마약) 중독</item>
+        <item>인터넷(스마트폰) 중독</item>
+    </string-array>
+
 </resources>

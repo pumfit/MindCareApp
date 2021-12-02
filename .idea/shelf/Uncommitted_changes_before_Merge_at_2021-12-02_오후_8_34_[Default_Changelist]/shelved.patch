@@ -1,0 +1,436 @@
+Index: app/src/main/java/com/teamopendata/mindcareapp/ui/graph/GraphFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.teamopendata.mindcareapp.ui.graph;\r\n\r\nimport static android.view.View.GONE;\r\nimport static android.view.View.VISIBLE;\r\n\r\nimport android.app.Activity;\r\nimport android.content.DialogInterface;\r\nimport android.graphics.Color;\r\nimport android.graphics.Picture;\r\nimport android.graphics.Point;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.Display;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageButton;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.navigation.Navigation;\r\n\r\nimport com.github.mikephil.charting.charts.BarChart;\r\n\r\nimport com.github.mikephil.charting.components.XAxis;\r\nimport com.github.mikephil.charting.components.YAxis;\r\nimport com.github.mikephil.charting.data.BarData;\r\nimport com.github.mikephil.charting.data.BarDataSet;\r\nimport com.github.mikephil.charting.data.BarEntry;\r\n\r\nimport com.github.mikephil.charting.formatter.IndexAxisValueFormatter;\r\n\r\nimport com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;\r\nimport com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;\r\nimport com.teamopendata.mindcareapp.MindChargeDB;\r\nimport com.teamopendata.mindcareapp.R;\r\nimport com.teamopendata.mindcareapp.common.model.entity.Record;\r\nimport com.teamopendata.mindcareapp.common.model.entity.Task;\r\nimport com.teamopendata.mindcareapp.converters.Converters;\r\nimport com.teamopendata.mindcareapp.databinding.FragmentGraphBinding;\r\nimport com.wdullaer.materialdatetimepicker.date.DatePickerDialog;\r\n\r\nimport java.text.DecimalFormat;\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\nimport java.util.Calendar;\r\nimport java.util.Date;\r\nimport java.util.List;\r\n\r\n\r\npublic class GraphFragment extends Fragment implements DatePickerDialog.OnDateSetListener{\r\n    private final String TAG = GraphFragment.class.getSimpleName();\r\n    DecimalFormat form;\r\n    int taskTrueNum,taskNum;\r\n    private FragmentGraphBinding binding;\r\n    long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;\r\n    float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;\r\n    float density;\r\n    int standardSize_X;\r\n    int standardSize_Y;\r\n    LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;\r\n    DatePickerDialog datePickerDialog;\r\n    int Year, Month, Day, Hour, Minute;\r\n    Calendar calendar ;\r\n    Calendar[] disabledDays;\r\n    Date format1;\r\n    Converters converters;\r\n    int isDataNone;\r\n    ArrayList<LocalDate> datesList;\r\n\r\n    float sum;\r\n\r\n\r\n\r\n    public View onCreateView(@NonNull LayoutInflater inflater,\r\n                             ViewGroup container, Bundle savedInstanceState) {\r\n        binding = FragmentGraphBinding.inflate(inflater, container, false);\r\n        View view = binding.getRoot();\r\n\r\n        return view;\r\n    }\r\n\r\n    @Override\r\n    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {\r\n        super.onViewCreated(view, savedInstanceState);\r\n\r\n\r\n\r\n        converters = new Converters();\r\n\r\n        //record 화면으로 이동\r\n        setAlYakClickListener();\r\n        // !-- datePickerDialog 세팅하기\r\n        setDatePickerDialog();\r\n        form = new DecimalFormat(\"#\");\r\n\r\n\r\n        //creatView 시 초기 세팅\r\n        setDefault();\r\n\r\n\r\n\r\n        // left버튼(일주일 전으로 )\r\n        btnListener(binding.leftArrowBtnGraph);\r\n\r\n\r\n        // right버튼(일주일 후로)\r\n        btnListener(binding.rightArrowBtnGraph);\r\n\r\n\r\n        //DatePicker\r\n        binding.calenderButtonGraph.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                disappearArrow();\r\n                datePickerDialog.show(getParentFragmentManager(),\"DatePickerDialog\");\r\n                binding.tvDate.setText(\"\");\r\n            }\r\n        });\r\n\r\n        binding.tvDate.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                disappearArrow();\r\n                datePickerDialog.show(getParentFragmentManager(),\"DatePickerDialog\");\r\n                binding.tvDate.setText(\"\");\r\n            }\r\n        });\r\n\r\n\r\n\r\n\r\n        // !-- onCreateEnd\r\n    }\r\n\r\n    public  void setAlYakClickListener(){\r\n        binding.btnAlyakGraph.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Navigation.findNavController(v).navigate(R.id.navigation_records);\r\n            }\r\n        });\r\n    }\r\n\r\n    public void setDefault() {\r\n\r\n        Calendar cal = Calendar.getInstance();\r\n        long currentTimeMill = System.currentTimeMillis();\r\n\r\n        int weekDay = cal.get(Calendar.DAY_OF_WEEK);\r\n\r\n\r\n\r\n        if(weekDay == 1){\r\n            //일요일\r\n            millSec =currentTimeMill - 60*60*24*1000*6;\r\n        }\r\n        else if(weekDay == 2){\r\n            //월요일\r\n            millSec =currentTimeMill;\r\n        }\r\n        else if(weekDay == 3){\r\n            //화요일\r\n            millSec =currentTimeMill - 60*60*24*1000;\r\n        }\r\n        else if(weekDay == 4){\r\n            //수요일\r\n            millSec =currentTimeMill - 60*60*24*1000*2;\r\n        }\r\n        else if(weekDay == 5){\r\n            //목요일\r\n            millSec =currentTimeMill - 60*60*24*1000*3;\r\n        }else if(weekDay == 6){\r\n            //금요일\r\n            millSec =currentTimeMill - 60*60*24*1000*4;\r\n        }else if(weekDay == 7){\r\n            //토요일\r\n            millSec =currentTimeMill - 60*60*24*1000*5;\r\n        }\r\n\r\n        millSec2 = millSec+ 60*60*24*1000; //화\r\n        millSec3 = millSec+ 60*60*24*1000*2;//수\r\n        millSec4 = millSec + 60*60*24*1000*3;//목\r\n        millSec5 = millSec + 60*60*24*1000*4;//금\r\n        millSec6 = millSec + 60*60*24*1000*5;//토\r\n        millSec7 = millSec + 60*60*24*1000*6;//일\r\n\r\n\r\n        //바로 구현\r\n        monday = converters.LongFromLocalDate(millSec);\r\n        tuesday = converters.LongFromLocalDate(millSec2);\r\n        wednesday = converters.LongFromLocalDate(millSec3);\r\n        thursday = converters.LongFromLocalDate(millSec4);\r\n        friday = converters.LongFromLocalDate(millSec5);\r\n        saturday = converters.LongFromLocalDate(millSec6);\r\n        sunday = converters.LongFromLocalDate(millSec7);\r\n\r\n\r\n        //!-- 날짜 쓰기\r\n        Calendar calWeek = Calendar.getInstance();\r\n        calWeek.set(Calendar.YEAR,monday.getYear());\r\n\r\n        calWeek.set(Calendar.MONTH,monday.getMonthValue());\r\n        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());\r\n        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);\r\n\r\n        Log.d(TAG,\"weekOfMonth: \"+weekOfMonth);\r\n        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));\r\n        String writeDateFirst =  monday +\" - \"+sunday;\r\n        binding.tvDate.setText(writeDateFirst);\r\n\r\n        //!-- DB -----------\r\n        startBackgroundThread();\r\n\r\n        setChart(binding.graph);\r\n\r\n        //!--controlSum\r\n        controlSum();\r\n    }\r\n\r\n\r\n    //! -- 메소드 시작\r\n\r\n\r\n\r\n    public void btnListener(ImageButton imgBtn){\r\n        imgBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n\r\n                if(imgBtn == binding.leftArrowBtnGraph){\r\n\r\n                    millSec = millSec - 60*60*24*1000*7; //전 월\r\n                    millSec2 = millSec+ 60*60*24*1000; //화\r\n                    millSec3 = millSec+ 60*60*24*1000*2;//수\r\n                    millSec4 = millSec + 60*60*24*1000*3;//목\r\n                    millSec5 = millSec + 60*60*24*1000*4;//금\r\n                    millSec6 = millSec + 60*60*24*1000*5;//토\r\n                    millSec7 = millSec + 60*60*24*1000*6;//일\r\n                }\r\n\r\n                else {\r\n                    Log.d(TAG,\"system.currentMills: \"+System.currentTimeMillis());\r\n                    Log.d(TAG,\"millSec7: \"+millSec7);\r\n\r\n\r\n                    if(System.currentTimeMillis() > millSec7+60*60*24*1000 ){\r\n\r\n                        millSec = millSec + 60*60*24*1000*7; //후 월\r\n                        millSec2 = millSec+ 60*60*24*1000; //화\r\n                        millSec3 = millSec+ 60*60*24*1000*2;//수\r\n                        millSec4 = millSec + 60*60*24*1000*3;//목\r\n                        millSec5 = millSec + 60*60*24*1000*4;//금\r\n                        millSec6 = millSec + 60*60*24*1000*5;//토\r\n                        millSec7 = millSec + 60*60*24*1000*6;//일\r\n                    }\r\n                }\r\n\r\n                //날짜형으로 형 변환\r\n//                monday = convertDate(millSec,\"yyyy-MM-dd\");\r\n                monday = converters.LongFromLocalDate(millSec);\r\n                tuesday = converters.LongFromLocalDate(millSec2);\r\n                wednesday = converters.LongFromLocalDate(millSec3);\r\n                thursday = converters.LongFromLocalDate(millSec4);\r\n                friday = converters.LongFromLocalDate(millSec5);\r\n                saturday = converters.LongFromLocalDate(millSec6);\r\n                sunday = converters.LongFromLocalDate(millSec7);\r\n\r\n\r\n                //!-- 날짜 쓰기\r\n                Calendar calWeek = Calendar.getInstance();\r\n                calWeek.set(Calendar.YEAR,monday.getYear());\r\n\r\n                calWeek.set(Calendar.MONTH,monday.getMonthValue());\r\n                calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());\r\n                int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);\r\n\r\n                Log.d(TAG,\"weekOfMonth: \"+weekOfMonth);\r\n                binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));\r\n                String writeDateFirst =  monday +\" - \"+sunday;\r\n                binding.tvDate.setText(writeDateFirst);\r\n\r\n                //!-- DB -----------\r\n                startBackgroundThread();\r\n\r\n                setChart(binding.graph);\r\n\r\n                //!--controlSum\r\n                controlSum();\r\n            }\r\n        });\r\n    }\r\n\r\n\r\n    // !-- 사라져 메소드\r\n    public void disappearArrow(){\r\n        binding.leftArrowBtnGraph.setVisibility(GONE);\r\n        binding.rightArrowBtnGraph.setVisibility(GONE);\r\n        binding.tvTopWeek.setVisibility(GONE);\r\n        binding.tvWeekOfMonth.setVisibility(GONE);\r\n    }\r\n\r\n    // !-- 보여줘 메소드\r\n    public void appearArrow(){\r\n        binding.leftArrowBtnGraph.setVisibility(VISIBLE);\r\n        binding.rightArrowBtnGraph.setVisibility(VISIBLE);\r\n        binding.tvTopWeek.setVisibility(VISIBLE);\r\n        binding.tvWeekOfMonth.setVisibility(VISIBLE);\r\n    }\r\n\r\n\r\n    //!--라벨  메소드\r\n    public void setDay(ArrayList<String> a, String day){\r\n        a.add(day);\r\n    }\r\n\r\n    //!-- graph 메소드\r\n    public void setChart(BarChart chart){\r\n\r\n\r\n        //!--1단계\r\n        ArrayList<BarEntry> arrayList = new ArrayList<>();\r\n//\r\n        arrayList.add(new BarEntry(0,new float[]{mondayData,100-mondayData}));\r\n        arrayList.add(new BarEntry(1,new float[]{tuesDayData,100-tuesDayData}));\r\n        arrayList.add(new BarEntry(2,new float[]{wednesdayData,100-wednesdayData}));\r\n        arrayList.add(new BarEntry(3,new float[]{thursdayData,100-thursdayData}));\r\n        arrayList.add(new BarEntry(4,new float[]{fridayData,100-fridayData}));\r\n        arrayList.add(new BarEntry(5,new float[]{saturdayData,100-saturdayData}));\r\n        arrayList.add(new BarEntry(6,new float[]{sundayData,100-sundayData}));\r\n\r\n        //!--2단계\r\n        BarDataSet barDataSet = new BarDataSet(arrayList,\"실천 점수\");\r\n        barDataSet.setColors(Color.rgb(99,171,247),Color.argb(100,213,222,226));\r\n        barDataSet.setValueTextColor(Color.BLACK);\r\n        barDataSet.setValueTextSize(5F);\r\n        barDataSet.setDrawValues(true);\r\n\r\n\r\n        //!--3단계\r\n        BarData barData = new BarData(barDataSet);\r\n        barData.setBarWidth(0.5f);\r\n\r\n        chart.setFitBars(true);\r\n        chart.setData(barData);\r\n        chart.getDescription().setText(\" \");\r\n        chart.animateX(500);\r\n        chart.getLegend().setEnabled(false); //하단부 없애기\r\n\r\n        //!--x축 라벨 설정하기\r\n        ArrayList<String> label_day = new ArrayList<String>(); //x축라벨\r\n\r\n        //x라벨 컬러 세팅하기\r\n        List<Integer> colors = new ArrayList<>();\r\n        for(int i = 0;i<7;i++){\r\n            colors.add(Color.rgb(200,200,200));\r\n        }\r\n        chart.setXAxisRenderer(new ColoredLabelXAxisRenderer(chart.getViewPortHandler(),chart.getXAxis(),chart.getTransformer(YAxis.AxisDependency.LEFT),colors));\r\n\r\n\r\n        setDay(label_day,\"Mon\");\r\n        setDay(label_day,\"Tue\");\r\n        setDay(label_day,\"wed\");\r\n        setDay(label_day,\"Thu\");\r\n        setDay(label_day,\"Fri\");\r\n        setDay(label_day,\"Sat\");\r\n        setDay(label_day,\"Sun\");\r\n\r\n        isDataNone =0;\r\n\r\n        //DB에 요일이 있는지 없는지 체크\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec))) {\r\n            colors.set(0,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec2))) {\r\n            colors.set(1,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec3))) {\r\n            colors.set(2,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec4))) {\r\n            colors.set(3,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec5))) {\r\n            colors.set(4,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec6))) {\r\n            colors.set(5,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n        if(datesList.contains(converters.LongFromLocalDate(millSec7))) {\r\n            colors.set(6,Color.rgb(0,0,0));\r\n            isDataNone++;\r\n        }\r\n\r\n        Log.d(TAG,\"isDataNone: \"+isDataNone);\r\n\r\n\r\n\r\n\r\n\r\n        //!--x축 관리\r\n        XAxis xAxis = chart.getXAxis();\r\n        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);\r\n        xAxis.setDrawGridLines(false);\r\n        xAxis.setValueFormatter(new IndexAxisValueFormatter(label_day));\r\n\r\n        //!-- y축 관리\r\n        chart.getAxisLeft().setEnabled(false); //y축 left 지우기\r\n        chart.getAxisRight().setEnabled(false);\r\n        chart.getAxisLeft().setAxisMaximum(100);\r\n        chart.getAxisLeft().setAxisMinimum(0);\r\n        chart.getAxisLeft().setLabelCount(5);\r\n\r\n        //!--차트 기타 관리\r\n        chart.setTouchEnabled(false); //터치막음\r\n    }\r\n\r\n    @Override\r\n    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {\r\n\r\n\r\n        // 날짜 변환\r\n        millSec = converters.LocalDateToLong(LocalDate.of(year,monthOfYear+1,dayOfMonth));\r\n\r\n        // 날짜의 milSec\r\n        millSec2 = millSec+ 60*60*24*1000; //화\r\n        millSec3 = millSec+ 60*60*24*1000*2;//수\r\n        millSec4 = millSec + 60*60*24*1000*3;//목\r\n        millSec5 = millSec + 60*60*24*1000*4;//금\r\n        millSec6 = millSec + 60*60*24*1000*5;//토\r\n        millSec7 = millSec + 60*60*24*1000*6;//일\r\n\r\n        //날짜형으로 형 변환\r\n        monday = converters.LongFromLocalDate(millSec);\r\n        tuesday = converters.LongFromLocalDate(millSec2);\r\n        wednesday = converters.LongFromLocalDate(millSec3);\r\n        thursday = converters.LongFromLocalDate(millSec4);\r\n        friday = converters.LongFromLocalDate(millSec5);\r\n        saturday = converters.LongFromLocalDate(millSec6);\r\n        sunday = converters.LongFromLocalDate(millSec7);\r\n\r\n\r\n        //!-- 날짜\r\n\r\n        //몇 주 째인지 계산하기.\r\n        Calendar calWeek = Calendar.getInstance();\r\n        calWeek.set(Calendar.YEAR,monday.getYear());\r\n\r\n        calWeek.set(Calendar.MONTH,monday.getMonthValue());\r\n        calWeek.set(Calendar.DAY_OF_MONTH,monday.getDayOfMonth());\r\n        int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);\r\n\r\n        Log.d(TAG,\"weekOfMonth: \"+weekOfMonth);\r\n        binding.tvWeekOfMonth.setText(String.valueOf(weekOfMonth));\r\n\r\n        //월~일 날짜 쓰기\r\n        String writeDateFirst =  monday +\" - \"+sunday;\r\n        binding.tvDate.setText(writeDateFirst);\r\n\r\n        //!-- DB -----------\r\n        startBackgroundThread();\r\n\r\n        //차트 그리기\r\n        setChart(binding.graph);\r\n        appearArrow();\r\n\r\n        //달성률 관리하기\r\n        controlSum();\r\n\r\n\r\n    }\r\n\r\n    //!--control sum\r\n    public void controlSum(){\r\n        sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);\r\n\r\n        //getTheme 안되는데 뭐 써야하는지\r\n        if((int)sum >=0 && (int)sum <25){\r\n            binding.btnAlyakGraph.setAlpha(0.0f);\r\n            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);\r\n            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvPercent.setAlpha(0.0f);\r\n            binding.tvCharge.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);\r\n        }\r\n        else if((int)sum >=25 && (int)sum <50){\r\n            binding.btnAlyakGraph.setAlpha(0.0f);\r\n            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_25);\r\n            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvPercent.setAlpha(0.0f);\r\n            binding.tvCharge.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);\r\n\r\n        }\r\n        else if((int)sum >=50 && (int)sum <75){\r\n            binding.btnAlyakGraph.setAlpha(0.0f);\r\n            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_50);\r\n            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvWeek.setAlpha(0.0f);\r\n            binding.tvWeek.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvPercent.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvProgressbar2.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvCharge.setAlpha(0.0f);\r\n            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);\r\n        }\r\n        else if((int)sum >=75 && (int)sum <100){\r\n            binding.btnAlyakGraph.setAlpha(0.0f);\r\n            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_75);\r\n            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvPercent.setAlpha(0.0f);\r\n            binding.tvCharge.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);\r\n        }\r\n        else if((int)sum == 100){\r\n            binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_100);\r\n            binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);\r\n\r\n            binding.tvPercent.setAlpha(0.0f);\r\n            binding.tvCharge.setAlpha(0.0f);\r\n            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);\r\n            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);\r\n        }\r\n\r\n        //기록 없을 때\r\n        if(isDataNone == 0){\r\n\r\n            binding.tvWeek.setVisibility(GONE);\r\n            binding.tvProgressbar2.setVisibility(GONE);\r\n\r\n            binding.tvPercent.setText(\"기록을 \");\r\n            binding.tvCharge.setText(\"입력해주세요!\");\r\n\r\n        }\r\n        else{\r\n            binding.tvWeek.setVisibility(VISIBLE);\r\n            binding.tvProgressbar2.setVisibility(VISIBLE);\r\n            binding.tvPercent.setVisibility(VISIBLE);\r\n            binding.tvPercent.setText(\"% \");\r\n            binding.tvCharge.setText(\"마음충전되었습니다.\");\r\n            binding.tvProgressbar2.setText(form.format(sum));\r\n        }\r\n\r\n    }\r\n\r\n\r\n    //!-- DB\r\n    public void startBackgroundThread(){\r\n\r\n        // BackgroundThread 구현하기\r\n        Runnable runnable = new Runnable() {\r\n            @Override\r\n            public void run() {\r\n                try{\r\n\r\n                    // db 초기화\r\n                    MindChargeDB db = MindChargeDB.getInstance(getContext());\r\n\r\n                    datesList = new ArrayList<>();\r\n\r\n\r\n                    mondayData = setDayData(millSec);\r\n                    tuesDayData = setDayData(millSec2);\r\n                    wednesdayData = setDayData(millSec3);\r\n                    thursdayData = setDayData(millSec4);\r\n                    fridayData = setDayData(millSec5);\r\n                    saturdayData = setDayData(millSec6);\r\n                    sundayData = setDayData(millSec7);\r\n\r\n\r\n\r\n\r\n////                                      // !--  가짜 데이터----\r\n//                    ArrayList<Task> tasks = new ArrayList<>();\r\n//\r\n//                    Task task1 = new Task(\"소주 마시기\",true);\r\n//                    Task task2 = new Task(\"친구랑 놀기\",true);\r\n//                    Task task3 = new Task(\"영화보기\",true);\r\n//                    Task task4 = new Task(\"맛있는 거먹기\",true);\r\n//                    Task task5 = new Task(\"맛있는 거먹기\",true);\r\n//                    Task task6 = new Task(\"취미생활 하기\",false);\r\n//                    Task task8 = new Task(\"하루종일 독서하기\",false);\r\n//\r\n//\r\n//                    tasks.add(task1);\r\n//                    tasks.add(task2);\r\n//                    tasks.add(task3);\r\n//                    tasks.add(task4);\r\n//                    tasks.add(task5);\r\n//                    tasks.add(task6);\r\n//\r\n//                    tasks.add(task8);\r\n//\r\n//\r\n//\r\n//\r\n//\r\n//\r\n////\r\n//                    Record record8 = new Record(LocalDate.of(2021,11,28),\"kk병원 방문하기\",tasks);\r\n////                    Record record2 = new Record(LocalDate.of(2021,11,02),\"ㅇㅇ병원 방문하기\",tasks2);\r\n//\r\n//\r\n//\r\n//\r\n//                    db.getRecordDao().insert(record8);\r\n\r\n\r\n                }\r\n                catch (Exception e){\r\n                    e.printStackTrace();\r\n                }\r\n            }\r\n        };\r\n        Thread backgroundThread = new Thread(runnable);\r\n        backgroundThread.start();\r\n        try {\r\n            backgroundThread.join();\r\n        }\r\n        catch (InterruptedException e){\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n\r\n\r\n    public float  setDayData(long millSecDate){\r\n        float dayData;\r\n        MindChargeDB db = MindChargeDB.getInstance(getContext());\r\n        LocalDate convertedDay = converters.LongFromLocalDate(millSecDate); //화요일\r\n        Log.d(TAG,\"convertedDay: \"+convertedDay);\r\n\r\n        Record selectedRecordDay = db.getRecordDao().\r\n                getDateRecord(convertedDay);\r\n\r\n\r\n\r\n        //선택한 날짜에 값이 들어있는지 여부 체크\r\n        if(selectedRecordDay != null){\r\n            //라벨을 위해\r\n            datesList.add(selectedRecordDay.getDate());\r\n            Log.d(TAG,\"selectedRecordDate: \"+String.valueOf(selectedRecordDay.getDate()));\r\n\r\n            List<Task> tasksList = selectedRecordDay.getTasks();\r\n            taskTrueNum = 0;\r\n            // !--true인 task 개수 구하기\r\n            for(int i =0 ;i<tasksList.size();i++){\r\n                if( tasksList.get(i).isCompleted()){\r\n                    taskTrueNum ++;\r\n                }\r\n            }\r\n            // task 개수 구하기\r\n            taskNum = tasksList.size();\r\n            Log.d(TAG, \"db taskTrueNum: \"+ taskTrueNum);\r\n            Log.d(TAG, \"db taskNum: \"+ taskNum);\r\n\r\n            dayData = (taskTrueNum*100 /taskNum);\r\n            Log.d(TAG,\"DayDataSet: \"+dayData);\r\n            Log.d(TAG,convertedDay+\"날의 실천률 값: \"+ dayData);\r\n            return  dayData;\r\n        }\r\n        else {\r\n            Log.d(TAG,convertedDay+\"날에 기록이 없습니다.\");\r\n            dayData = 0;\r\n            return  dayData;\r\n        }\r\n    }\r\n\r\n\r\n\r\n    //데이트피커 세팅하기 메소드\r\n    public void setDatePickerDialog(){\r\n\r\n        calendar = Calendar.getInstance();\r\n        Year = calendar.get(Calendar.YEAR) ;\r\n        Month = calendar.get(Calendar.MONTH);\r\n        Day = calendar.get(Calendar.DAY_OF_MONTH);\r\n        Hour = calendar.get(Calendar.HOUR_OF_DAY);\r\n        Minute = calendar.get(Calendar.MINUTE);\r\n\r\n        datePickerDialog = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(this, Year, Month, Day);\r\n\r\n        datePickerDialog.setThemeDark(false);\r\n        datePickerDialog.showYearPickerFirst(false);\r\n        datePickerDialog.setTitle(\"날짜를 선택해 주세요\");\r\n\r\n        // min 날짜 제한\r\n        Calendar min_date_c = Calendar.getInstance();\r\n        min_date_c.set(Calendar.YEAR,Year-15); //과거 15년까지 가능 메모리 상의 후 얼마까지 가능하게 할 지 결정\r\n        datePickerDialog.setMinDate(min_date_c);\r\n\r\n\r\n        Calendar max_date_c = Calendar.getInstance();\r\n        datePickerDialog.setMaxDate(max_date_c);\r\n\r\n        // !-- 요일 제한하기 for 문이라 메모리 좀 많이씀...10 * 365 번 돌아감..\r\n        for (Calendar loopdate = min_date_c; min_date_c.before(max_date_c); min_date_c.add(Calendar.DATE, 1), loopdate = min_date_c) {\r\n            int dayOfWeek = loopdate.get(Calendar.DAY_OF_WEEK);\r\n            if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.TUESDAY || dayOfWeek == Calendar.WEDNESDAY || dayOfWeek == Calendar.THURSDAY || dayOfWeek == Calendar.FRIDAY  ) {\r\n                disabledDays =  new Calendar[1];\r\n                disabledDays[0] = loopdate;\r\n                datePickerDialog.setDisabledDays(disabledDays);\r\n            }\r\n        }\r\n\r\n        //!-- 현재날짜가 월요일이 아닌경우 뜨는 문제가 발생햇는데 그 오류를 해결하는 코드\r\n        if(max_date_c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){\r\n\r\n        }\r\n        else {\r\n            Log.d(TAG,\"월요일이 아닙니다.\");\r\n            disabledDays = new Calendar[1];\r\n            disabledDays[0] = max_date_c;\r\n            datePickerDialog.setDisabledDays(disabledDays);\r\n        }\r\n        datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {\r\n            @Override\r\n            public void onCancel(DialogInterface dialog) {\r\n                binding.tvDate.setText(monday+\"-\"+sunday);\r\n                binding.leftArrowBtnGraph.setVisibility(VISIBLE);\r\n                binding.rightArrowBtnGraph.setVisibility(VISIBLE);\r\n                binding.tvWeekOfMonth.setVisibility(VISIBLE);\r\n                binding.tvTopWeek.setVisibility(VISIBLE);\r\n            }\r\n        });\r\n    }\r\n    //!--end\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/teamopendata/mindcareapp/ui/graph/GraphFragment.java b/app/src/main/java/com/teamopendata/mindcareapp/ui/graph/GraphFragment.java
+--- a/app/src/main/java/com/teamopendata/mindcareapp/ui/graph/GraphFragment.java	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/java/com/teamopendata/mindcareapp/ui/graph/GraphFragment.java	(date 1638444570404)
+@@ -19,6 +19,7 @@
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+ import androidx.fragment.app.Fragment;
++import androidx.navigation.NavOptions;
+ import androidx.navigation.Navigation;
+ 
+ import com.github.mikephil.charting.charts.BarChart;
+@@ -56,15 +57,11 @@
+     private FragmentGraphBinding binding;
+     long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;
+     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
+-    float density;
+-    int standardSize_X;
+-    int standardSize_Y;
+     LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;
+     DatePickerDialog datePickerDialog;
+     int Year, Month, Day, Hour, Minute;
+     Calendar calendar ;
+     Calendar[] disabledDays;
+-    Date format1;
+     Converters converters;
+     int isDataNone;
+     ArrayList<LocalDate> datesList;
+@@ -138,7 +135,15 @@
+         binding.btnAlyakGraph.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                Navigation.findNavController(v).navigate(R.id.navigation_records);
++                NavOptions options = new NavOptions.Builder()
++                        .setEnterAnim(R.anim.fade_in)
++                        .setExitAnim(R.anim.fade_out)
++                        .setPopEnterAnim(R.anim.fade_in)
++                        .setPopExitAnim(R.anim.fade_out)
++                        .build();
++
++                Navigation.findNavController(v).navigate(R.id.navigation_records,null,options);
++
+             }
+         });
+     }
+@@ -348,6 +353,9 @@
+         chart.animateX(500);
+         chart.getLegend().setEnabled(false); //하단부 없애기
+ 
++        chart.animate().alpha(0.0f);
++        chart.animate().alpha(1.0f).setDuration(1000);
++
+         //!--x축 라벨 설정하기
+         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
+ 
+@@ -477,67 +485,51 @@
+ 
+     }
+ 
++
+     //!--control sum
+     public void controlSum(){
+         sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
+ 
+         //getTheme 안되는데 뭐 써야하는지
+         if((int)sum >=0 && (int)sum <25){
++
+             binding.btnAlyakGraph.setAlpha(0.0f);
+             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);
+             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+ 
+-            binding.tvPercent.setAlpha(0.0f);
+-            binding.tvCharge.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++            animation();
+         }
+         else if((int)sum >=25 && (int)sum <50){
+             binding.btnAlyakGraph.setAlpha(0.0f);
+             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_25);
+             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+ 
+-            binding.tvPercent.setAlpha(0.0f);
+-            binding.tvCharge.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++            animation();
+ 
+         }
+         else if((int)sum >=50 && (int)sum <75){
++
+             binding.btnAlyakGraph.setAlpha(0.0f);
+             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_50);
+             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+ 
+-            binding.tvWeek.setAlpha(0.0f);
+-            binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
+-
+-            binding.tvPercent.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-
+-            binding.tvProgressbar2.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-
+-            binding.tvCharge.setAlpha(0.0f);
+-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++            animation();
+         }
+         else if((int)sum >=75 && (int)sum <100){
++
+             binding.btnAlyakGraph.setAlpha(0.0f);
+             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_75);
+             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+ 
+-            binding.tvPercent.setAlpha(0.0f);
+-            binding.tvCharge.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++            animation();
+         }
+         else if((int)sum == 100){
++
++            binding.btnAlyakGraph.setAlpha(0.0f);
+             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_100);
+             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
+ 
+-            binding.tvPercent.setAlpha(0.0f);
+-            binding.tvCharge.setAlpha(0.0f);
+-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++            animation();
+         }
+ 
+         //기록 없을 때
+@@ -561,6 +553,20 @@
+ 
+     }
+ 
++    // !-- animation
++    public void animation(){
++        binding.tvWeek.setAlpha(0.0f);
++        binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
++
++        binding.tvPercent.setAlpha(0.0f);
++        binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
++
++        binding.tvProgressbar2.setAlpha(0.0f);
++        binding.tvProgressbar2.animate().alpha(1.0f).setDuration(1000);
++
++        binding.tvCharge.setAlpha(0.0f);
++        binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
++    }
+ 
+     //!-- DB
+     public void startBackgroundThread(){
+@@ -588,40 +594,6 @@
+ 
+ 
+ 
+-////                                      // !--  가짜 데이터----
+-//                    ArrayList<Task> tasks = new ArrayList<>();
+-//
+-//                    Task task1 = new Task("소주 마시기",true);
+-//                    Task task2 = new Task("친구랑 놀기",true);
+-//                    Task task3 = new Task("영화보기",true);
+-//                    Task task4 = new Task("맛있는 거먹기",true);
+-//                    Task task5 = new Task("맛있는 거먹기",true);
+-//                    Task task6 = new Task("취미생활 하기",false);
+-//                    Task task8 = new Task("하루종일 독서하기",false);
+-//
+-//
+-//                    tasks.add(task1);
+-//                    tasks.add(task2);
+-//                    tasks.add(task3);
+-//                    tasks.add(task4);
+-//                    tasks.add(task5);
+-//                    tasks.add(task6);
+-//
+-//                    tasks.add(task8);
+-//
+-//
+-//
+-//
+-//
+-//
+-////
+-//                    Record record8 = new Record(LocalDate.of(2021,11,28),"kk병원 방문하기",tasks);
+-////                    Record record2 = new Record(LocalDate.of(2021,11,02),"ㅇㅇ병원 방문하기",tasks2);
+-//
+-//
+-//
+-//
+-//                    db.getRecordDao().insert(record8);
+ 
+ 
+                 }
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/container\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/nav_view\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"0dp\"\r\n        android:layout_marginEnd=\"0dp\"\r\n        android:background=\"?android:attr/windowBackground\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:menu=\"@menu/bottom_nav_menu\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/nav_host_fragment\"\r\n        android:name=\"androidx.navigation.fragment.NavHostFragment\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        app:defaultNavHost=\"true\"\r\n        app:layout_constraintBottom_toTopOf=\"@id/nav_view\"\r\n        app:layout_constraintLeft_toLeftOf=\"parent\"\r\n        app:layout_constraintRight_toRightOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:navGraph=\"@navigation/mobile_navigation\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+--- a/app/src/main/res/layout/activity_main.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/layout/activity_main.xml	(date 1638326143335)
+@@ -11,11 +11,13 @@
+         android:layout_height="wrap_content"
+         android:layout_marginStart="0dp"
+         android:layout_marginEnd="0dp"
+-        android:background="?android:attr/windowBackground"
++        android:background="#90CAF9"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintRight_toRightOf="parent"
+-        app:menu="@menu/bottom_nav_menu" />
++        app:menu="@menu/bottom_nav_menu"
++        app:itemIconTint="@color/white"
++        app:itemTextColor="@color/white"/>
+ 
+     <fragment
+         android:id="@+id/nav_host_fragment"
+Index: app/src/main/res/values-xxhdpi/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <!-- Default screen margins, per the Android Design guidelines. -->\r\n    <dimen name=\"activity_horizontal_margin\">16dp</dimen>\r\n    <dimen name=\"activity_vertical_margin\">16dp</dimen>\r\n    <!-- Default screen margins, per the Android Design guidelines. -->\r\n    <dimen name=\"fab_margin\">16dp</dimen>\r\n    <dimen name=\"dots_height\">30dp</dimen>\r\n    <dimen name=\"dots_margin_bottom\">60dp</dimen>\r\n    <dimen name=\"img_width_height\">120dp</dimen>\r\n    <dimen name=\"slide_title\">30dp</dimen>\r\n    <dimen name=\"slide_desc\">16dp</dimen>\r\n    <dimen name=\"desc_padding\">40dp</dimen>\r\n\r\n\r\n    <dimen name=\"home_title_size\">28sp</dimen>\r\n    <dimen name=\"home_show_button_size\">64dp</dimen>\r\n    <dimen name=\"home_contents_size\">20sp</dimen>\r\n    <dimen name=\"home_bottom_view_mg\">16dp</dimen>\r\n    <dimen name=\"layout_design_dp\">1dp</dimen>\r\n\r\n    <dimen name=\"graph_week_text_size\">15sp</dimen>\r\n    <dimen name=\"layout_alyak\">275dp</dimen>\r\n    <dimen name=\"graph_alyak_img_size\">250dp</dimen>\r\n    <dimen name=\"graph_bar_height\">275dp</dimen>\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values-xxhdpi/dimens.xml b/app/src/main/res/values-xxhdpi/dimens.xml
+--- a/app/src/main/res/values-xxhdpi/dimens.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/values-xxhdpi/dimens.xml	(date 1638324538447)
+@@ -20,6 +20,6 @@
+ 
+     <dimen name="graph_week_text_size">15sp</dimen>
+     <dimen name="layout_alyak">275dp</dimen>
+-    <dimen name="graph_alyak_img_size">250dp</dimen>
++    <dimen name="graph_alyak_img_size">225dp</dimen>
+     <dimen name="graph_bar_height">275dp</dimen>
+ </resources>
+Index: app/src/main/res/drawable/ic_graph.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_graph.xml b/app/src/main/res/drawable/ic_graph.xml
+new file mode 100644
+--- /dev/null	(date 1638326498330)
++++ b/app/src/main/res/drawable/ic_graph.xml	(date 1638326498330)
+@@ -0,0 +1,9 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="24dp"
++    android:height="24dp"
++    android:viewportWidth="24"
++    android:viewportHeight="24">
++  <path
++      android:pathData="M14,9H10C9.7348,9 9.4804,9.1054 9.2929,9.2929C9.1054,9.4804 9,9.7348 9,10V22C9,22.2652 9.1054,22.5196 9.2929,22.7071C9.4804,22.8946 9.7348,23 10,23H14C14.2652,23 14.5196,22.8946 14.7071,22.7071C14.8946,22.5196 15,22.2652 15,22V10C15,9.7348 14.8946,9.4804 14.7071,9.2929C14.5196,9.1054 14.2652,9 14,9ZM13,21H11V11H13V21ZM22,1H18C17.7348,1 17.4804,1.1054 17.2929,1.2929C17.1054,1.4804 17,1.7348 17,2V22C17,22.2652 17.1054,22.5196 17.2929,22.7071C17.4804,22.8946 17.7348,23 18,23H22C22.2652,23 22.5196,22.8946 22.7071,22.7071C22.8946,22.5196 23,22.2652 23,22V2C23,1.7348 22.8946,1.4804 22.7071,1.2929C22.5196,1.1054 22.2652,1 22,1ZM21,21H19V3H21V21ZM6,15H2C1.7348,15 1.4804,15.1054 1.2929,15.2929C1.1054,15.4804 1,15.7348 1,16V22C1,22.2652 1.1054,22.5196 1.2929,22.7071C1.4804,22.8946 1.7348,23 2,23H6C6.2652,23 6.5196,22.8946 6.7071,22.7071C6.8946,22.5196 7,22.2652 7,22V16C7,15.7348 6.8946,15.4804 6.7071,15.2929C6.5196,15.1054 6.2652,15 6,15ZM5,21H3V17H5V21Z"
++      android:fillColor="#ffffff"/>
++</vector>
+Index: app/src/main/res/menu/bottom_nav_menu.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<menu xmlns:android=\"http://schemas.android.com/apk/res/android\">\r\n\r\n    <item\r\n        android:id=\"@+id/navigation_home\"\r\n        android:icon=\"@drawable/icon_home\"\r\n        android:title=\"홈\" />\r\n\r\n    <item\r\n        android:id=\"@+id/navigation_map\"\r\n        android:icon=\"@drawable/icon_map\"\r\n        android:title=\"위치\" />\r\n\r\n    <item\r\n        android:id=\"@+id/navigation_records\"\r\n        android:icon=\"@drawable/icon_record\"\r\n        android:title=\"작성\" />\r\n    <item\r\n        android:id=\"@+id/navigation_graph\"\r\n        android:icon=\"@drawable/icon_graph\"\r\n        android:title=\"그래프\" />\r\n\r\n</menu>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/menu/bottom_nav_menu.xml b/app/src/main/res/menu/bottom_nav_menu.xml
+--- a/app/src/main/res/menu/bottom_nav_menu.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/menu/bottom_nav_menu.xml	(date 1638326516271)
+@@ -3,21 +3,21 @@
+ 
+     <item
+         android:id="@+id/navigation_home"
+-        android:icon="@drawable/icon_home"
++        android:icon="@drawable/ic_home"
+         android:title="홈" />
+ 
+     <item
+         android:id="@+id/navigation_map"
+-        android:icon="@drawable/icon_map"
++        android:icon="@drawable/ic_map"
+         android:title="위치" />
+ 
+     <item
+         android:id="@+id/navigation_records"
+-        android:icon="@drawable/icon_record"
++        android:icon="@drawable/ic_record"
+         android:title="작성" />
+     <item
+         android:id="@+id/navigation_graph"
+-        android:icon="@drawable/icon_graph"
++        android:icon="@drawable/ic_graph"
+         android:title="그래프" />
+ 
+ </menu>
+Index: app/src/main/java/com/teamopendata/mindcareapp/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.teamopendata.mindcareapp;\r\n\r\nimport android.Manifest;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.pm.PackageManager;\r\nimport android.graphics.Rect;\r\nimport android.location.LocationManager;\r\nimport android.os.Bundle;\r\nimport android.os.Handler;\r\nimport android.util.Log;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.view.inputmethod.InputMethodManager;\r\nimport android.widget.EditText;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.core.content.ContextCompat;\r\nimport androidx.navigation.NavController;\r\nimport androidx.navigation.Navigation;\r\nimport androidx.navigation.ui.AppBarConfiguration;\r\nimport androidx.navigation.ui.NavigationUI;\r\n\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView;\r\n\r\npublic class MainActivity extends BaseActivity {\r\n\r\n    private static final String TAG = MainActivity.class.getSimpleName();\r\n    private static final int GPS_ENABLE_REQUEST_CODE = 2001;\r\n    private static final int PERMISSIONS_REQUEST_CODE = 100;\r\n    String[] REQUIRED_PERMISSIONS = {\"android.permission.ACCESS_FINE_LOCATION\", \"android.permission.ACCESS_COARSE_LOCATION\"};\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n        BottomNavigationView navView = findViewById(R.id.nav_view);\r\n\r\n        if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인\r\n            Intent callGPSSettingIntent\r\n                    = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);//아닌경우 Dialog 생성\r\n            startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);\r\n        } else {\r\n            checkRunTimePermission();\r\n        }\r\n\r\n        //!-- fragment 네이게이션 만드는 코드\r\n        // Passing each menu ID as a set of Ids because each\r\n        // menu should be considered as top level destinations.\r\n        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(\r\n                R.id.navigation_home, R.id.navigation_map, R.id.navigation_records, R.id.navigation_graph)\r\n                .build();\r\n        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);\r\n        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);\r\n        NavigationUI.setupWithNavController(navView, navController);\r\n\r\n        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {\r\n            Log.d(TAG, \"itemSelected: \" + destination);\r\n            displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);\r\n            if (destination.getId() == R.id.navigation_home || destination.getId() == R.id.navigation_map) {\r\n                hideActionBar();\r\n            } else {\r\n                new Handler().postDelayed(this::showActionBar, 100);\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    private static final int REQUEST_PERMISSIONS = 1;\r\n    private static final String[] MY_PERMISSIONS = {\r\n            Manifest.permission.ACCESS_FINE_LOCATION,\r\n            Manifest.permission.ACCESS_COARSE_LOCATION\r\n    };\r\n    public boolean checkLocationServicesStatus() { //GPS기능 사용가능한지 판단\r\n        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);\r\n\r\n        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)\r\n                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);\r\n    }\r\n\r\n    void checkRunTimePermission() {//RunTimePermission 처리\r\n\r\n        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.\r\n        int hasFineLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(),\r\n                Manifest.permission.ACCESS_FINE_LOCATION);\r\n        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(),\r\n                Manifest.permission.ACCESS_COARSE_LOCATION);\r\n\r\n        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&\r\n                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {\r\n        } else {\r\n\r\n            if (shouldShowRequestPermissionRationale(REQUIRED_PERMISSIONS[0])) {\r\n                Toast.makeText(getApplicationContext(), \"이 앱을 실행하려면 위치 접근 권한이 필요합니다.\", Toast.LENGTH_LONG).show();\r\n                requestPermissions(REQUIRED_PERMISSIONS,\r\n                        PERMISSIONS_REQUEST_CODE);//위치 정보 퍼미션 재요청\r\n\r\n            } else {\r\n                requestPermissions(REQUIRED_PERMISSIONS,\r\n                        PERMISSIONS_REQUEST_CODE);\r\n            }\r\n        }\r\n        /**\r\n         * 현재 포커싱된 EditText range외의 view를 클릭하면 포커스 해제\r\n         * {@link com.teamopendata.mindcareapp.ui.records.adapter.TaskAdapter}\r\n         */\r\n\r\n    }\r\n    @Override\r\n    public boolean dispatchTouchEvent(MotionEvent event) {\r\n        if (event.getAction() == MotionEvent.ACTION_DOWN) {\r\n            View v = getCurrentFocus();\r\n            if (v instanceof EditText) {\r\n                Rect outRect = new Rect();\r\n                v.getGlobalVisibleRect(outRect);\r\n                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {\r\n                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);\r\n                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);\r\n                    v.clearFocus();\r\n                }\r\n            }\r\n        }\r\n        return super.dispatchTouchEvent(event);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/teamopendata/mindcareapp/MainActivity.java b/app/src/main/java/com/teamopendata/mindcareapp/MainActivity.java
+--- a/app/src/main/java/com/teamopendata/mindcareapp/MainActivity.java	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/java/com/teamopendata/mindcareapp/MainActivity.java	(date 1638275615420)
+@@ -17,6 +17,7 @@
+ 
+ import androidx.core.content.ContextCompat;
+ import androidx.navigation.NavController;
++import androidx.navigation.NavOptions;
+ import androidx.navigation.Navigation;
+ import androidx.navigation.ui.AppBarConfiguration;
+ import androidx.navigation.ui.NavigationUI;
+@@ -47,6 +48,8 @@
+         //!-- fragment 네이게이션 만드는 코드
+         // Passing each menu ID as a set of Ids because each
+         // menu should be considered as top level destinations.
++
++
+         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                 R.id.navigation_home, R.id.navigation_map, R.id.navigation_records, R.id.navigation_graph)
+                 .build();
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/USER/AppData/Local/Android/Sdk/platforms/android-29/data/res/layout/simple_list_item_1.xml\" value=\"0.24427083333333333\" />\r\n        <entry key=\"..\\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_keywords.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/item_home_today_task.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/welcome_slide1.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/.gradle/caches/transforms-2/files-2.1/63dac4b0f8ef13947ce880083f712369/jetified-appcompat-resources-1.2.0/res/drawable/abc_vector_test.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/achievementrate_graph.xml\" value=\"0.1140625\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/border_round_rectangle_dark.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/custon_btn_radio.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/layoutdesign_selectactivity.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/progressbar_custom.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/radius.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable-v24/radius_filled.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/achievementrate_graph.xml\" value=\"0.1140625\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/border_round_rectangle_light.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/button.xml\" value=\"0.175\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/buttonselected.xml\" value=\"0.175\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/cancel_button_calender.xml\" value=\"0.2015625\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ciclebar.xml\" value=\"0.10885416666666667\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/circlebar.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/fragmenticon_graph.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/fragmenticon_home.xml\" value=\"0.10833333333333334\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/fragmenticon_map.xml\" value=\"0.13518518518518519\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/fragmenticon_record.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/fragmeticon_setting.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ic_dashboard_black_24dp.xml\" value=\"0.14739583333333334\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ic_home_black_24dp.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ic_notifications_black_24dp.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/icon_check.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/icon_graph.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/icon_map.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/icon_record.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/layoutdesign_selectactivity.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/drawable/ripple_home_show_btn.xml\" value=\"0.26979166666666665\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/activity_add_record.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/activity_base.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/activity_main.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/activity_tutorial.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/activity_welcome.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/add_record_item.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/calender_dialog_graph.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_dashboard.xml\" value=\"0.13125\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_graph.xml\" value=\"0.23508771929824562\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_home.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_notifications.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/fragment_setting.xml\" value=\"0.253125\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/intro.xml\" value=\"0.12195121951219512\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/map_question_dialog.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/record_yourlist_add_item.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/record_yourlist_item.xml\" value=\"0.536\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide1.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide2.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide3.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/layout/welcome_slide4.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml\" value=\"0.25364583333333335\" />\r\n        <entry key=\"..\\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml\" value=\"0.5734939759036145\" />\r\n        <entry key=\"..\\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/menu/menu_base.xml\" value=\"0.27447916666666666\" />\r\n        <entry key=\"..\\:/fork/MindCareApp/app/src/main/res/layout/fragment_graph.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/fork/MindCareApp/app/src/main/res/layout/fragment_home.xml\" value=\"0.25364583333333335\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/.idea/misc.xml	(date 1638325933761)
+@@ -63,8 +63,15 @@
+         <entry key="..\:/Users/kimta/AndroidStudioProjects/cooperation/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25364583333333335" />
+         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.5734939759036145" />
+         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/menu/menu_base.xml" value="0.27447916666666666" />
+-        <entry key="..\:/fork/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.176" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/drawable/achievementrate_graph.xml" value="0.26979166666666665" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/drawable/ic_map.xml" value="0.26979166666666665" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/drawable/icon_record.xml" value="0.26979166666666665" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/layout/activity_add_record.xml" value="0.25364583333333335" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.5126315789473684" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.264" />
+         <entry key="..\:/fork/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.25364583333333335" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.271875" />
++        <entry key="..\:/fork/MindCareApp/app/src/main/res/menu/menu_base.xml" value="0.25364583333333335" />
+       </map>
+     </option>
+   </component>
+Index: app/src/main/res/drawable/achievementrate_graph.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<layer-list xmlns:android=\"http://schemas.android.com/apk/res/android\" >\r\n    <!-- Background -->\r\n    <item>\r\n        <shape>\r\n            <corners android:radius=\"12dp\"/>\r\n            <solid android:color=\"#74C1FF\" />\r\n        </shape>\r\n    </item>\r\n\r\n</layer-list>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/achievementrate_graph.xml b/app/src/main/res/drawable/achievementrate_graph.xml
+--- a/app/src/main/res/drawable/achievementrate_graph.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/drawable/achievementrate_graph.xml	(date 1638325099853)
+@@ -3,7 +3,8 @@
+     <!-- Background -->
+     <item>
+         <shape>
+-            <corners android:radius="12dp"/>
++            <corners android:topLeftRadius="12dp"
++                android:topRightRadius="12dp"/>
+             <solid android:color="#74C1FF" />
+         </shape>
+     </item>
+Index: app/src/main/res/drawable/ic_map.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_map.xml b/app/src/main/res/drawable/ic_map.xml
+new file mode 100644
+--- /dev/null	(date 1638325750263)
++++ b/app/src/main/res/drawable/ic_map.xml	(date 1638325750263)
+@@ -0,0 +1,15 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="24dp"
++    android:height="24dp"
++    android:viewportWidth="24"
++    android:viewportHeight="24"
++    android:tint="#FFFFFF">
++
++  <path
++      android:pathData="M16.7998,3.5002C13.8998,1.6002 10.0998,1.6002 7.1998,3.5002C2.4998,6.7002 1.9998,13.1002 5.7998,16.9002L10.3998,21.4002C11.1998,22.2002 12.5998,22.2002 13.3998,21.4002L17.9998,16.9002C21.9998,13.1002 21.4998,6.6002 16.7998,3.5002ZM11.9998,13.7002C10.2998,13.7002 8.9998,12.4002 8.9998,10.7002C8.9998,9.0002 10.2998,7.7002 11.9998,7.7002C13.6998,7.7002 14.9998,9.0002 14.9998,10.7002C14.9998,12.4002 13.6998,13.7002 11.9998,13.7002Z"
++      android:strokeLineJoin="round"
++      android:strokeWidth="2"
++      android:fillColor="#00000000"
++      android:strokeColor="#ffffff"
++      android:strokeLineCap="round"/>
++</vector>
+Index: app/src/main/res/layout/fragment_graph.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/default_background\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\".ui.Graph.GraphFragment\"\r\n    >\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n\r\n        >\r\n\r\n        <LinearLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:orientation=\"vertical\">\r\n\r\n            <LinearLayout\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:orientation=\"vertical\">\r\n                <RelativeLayout\r\n                    android:layout_marginTop=\"20dp\"\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    >\r\n\r\n                    <TextView\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginLeft=\"20dp\"\r\n                        android:layout_marginRight=\"20dp\"\r\n                        android:text=\"Graph\"\r\n                        android:textColor=\"#000000\"\r\n                        android:textSize=\"30dp\"\r\n                        android:textStyle=\"bold\" />\r\n\r\n\r\n                    <ImageButton\r\n                        android:id=\"@+id/calenderButton_graph\"\r\n                        android:layout_width=\"40dp\"\r\n                        android:layout_height=\"40dp\"\r\n                        android:layout_alignParentRight=\"true\"\r\n                        android:layout_marginRight=\"30dp\"\r\n                        android:background=\"@android:color/transparent\"\r\n                        android:scaleType=\"fitCenter\"\r\n                        android:src=\"@drawable/icon_calender_24dp\" />\r\n\r\n\r\n                </RelativeLayout>\r\n\r\n                <LinearLayout\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"wrap_content\"\r\n                    android:orientation=\"vertical\">\r\n\r\n                    <com.google.android.material.card.MaterialCardView\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"wrap_content\"\r\n                        android:layout_marginHorizontal=\"5dp\"\r\n                        app:cardCornerRadius=\"8dp\"\r\n                        app:cardElevation=\"2dp\">\r\n\r\n                        <LinearLayout\r\n                            android:layout_width=\"match_parent\"\r\n                            android:layout_height=\"wrap_content\">\r\n\r\n                            <RelativeLayout\r\n                                android:layout_width=\"match_parent\"\r\n                                android:layout_height=\"wrap_content\"\r\n                                android:layout_marginTop=\"10dp\">\r\n                                <RelativeLayout\r\n                                    android:layout_marginRight=\"20dp\"\r\n                                    android:layout_centerVertical=\"true\"\r\n                                    android:layout_toLeftOf=\"@id/select_date\"\r\n                                    android:layout_width=\"wrap_content\"\r\n                                    android:layout_height=\"wrap_content\">\r\n\r\n                                    <TextView\r\n                                        android:id=\"@+id/tv_top_week\"\r\n                                        android:layout_width=\"wrap_content\"\r\n                                        android:layout_height=\"wrap_content\"\r\n                                        android:layout_centerVertical=\"true\"\r\n                                        android:layout_marginRight=\"5dp\"\r\n                                        android:text=\"Week\"\r\n                                        android:textColor=\"#90CAF9\"\r\n                                        android:textSize=\"@dimen/graph_week_text_size\"\r\n                                        android:textStyle=\"bold\" />\r\n\r\n                                    <TextView\r\n                                        android:id=\"@+id/tv_week_of_month\"\r\n                                        android:layout_width=\"wrap_content\"\r\n                                        android:layout_height=\"wrap_content\"\r\n                                        android:layout_centerVertical=\"true\"\r\n                                        android:layout_toRightOf=\"@id/tv_top_week\"\r\n                                        android:text=\"1\"\r\n                                        android:textColor=\"#90CAF9\"\r\n                                        android:textSize=\"@dimen/graph_week_text_size\"\r\n                                        android:textStyle=\"bold\" />\r\n                                </RelativeLayout>\r\n\r\n\r\n                                <RelativeLayout\r\n                                    android:id=\"@+id/select_date\"\r\n                                    android:layout_marginRight=\"50dp\"\r\n                                    android:layout_alignParentRight=\"true\"\r\n                                    android:layout_width=\"wrap_content\"\r\n                                    android:layout_height=\"wrap_content\">\r\n\r\n                                    <ImageButton\r\n\r\n                                        android:id=\"@+id/left_arrow_btn_graph\"\r\n                                        android:layout_width=\"50dp\"\r\n                                        android:layout_height=\"40dp\"\r\n                                        android:layout_toLeftOf=\"@id/tvDate\"\r\n                                        android:background=\"@android:color/transparent\"\r\n                                        android:scaleType=\"fitCenter\"\r\n                                        android:src=\"@drawable/arrow_left_graph\" />\r\n\r\n                                    <TextView\r\n                                        android:id=\"@+id/tvDate\"\r\n                                        android:layout_width=\"wrap_content\"\r\n                                        android:layout_height=\"wrap_content\"\r\n                                        android:layout_centerInParent=\"true\"\r\n                                        android:clickable=\"true\"\r\n                                        android:gravity=\"center\"\r\n                                        android:text=\"날짜를 선택해주세요\"\r\n                                        android:textColor=\"#000000\"\r\n                                        android:textSize=\"@dimen/graph_week_text_size\"\r\n                                        android:textStyle=\"bold\" />\r\n\r\n                                    <ImageButton\r\n                                        android:id=\"@+id/right_arrow_btn_graph\"\r\n                                        android:layout_width=\"50dp\"\r\n                                        android:layout_height=\"40dp\"\r\n                                        android:layout_toRightOf=\"@+id/tvDate\"\r\n                                        android:background=\"@android:color/transparent\"\r\n                                        android:scaleType=\"fitCenter\"\r\n                                        android:src=\"@drawable/arrow_right_graph\" />\r\n                                </RelativeLayout>\r\n\r\n                            </RelativeLayout>\r\n\r\n                        </LinearLayout>\r\n                    </com.google.android.material.card.MaterialCardView>\r\n\r\n\r\n                    <LinearLayout\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"match_parent\"\r\n                        android:layout_marginTop=\"5dp\"\r\n                        android:layout_marginBottom=\"10dp\"\r\n                        android:orientation=\"horizontal\">\r\n\r\n                        <com.google.android.material.card.MaterialCardView\r\n                            android:layout_width=\"match_parent\"\r\n                            android:layout_height=\"match_parent\"\r\n                            android:layout_margin=\"5dp\"\r\n                            app:cardCornerRadius=\"8dp\"\r\n                            app:cardElevation=\"2dp\">\r\n\r\n                            <com.github.mikephil.charting.charts.BarChart\r\n\r\n                                android:id=\"@+id/graph\"\r\n                                android:layout_width=\"match_parent\"\r\n                                android:layout_height=\"@dimen/graph_bar_height\"\r\n                                android:layout_marginBottom=\"10dp\" />\r\n                        </com.google.android.material.card.MaterialCardView>\r\n\r\n                    </LinearLayout>\r\n\r\n\r\n                    <androidx.constraintlayout.widget.ConstraintLayout\r\n                        android:id=\"@+id/layout_alyak\"\r\n                        android:layout_width=\"match_parent\"\r\n                        android:layout_height=\"@dimen/layout_alyak\"\r\n                        android:layout_marginLeft=\"5dp\"\r\n                        android:layout_marginRight=\"5dp\"\r\n                        android:background=\"@drawable/achievementrate_graph\">\r\n\r\n\r\n                        <ImageButton\r\n                            android:id=\"@+id/btn_alyak_graph\"\r\n                            android:layout_width=\"200dp\"\r\n                            android:layout_height=\"@dimen/graph_alyak_img_size\"\r\n                            android:background=\"@android:color/transparent\"\r\n                            android:scaleType=\"fitCenter\"\r\n                            android:src=\"@drawable/icon_mind_charge_expanded_0\"\r\n                            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                            app:layout_constraintEnd_toEndOf=\"parent\"\r\n                            app:layout_constraintHorizontal_bias=\"0.497\"\r\n                            app:layout_constraintStart_toStartOf=\"parent\"\r\n                            app:layout_constraintTop_toTopOf=\"parent\"\r\n                            app:layout_constraintVertical_bias=\"0.0\" />\r\n\r\n                        <LinearLayout\r\n                            android:layout_width=\"match_parent\"\r\n                            android:layout_height=\"20dp\"\r\n                            android:gravity=\"center\"\r\n                            android:orientation=\"horizontal\"\r\n                            app:layout_constraintBottom_toBottomOf=\"@id/btn_alyak_graph\"\r\n                            tools:layout_editor_absoluteX=\"0dp\">\r\n\r\n                            <TextView\r\n\r\n                                android:id=\"@+id/tv_week\"\r\n                                android:layout_width=\"wrap_content\"\r\n                                android:layout_height=\"wrap_content\"\r\n                                android:gravity=\"center\"\r\n                                android:text=\"이번 주는 \"\r\n                                android:textColor=\"@color/white\"\r\n                                android:textSize=\"15sp\"\r\n                                android:textStyle=\"bold\"\r\n                                app:layout_constraintStart_toStartOf=\"parent\"\r\n                                tools:layout_editor_absoluteY=\"180dp\" />\r\n\r\n                            <TextView\r\n                                android:id=\"@+id/tv_progressbar2\"\r\n                                android:layout_width=\"wrap_content\"\r\n                                android:layout_height=\"wrap_content\"\r\n                                android:gravity=\"center\"\r\n                                android:text=\"50\"\r\n                                android:textColor=\"@color/white\"\r\n                                android:textSize=\"15sp\"\r\n                                android:textStyle=\"bold\"\r\n\r\n                                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                                app:layout_constraintEnd_toStartOf=\"@+id/textView9\" />\r\n\r\n                            <TextView\r\n                                android:id=\"@+id/tv_percent\"\r\n                                android:layout_width=\"wrap_content\"\r\n                                android:layout_height=\"wrap_content\"\r\n                                android:gravity=\"center\"\r\n                                android:text=\"% \"\r\n                                android:textColor=\"@color/white\"\r\n                                android:textSize=\"15sp\"\r\n                                android:textStyle=\"bold\"\r\n                                app:layout_constraintEnd_toStartOf=\"@+id/textView10\"\r\n                                tools:layout_editor_absoluteY=\"180dp\" />\r\n\r\n                            <TextView\r\n                                android:id=\"@+id/tv_charge\"\r\n                                android:layout_width=\"wrap_content\"\r\n                                android:layout_height=\"wrap_content\"\r\n                                android:text=\"마음충전되었습니다.\"\r\n                                android:textColor=\"@color/white\"\r\n                                android:textSize=\"15sp\"\r\n                                android:textStyle=\"bold\"\r\n                                app:layout_constraintBottom_toBottomOf=\"parent\"\r\n                                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                                app:layout_constraintStart_toStartOf=\"@+id/imageView12\" />\r\n\r\n\r\n                        </LinearLayout>\r\n                    </androidx.constraintlayout.widget.ConstraintLayout>\r\n                </LinearLayout>\r\n\r\n            </LinearLayout>\r\n\r\n\r\n        </LinearLayout>\r\n    </ScrollView>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_graph.xml b/app/src/main/res/layout/fragment_graph.xml
+--- a/app/src/main/res/layout/fragment_graph.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/layout/fragment_graph.xml	(date 1638325250976)
+@@ -178,8 +178,6 @@
+                         android:id="@+id/layout_alyak"
+                         android:layout_width="match_parent"
+                         android:layout_height="@dimen/layout_alyak"
+-                        android:layout_marginLeft="5dp"
+-                        android:layout_marginRight="5dp"
+                         android:background="@drawable/achievementrate_graph">
+ 
+ 
+Index: app/src/main/res/anim/fade_in.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<set xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:interpolator=\"@android:anim/linear_interpolator\">\r\n    <alpha\r\n        android:duration=\"500\"\r\n        android:fromAlpha=\"0.1\"\r\n        android:toAlpha=\"1\" />\r\n\r\n</set>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/anim/fade_in.xml b/app/src/main/res/anim/fade_in.xml
+--- a/app/src/main/res/anim/fade_in.xml	(revision 13bf05368fc21eb3bb6054b53eb81a2fb839c96b)
++++ b/app/src/main/res/anim/fade_in.xml	(date 1638275220922)
+@@ -5,5 +5,4 @@
+         android:duration="500"
+         android:fromAlpha="0.1"
+         android:toAlpha="1" />
+-
+ </set>
+\ No newline at end of file

@@ -1,0 +1,43 @@
+Index: app/src/main/res/layout/fragment_notifications.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\nxmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\nxmlns:tools=\"http://schemas.android.com/tools\"\r\nandroid:layout_width=\"match_parent\"\r\nandroid:layout_height=\"match_parent\"\r\ntools:context=\".ui.setting.SettingFragment\">\r\n\r\n<TextView\r\n    android:id=\"@+id/text_setting\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_marginStart=\"8dp\"\r\n    android:layout_marginTop=\"8dp\"\r\n    android:layout_marginEnd=\"8dp\"\r\n    android:textAlignment=\"center\"\r\n    android:textSize=\"20sp\"\r\n    app:layout_constraintBottom_toBottomOf=\"parent\"\r\n    app:layout_constraintEnd_toEndOf=\"parent\"\r\n    app:layout_constraintStart_toStartOf=\"parent\"\r\n    app:layout_constraintTop_toTopOf=\"parent\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_notifications.xml b/app/src/main/res/layout/fragment_notifications.xml
+--- a/app/src/main/res/layout/fragment_notifications.xml	
++++ b/app/src/main/res/layout/fragment_notifications.xml	
+@@ -4,7 +4,7 @@
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+-tools:context=".ui.setting.SettingFragment">
++tools:context=".ui.setting.GraphFragment">
+ 
+ <TextView
+     android:id="@+id/text_setting"
+Index: app/src/main/res/navigation/mobile_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<navigation xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/mobile_navigation\"\r\n    app:startDestination=\"@+id/navigation_home\">\r\n\r\n    <fragment\r\n        android:id=\"@+id/navigation_home\"\r\n        android:name=\"com.teamopendata.mindcareapp.ui.home.HomeFragment\"\r\n        android:label=\"@string/title_home\"\r\n        tools:layout=\"@layout/fragment_home\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/navigation_dashboard\"\r\n        android:name=\"com.teamopendata.mindcareapp.ui.dashboard.DashboardFragment\"\r\n        android:label=\"@string/title_dashboard\"\r\n        tools:layout=\"@layout/fragment_dashboard\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/navigation_notifications\"\r\n        android:name=\"com.teamopendata.mindcareapp.ui.notifications.NotificationsFragment\"\r\n        android:label=\"@string/title_notifications\"\r\n        tools:layout=\"@layout/fragment_setting\" />\r\n\r\n    <fragment\r\n        android:id=\"@+id/navigation_stting\"\r\n        android:name=\"com.teamopendata.mindcareapp.ui.setting.SettingFragment\"\r\n        android:label=\"@string/title_setting\"\r\n        tools:layout=\"@layout/fragment_notifications\" />\r\n</navigation>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/navigation/mobile_navigation.xml b/app/src/main/res/navigation/mobile_navigation.xml
+--- a/app/src/main/res/navigation/mobile_navigation.xml	
++++ b/app/src/main/res/navigation/mobile_navigation.xml	
+@@ -21,11 +21,11 @@
+         android:id="@+id/navigation_notifications"
+         android:name="com.teamopendata.mindcareapp.ui.notifications.NotificationsFragment"
+         android:label="@string/title_notifications"
+-        tools:layout="@layout/fragment_setting" />
++        tools:layout="@layout/fragment_graph" />
+ 
+     <fragment
+         android:id="@+id/navigation_stting"
+-        android:name="com.teamopendata.mindcareapp.ui.setting.SettingFragment"
++        android:name="com.teamopendata.mindcareapp.ui.setting.GraphFragment"
+         android:label="@string/title_setting"
+         tools:layout="@layout/fragment_notifications" />
+ </navigation>

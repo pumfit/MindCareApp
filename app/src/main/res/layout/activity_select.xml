@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     android:orientation="vertical"
     android:background="#E3F2FD">
 
@@ -106,392 +106,425 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:background="@drawable/layoutdesign_selectactivity"
             android:id="@+id/top_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:background="@drawable/layoutdesign_selectactivity"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3.5"
+                    android:layout_marginBottom="10dp">
+
+                    <android.widget.Button
+                        android:id="@+id/btn_depress_anxiety"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="우울·불안"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_sleeplessness"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="불면"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:stateListAnimator="@null"
+                        android:id="@+id/btn_stress"
+                        android:textColor="#0D47A1"
+                        android:text="스트레스"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3.7"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <android.widget.Button
+                        android:id="@+id/btn_phobia"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="공포증"
+                        android:background="@drawable/button"
+                        android:layout_weight="0.8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_mental_illness"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="정신질환"
+                        android:background="@drawable/button"
+                        android:layout_weight="1.2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_suicide_thinking"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="자살생각"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3"
+                    android:layout_marginBottom="10dp"
+                    >
+                    <android.widget.Button
+                        android:id="@+id/btn_left_people"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="자살유족"
+                        android:background="@drawable/button"
+                        android:layout_weight="1.2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_self_injury"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="자해·자살시도"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
 
             <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:background="@drawable/layoutdesign_selectactivity"
+                android:id="@+id/middle_linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="4"
-                android:layout_marginBottom="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <android.widget.Button
-                    android:id="@+id/depressed_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="우울"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3"
+                    android:layout_marginBottom="10dp">
 
-                <android.widget.Button
-                    android:id="@+id/anxiety_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="불안"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_adult"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="성인"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
 
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:id="@+id/stress_button"
-                    android:textColor="#0D47A1"
-                    android:text="스트레스"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_kids"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="아동·청소년"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
 
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:id="@+id/fear_button"
-                    android:textColor="#0D47A1"
-                    android:text="공포증"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_elders"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="노인·치매"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="2"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <android.widget.Button
+                        android:id="@+id/btn_parents_family"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="부모·가족"
+                        android:background="@drawable/button"
+                        android:layout_weight="1.2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_healthcare"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="건강관리"
+                        android:background="@drawable/button"
+                        android:layout_weight="0.8"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/layoutdesign_selectactivity"
+                android:id="@+id/bottom_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="2"
+                    android:layout_marginBottom="10dp">
+
+                    <android.widget.Button
+                        android:id="@+id/btn_out_clinic"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="외래·입원(입소)"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_rehabilitation"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="재활"
+                        android:background="@drawable/button"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_residence"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="주거"
+                        android:background="@drawable/button"
+                        android:layout_weight="0.5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <android.widget.Button
+                        android:id="@+id/btn_guidance"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="생활지도"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_vocation_training"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="직업교육"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_mental_retardation"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="정신지체"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="3"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <android.widget.Button
+                        android:id="@+id/btn_disaster"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="재난"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_adjust"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="사회복귀·적응"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:background="@drawable/layoutdesign_selectactivity"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="4"
-                android:layout_marginBottom="10dp"
-                >
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="2"
+                    android:layout_marginBottom="10dp"
+                    >
 
-                <android.widget.Button
-                    android:id="@+id/insomnia_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="불면"
-                    android:background="@drawable/button"
-                    android:layout_weight="0.8"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-                <android.widget.Button
-                    android:id="@+id/suicide_try_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="자해·자살시도"
-                    android:background="@drawable/button"
-                    android:layout_weight="1.2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_alcohol_addicted"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="알코올 중독"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
 
-                <android.widget.Button
-                    android:id="@+id/suicide_thinking_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="자살생각"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
+                    <android.widget.Button
+                        android:id="@+id/btn_gambling_addicted"                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="도박중독"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
 
-                <android.widget.Button
-                    android:id="@+id/left_people_button"
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="자살유족"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="2"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <android.widget.Button
+                        android:id="@+id/btn_drug_addicted"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="약물(마약) 중독"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                    <android.widget.Button
+                        android:id="@+id/btn_smartphone_addicted"
+                        android:stateListAnimator="@null"
+                        android:textColor="#0D47A1"
+                        android:text="인터넷(스마트폰)중독"
+                        android:background="@drawable/button"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:background="@drawable/layoutdesign_selectactivity"
-            android:id="@+id/middle_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="2"
-                android:layout_marginBottom="10dp">
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="알콜중독"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="약물(마약)중독"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="2"
-                android:layout_marginBottom="10dp"
-                >
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="인터넷(스마트폰)중독"
-                    android:background="@drawable/button"
-                    android:layout_weight="1.2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="도박중독"
-                    android:background="@drawable/button"
-                    android:layout_weight="0.8"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/layoutdesign_selectactivity"
-            android:id="@+id/bottom_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="2"
-                android:layout_marginBottom="10dp">
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="성인"
-                    android:background="@drawable/button"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="아동·청소년"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="부모"
-                    android:background="@drawable/button"
-                    android:layout_weight="0.5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="3"
-                android:layout_marginBottom="10dp"
-                >
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="부모·가족"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="노인(치매)"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="건강관리"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="3"
-                android:layout_marginBottom="10dp"
-                >
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="재난"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="주거"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="사회복귀·적응"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="3"
-                android:layout_marginBottom="10dp"
-                >
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="생활지도"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="직업교육"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="재활"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:weightSum="2"
-                android:layout_marginBottom="10dp"
-                >
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="외래·입원(입소)"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-                <android.widget.Button
-                    android:stateListAnimator="@null"
-                    android:textColor="#0D47A1"
-                    android:text="정신지체"
-                    android:background="@drawable/button"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
 
 
         <RelativeLayout
@@ -514,4 +547,5 @@
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
+
 </ScrollView>
