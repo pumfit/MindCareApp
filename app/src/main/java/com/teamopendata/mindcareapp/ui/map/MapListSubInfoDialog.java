@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,8 +53,20 @@ public class MapListSubInfoDialog {
         Dialog dlg = new Dialog(this.context);
         dlg.requestWindowFeature(1);
         dlg.setContentView(R.layout.dialog_map_list_subinfo);
+
+        WindowManager.LayoutParams params = dlg.getWindow().getAttributes();
+
+        Display display = dlg.getWindow().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getRealSize(size);
+
+        params.width = (size.x)*4/5;
+        params.height = (size.y)*1/2;
+        dlg.getWindow().setAttributes(params);
+
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         dlg.show();
+
         ImageButton callButton = (ImageButton) dlg.findViewById(R.id.btn_map_info_call);
         ImageButton webButton = (ImageButton) dlg.findViewById(R.id.btn_map_info_web);
         final ImageButton bookMarkButton = (ImageButton) dlg.findViewById(R.id.btn_map_info_bookmark);
@@ -61,6 +76,7 @@ public class MapListSubInfoDialog {
         TextView addressTextView = (TextView) dlg.findViewById(R.id.tv_map_info_address);
         TextView urlTextView = (TextView) dlg.findViewById(R.id.tv_map_info_url);
         TextView telTextView = (TextView) dlg.findViewById(R.id.tv_map_info_tel);
+
         if (this.isMarked) {
             buttonClicked(bookMarkButton);
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="380dp" android:background="@drawable/border_maptitle_round_background" android:orientation="vertical" xmlns:aapt="http://schemas.android.com/aapt" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:background="@drawable/border_maptitle_round_background" android:orientation="vertical" xmlns:aapt="http://schemas.android.com/aapt" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">

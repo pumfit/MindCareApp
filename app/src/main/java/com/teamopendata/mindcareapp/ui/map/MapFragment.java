@@ -1,13 +1,17 @@
 package com.teamopendata.mindcareapp.ui.map;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -45,6 +49,10 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         {
             MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
             MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            if(list.size()==0)
+            {
+                customToast("키워드에 맞는 리스트가 없습니다.");
+            }
         }
     };
 
@@ -162,7 +170,17 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         }
     }
 
-
+    public void customToast(String message){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.toast_map_bookmark, null);
+        TextView toast_textview  = layout.findViewById(R.id.tv_toast_message);
+        toast_textview.setText(String.valueOf(message));
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT); //메시지 표시 시간
+        toast.setView(layout);
+        toast.show();
+    }
 
     /* renamed from: com.teamopendata.mindcareapp.ui.map.MapFragment$bookmarkThread */
     class bookmarkThread extends Thread {

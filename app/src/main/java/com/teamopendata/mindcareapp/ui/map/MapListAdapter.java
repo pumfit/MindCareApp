@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 
 import java.util.HashMap;
 import java.util.List;
