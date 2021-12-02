@@ -135,7 +135,6 @@ public class AddEditRecordFragment extends Fragment {
         binding.etRecordTitle.setText(mNewRecord.getTitle());
 
         binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());
-
     }
 
     @NonNull
@@ -257,14 +256,6 @@ public class AddEditRecordFragment extends Fragment {
         datePickerDialog.setLocale(Locale.KOREA);
         datePickerDialog.setMaxDate(Calendar.getInstance());
 
-        Calendar[] calendars;
-        if (mRegisteredDate != null) {
-            calendars = new Calendar[mRegisteredDate.size()];
-            int i = 0;
-            for (LocalDate localDate : mRegisteredDate)
-                calendars[i++] = Utils.LocalDateToCalender(localDate);
-            datePickerDialog.setDisabledDays(calendars);
-        }
 
         datePickerDialog.show(getParentFragmentManager(), "DatePickerDialog");
     }
