@@ -38,6 +38,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     private GpsTracker gpsTracker;
     public double latitude = 37.65373464975277d;
     public List<MedicalInstitution> list = null;
+    public List<MedicalInstitution> recommandList = null;
     public double longitude = 127.06081718059411d;
 
     public RecyclerView recyclerView = null;
@@ -47,8 +48,15 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     {
         public void handleMessage(Message msg)
         {
-            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
-            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            if(msg.what==1)//recommend
+            {
+                MapFragment.this.adapter = new MapListAdapter(MapFragment.this.recommandList);
+                MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            }else
+            {
+                MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
+                MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            }
             if(list.size()==0)
             {
                 customToast("키워드에 맞는 리스트가 없습니다.");
@@ -188,8 +196,8 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         }
         public void run() {
             MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
-            MapFragment.this.list = db.getBookMarkDao().getBookmarkList();
-            Message msg = handler.obtainMessage();
+            MapFragment.this.recommandList = db.getBookMarkDao().getBookmarkList();
+            Message msg = handler.obtainMessage(1);
             handler.sendMessage(msg);
         }
     }
