@@ -25,6 +25,9 @@ public interface RecordDao {
     @Query("SELECT * FROM record_table")
     List<Record> getAll();
 
+    @Query("SELECT * FROM record_table WHERE record_table.date LIKE :localdate ")
+    List<Record> getAllLocalDate(LocalDate localdate);
+
     @Query("Select * FROM record_table WHERE record_table.date LIKE :localdate")
     Record getDateRecord(LocalDate localdate);
 
