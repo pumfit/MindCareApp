@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO 기록 하루에 하나만 작성가능 validation
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private Task cachedItem;
 
@@ -168,8 +169,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public void updateCharge(int position, boolean isChecked) {
             mItems.get(position).setCompleted(isChecked);
             setMindCharge();
-            if (mListener != null)
-                mListener.onChanged(mindCharge);
+            if (mListener != null) mListener.onChanged(mindCharge);
         }
     }
 

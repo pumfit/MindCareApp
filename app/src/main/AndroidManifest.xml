@@ -26,18 +26,17 @@
             android:value="AIzaSyD6Bmw7osVBs8-_787J6YvHxCUOI6-d_Ss" />
 
         <activity
-            android:name=".BaseActivity"
+            android:name=".ui.BaseActivity"
             android:exported="true" />
-        <activity android:name=".IntroActivity"
+        <activity android:name=".ui.intro.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".SelectActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".ui.MainActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.intro.UserGuideActivity" />
     </application>
 
 </manifest>

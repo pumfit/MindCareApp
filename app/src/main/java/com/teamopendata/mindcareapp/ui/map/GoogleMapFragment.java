@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.HashMap;
@@ -68,6 +69,7 @@ public class GoogleMapFragment extends Fragment
         mMap.onCreate(savedInstanceState);
 
         getCurrentAddress();
+
         mMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -75,8 +77,6 @@ public class GoogleMapFragment extends Fragment
                 LatLng currentPlace = new LatLng(latitude, longitude); //LatLng 위경도 좌표를 나타내는 클래스
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(currentPlace);
-                markerOptions.title("현위치");
-                markerOptions.snippet("간단한 설명");
                 googleMap.addMarker(markerOptions);//마커를 맵 객체에 추가함
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPlace));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
@@ -93,12 +93,28 @@ public class GoogleMapFragment extends Fragment
                 });
             }
         });
+
+        FloatingActionButton fab = v.findViewById(R.id.fab_map_refresh);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gMap.clear();
+                latitude = gMap.getCameraPosition().target.latitude;
+                longitude = gMap.getCameraPosition().target.longitude;
+                try {
+                    listener.callBackClickRefresh(gMap.getCameraPosition().target);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         return v;
     }
 
     public interface CustomMapListener{
         void callBackMapReady();
         void callBackClickMarker(LatLng position);
+        void callBackClickRefresh(LatLng position) throws InterruptedException;
     }
 
     public void addMediInfoMarker(List<MedicalInstitution> list)
@@ -108,8 +124,6 @@ public class GoogleMapFragment extends Fragment
         {
             markerOptions.position(new LatLng(list.get(i).latitude,list.get(i).longitude));
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colormap.get(list.get(i).type)));
-            markerOptions.title("기관");
-            markerOptions.snippet("간단한 설명");
             gMap.addMarker(markerOptions);
         }
     }

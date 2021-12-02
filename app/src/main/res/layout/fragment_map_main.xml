@@ -16,7 +16,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center"
-        android:background="@drawable/ic_icon_map_back"
+        android:background="@drawable/icon_back_32"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView3" android:text="@string/map_title" android:layout_marginLeft="8dp" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="30dp"/>
@@ -38,10 +38,11 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center"
+        android:layout_marginRight="8dp"
         android:background="@drawable/ic_icon__map_bookmark_star"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-</LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
 

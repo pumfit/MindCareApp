@@ -2,26 +2,26 @@ package com.teamopendata.mindcareapp.ui.records.item;
 
 
 import com.teamopendata.mindcareapp.common.model.entity.Record;
-import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter.Type;
+import com.teamopendata.mindcareapp.common.object.ItemType;
 import com.teamopendata.mindcareapp.ui.records.adapter.RecordsAdapter.Header;
 
 public class RecordItem {
     Object item;
-    Type type;
+    ItemType itemType;
 
     public RecordItem(Object item) {
         this.item = item;
-        if (item instanceof Header) type = Type.TYPE_HEADER;
-        else if (item instanceof Record) type = Type.TYPE_ITEM;
+        if (item instanceof Header) itemType = ItemType.TYPE_HEADER;
+        else if (item instanceof Record) itemType = ItemType.TYPE_ITEM;
     }
 
-    public RecordItem(Type type) {
-        this.type = type;
+    public RecordItem(ItemType itemType) {
+        this.itemType = itemType;
     }
 
-    public RecordItem(Object item, Type type) {
+    public RecordItem(Object item, ItemType itemType) {
         this.item = item;
-        this.type = type;
+        this.itemType = itemType;
     }
 
     public Object getItem() {
@@ -32,11 +32,11 @@ public class RecordItem {
         this.item = item;
     }
 
-    public Type getType() {
-        return type;
+    public ItemType getType() {
+        return itemType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(ItemType itemType) {
+        this.itemType = itemType;
     }
 }

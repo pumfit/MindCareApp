@@ -1,24 +1,28 @@
 package com.teamopendata.mindcareapp.ui.map;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.teamopendata.mindcareapp.BtnPrefMgr;
-import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
+import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
+import com.teamopendata.mindcareapp.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class MapFragment extends Fragment implements GoogleMapFragment.CustomMapListener {
@@ -35,19 +39,25 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     public RecyclerView recyclerView = null;
     public ArrayList<String> userKeywordList = null;
 
+    public final Handler handler = new Handler()
+    {
+        public void handleMessage(Message msg)
+        {
+            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
+            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+        }
+    };
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map_main, container, false);
-        View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, (ViewGroup) null);
 
-        this.recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.recyclerview);
-        this.userKeywordList = new ArrayList<>();
-        this.userKeywordList = BtnPrefMgr.getStringArrayPref(container.getContext(), BtnPrefMgr.BTN_PREF_KEY);
+        View view = ((MainActivity)getActivity()).bottomSheetParentLayout;
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setPeekHeight(100);
+        view.setVisibility(View.VISIBLE);
 
-        BottomSheetDialog bottomSheetDialog2 = new BottomSheetDialog(container.getContext());
-        this.bottomSheetDialog = bottomSheetDialog2;
-        bottomSheetDialog2.setContentView(bottomSheetView);
-        this.bottomSheetDialog.show();
+        this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        this.userKeywordList = SharedPreferencesManager.getUserKeywords(getContext());
 
         getCurrentAddress();
 
@@ -61,11 +71,14 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         ((ImageButton) root.findViewById(R.id.btn_map_bookmark)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new bookmarkThread().start();
-                MapFragment.this.bottomSheetDialog.show();
+                ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
         ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             public void onClick(View view) {
+                Navigation.findNavController(view).navigate(
+                        Navigation.findNavController(view).getPreviousBackStackEntry().getDestination().getId());
             }
         });
         return root;
@@ -95,8 +108,20 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
                 break;
             }
         }
+
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
         this.recyclerView.setAdapter(new MapListAdapter(m));
-        this.bottomSheetDialog.show();
+    }
+
+    @Override
+    public void callBackClickRefresh(LatLng position) throws InterruptedException {
+        longitude = position.longitude;
+        latitude = position.latitude;
+        Thread th = new dataThread();
+        th.start();
+        th.join();
+        googleMapFragment.addMediInfoMarker(MapFragment.this.list);
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public void getCurrentAddress() {
@@ -110,37 +135,44 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     class dataThread extends Thread {
         dataThread() {
         }
-
         public void run() {
             MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
             MapFragment.this.list = db.getMedicalInstitutionDao().getCurrentList(MapFragment.this.latitude, MapFragment.this.longitude);
-            ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
-            for (int idx = 0; idx < list.size(); idx++)
-            {
-                for(int i=0;i<userKeywordList.size();i++)
-                {
-                    if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
-                    {
-                        recommedList.add(MapFragment.this.list.get(idx));
-                        break;
-                    }
-                }
 
+            if(userKeywordList.size()!=0)
+            {
+                ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
+                for (int idx = 0; idx < list.size(); idx++)
+                {
+                    for(int i=0;i<userKeywordList.size();i++)
+                    {
+                        if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
+                        {
+                            recommedList.add(MapFragment.this.list.get(idx));
+                            break;
+                        }
+                    }
+
+                }
+                MapFragment.this.list = recommedList;
             }
-            MapFragment.this.list = recommedList;
-            MapFragment.this.adapter = new MapListAdapter(MapFragment.this.list);
-            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+
+            Message msg = handler.obtainMessage();
+            handler.sendMessage(msg);
         }
     }
+
+
 
     /* renamed from: com.teamopendata.mindcareapp.ui.map.MapFragment$bookmarkThread */
     class bookmarkThread extends Thread {
         bookmarkThread() {
         }
-
         public void run() {
-            MapFragment.this.adapter = new MapListAdapter(MindChargeDB.getInstance(MapFragment.this.getContext()).getBookMarkDao().getBookmarkList());
-            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
+            MapFragment.this.list = db.getBookMarkDao().getBookmarkList();
+            Message msg = handler.obtainMessage();
+            handler.sendMessage(msg);
         }
     }
 }

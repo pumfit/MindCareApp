@@ -65,5 +65,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    // user guide viewpager indicator
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    // keyword flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.2'
 }

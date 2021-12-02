@@ -33,11 +33,11 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.teamopendata.mindcareapp.ColoredLabelXAxisRenderer;
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.converters.Converters;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
-import com.teamopendata.mindcareapp.converters.Converters;
 import com.teamopendata.mindcareapp.databinding.FragmentGraphBinding;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -564,7 +564,6 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     //!-- DB
     public void startBackgroundThread(){
-
         // BackgroundThread 구현하기
         Runnable runnable = new Runnable() {
             @Override

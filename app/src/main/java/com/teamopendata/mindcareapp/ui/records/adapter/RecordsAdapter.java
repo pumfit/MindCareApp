@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.object.ItemType;
 import com.teamopendata.mindcareapp.ui.records.StickyHeaderItemDecoration;
 import com.teamopendata.mindcareapp.ui.records.fragment.AddEditRecordFragment;
 import com.teamopendata.mindcareapp.ui.records.listener.OnAddEditRecordClickListener;
@@ -27,12 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeaderItemDecoration.StickyHeaderInterface {
-
-    public enum Type {
-        TYPE_TOP_HEADER,
-        TYPE_HEADER,
-        TYPE_ITEM
-    }
 
     public static class Header {
         private final LocalDate localDate;
@@ -90,7 +85,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void initHeaderAndItem(List<RecordItem> data) {
         if (mItems.isEmpty())
-            mItems.add(new RecordItem(Type.TYPE_TOP_HEADER));
+            mItems.add(new RecordItem(ItemType.TYPE_TOP_HEADER));
 
         data.forEach(recordItem -> addHeaderAndItem((Record) recordItem.getItem()));
         Log.d(TAG, "addHeaderAndItem: headers(index) -> " + headers.toString());
@@ -99,9 +94,9 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == Type.TYPE_TOP_HEADER.ordinal()) {
+        if (viewType == ItemType.TYPE_TOP_HEADER.ordinal()) {
             return new TopHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_top_header, parent, false));
-        } else if (viewType == Type.TYPE_HEADER.ordinal()) {
+        } else if (viewType == ItemType.TYPE_HEADER.ordinal()) {
             return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records_header, parent, false));
         } else {
             return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false));
@@ -276,13 +271,13 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public boolean isHeader(int position) {
-        return mItems.get(position).getType() == Type.TYPE_HEADER;
+        return mItems.get(position).getType() == ItemType.TYPE_HEADER;
     }
 
     @Override
     public View getHeaderLayoutView(RecyclerView parent, int position) {
         View header = LayoutInflater.from(parent.getContext()).inflate(getHeaderLayout(position), parent, false);
-        if (mItems.get(position).getType() != Type.TYPE_TOP_HEADER)
+        if (mItems.get(position).getType() != ItemType.TYPE_TOP_HEADER)
             bindHeaderData(header, position);
         return header;
     }
@@ -305,7 +300,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         String year, month;
         LocalDate date;
 
-        if (mItems.get(headerPosition).getType() == Type.TYPE_HEADER) {
+        if (mItems.get(headerPosition).getType() == ItemType.TYPE_HEADER) {
             Header header = ((Header) mItems.get(headerPosition).getItem());
             date = header.localDate;
         } else {
@@ -322,7 +317,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getHeaderLayout(int headerPosition) {
-        if (mItems.get(headerPosition).getType() == Type.TYPE_TOP_HEADER)
+        if (mItems.get(headerPosition).getType() == ItemType.TYPE_TOP_HEADER)
             return R.layout.item_records_top_header;
         else {
             return R.layout.item_records_header;

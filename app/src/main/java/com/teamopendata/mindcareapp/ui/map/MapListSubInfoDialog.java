@@ -7,13 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.teamopendata.mindcareapp.MindChargeDB;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
 
 import java.util.HashMap;
@@ -34,12 +36,14 @@ public class MapListSubInfoDialog {
 
     public Context context;
     public boolean isMarked;
+    public ImageButton bookMarkListButton;
     public MedicalInstitution mediInfo;
 
-    public MapListSubInfoDialog(Context context, MedicalInstitution mediInfo, boolean isMarked) {
+    public MapListSubInfoDialog(Context context, MedicalInstitution mediInfo, boolean isMarked,ImageButton btnBookmark) {
         this.context = context;
         this.mediInfo = mediInfo;
         this.isMarked = isMarked;
+        this.bookMarkListButton = btnBookmark;
     }
 
     public void callFunction() {
@@ -95,19 +99,33 @@ public class MapListSubInfoDialog {
             public void onClick(View view) {
                 if (!MapListSubInfoDialog.this.isMarked) {
                     MapListSubInfoDialog.this.buttonClicked(bookMarkButton);
+                    MapListSubInfoDialog.this.buttonClickedList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog = MapListSubInfoDialog.this;
                     new bookmarkInsertThread(mapListSubInfoDialog.mediInfo).start();
-                    Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기에 추가되었습니다.", 1).show();
+                    customToast("즐겨찾기에 추가되었습니다.");
                     MapListSubInfoDialog.this.isMarked = true;
                 } else if (MapListSubInfoDialog.this.isMarked) {
                     MapListSubInfoDialog.this.buttonDefault(bookMarkButton);
+                    MapListSubInfoDialog.this.buttonDefaultList(bookMarkListButton);
                     MapListSubInfoDialog mapListSubInfoDialog2 = MapListSubInfoDialog.this;
                     new bookmarkDeleteThread(mapListSubInfoDialog2.mediInfo).start();
-                    Toast.makeText(MapListSubInfoDialog.this.context, "즐겨찾기가 취소되었습니다.", 1).show();
+                    customToast("즐겨찾기가 취소되었습니다.");
                     MapListSubInfoDialog.this.isMarked = false;
                 }
             }
         });
+    }
+
+    public void customToast(String message){
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.toast_map_bookmark, null);
+        TextView toast_textview  = layout.findViewById(R.id.tv_toast_message);
+        toast_textview.setText(String.valueOf(message));
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT); //메시지 표시 시간
+        toast.setView(layout);
+        toast.show();
     }
 
     /* access modifiers changed from: private */
@@ -117,15 +135,25 @@ public class MapListSubInfoDialog {
 
     /* access modifiers changed from: private */
     public void buttonDefault(ImageButton button) {
-        button.setImageDrawable(button.getResources().getDrawable(R.drawable.ic_icon__map_bookmark_star));
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.ic_icon_map_bookmark_starunfilled));
+    }
+
+    /* access modifiers changed from: private */
+    public void buttonClickedList(ImageButton button) {
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.starfilled));
+    }
+
+    /* access modifiers changed from: private */
+    public void buttonDefaultList(ImageButton button) {
+        button.setImageDrawable(button.getResources().getDrawable(R.drawable.star));
     }
 
     /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListSubInfoDialog$bookmarkInsertThread */
     class bookmarkInsertThread extends Thread {
         private MedicalInstitution medi;
 
-        bookmarkInsertThread(MedicalInstitution medi2) {
-            this.medi = medi2;
+        bookmarkInsertThread(MedicalInstitution medi) {
+            this.medi = medi;
         }
 
         public void run() {

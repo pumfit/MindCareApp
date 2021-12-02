@@ -41,5 +41,16 @@
         <item name="fontFamily">sans-serif</item>
     </style>
 
+    <style name="KeywordDialogFragmentTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_keyword_list</item>
+        <item name="android:textColor">@color/text_keyword_list</item>
+        <item name="chipStrokeColor">@color/stroke_keyword_list</item>
+    </style>
 
 </resources>
