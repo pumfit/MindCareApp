@@ -6,11 +6,9 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.teamopendata.mindcareapp.ui.MainActivity;
 import com.teamopendata.mindcareapp.R;
 
 public class IntroActivity extends AppCompatActivity {
-    private final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

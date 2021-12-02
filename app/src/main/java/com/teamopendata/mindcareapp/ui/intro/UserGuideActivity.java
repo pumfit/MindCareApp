@@ -16,11 +16,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.teamopendata.mindcareapp.ui.MainActivity;
 import com.teamopendata.mindcareapp.R;
 import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
 import com.teamopendata.mindcareapp.databinding.ActivityUserGuideBinding;
 import com.teamopendata.mindcareapp.databinding.ItemUserGuideBinding;
+import com.teamopendata.mindcareapp.ui.MainActivity;
 
 import java.util.Arrays;
 import java.util.List;

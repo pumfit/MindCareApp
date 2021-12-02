@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.teamopendata.mindcareapp.BtnPrefMgr;
-import com.teamopendata.mindcareapp.MainActivity;
-import com.teamopendata.mindcareapp.MindChargeDB;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.common.MindChargeDB;
+import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
+import com.teamopendata.mindcareapp.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +57,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         view.setVisibility(View.VISIBLE);
 
         this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        this.userKeywordList = new ArrayList<>();
-        this.userKeywordList = BtnPrefMgr.getStringArrayPref(container.getContext(), BtnPrefMgr.BTN_PREF_KEY);
+        this.userKeywordList = SharedPreferencesManager.getUserKeywords(getContext());
 
         getCurrentAddress();
 
