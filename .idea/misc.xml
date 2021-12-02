@@ -10,12 +10,14 @@
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/layout/welcome_slide1.xml" value="0.2" />
         <entry key="..\:/Users/USER/StudioProjects/MindCareApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.19114583333333332" />
-        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/activity_select.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_graph.xml" value="0.1" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_map.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_map_googlemap.xml" value="0.2" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/fragment_map_main.xml" value="0.1" />
-        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/item_map_list.xml" value="0.15833333333333333" />
+        <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/item_map_list.xml" value="0.6" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/item_records_header.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/item_records_top_header.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/joo98/AndroidStudioProjects/MindCareApp/app/src/main/res/layout/item_task.xml" value="0.15833333333333333" />

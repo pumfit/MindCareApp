@@ -50,15 +50,10 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map_main, container, false);
-       // View bottomSheetView = inflater.inflate(R.layout.layout_map_bottomsheet, null);
 
-
-//        this.bottomSheetDialog.show();
         View view = ((MainActivity)getActivity()).bottomSheetParentLayout;
+        ((MainActivity)getActivity()).mBottomSheetBehaviour.setPeekHeight(100);
         view.setVisibility(View.VISIBLE);
-//        view = inflater.inflate(R.layout.layout_map_bottomsheet, null);
-//        bottomSheetDialog.setContentView(view);
- //       bottomSheetDialog = new BottomSheetDialog(container.getContext());
 
         this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         this.userKeywordList = new ArrayList<>();
@@ -76,7 +71,7 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         ((ImageButton) root.findViewById(R.id.btn_map_bookmark)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new bookmarkThread().start();
-                MapFragment.this.bottomSheetDialog.show();
+                ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
         ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
@@ -110,9 +105,9 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
                 break;
             }
         }
+
         ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
         this.recyclerView.setAdapter(new MapListAdapter(m));
-
     }
 
     @Override
@@ -123,7 +118,6 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
         th.start();
         th.join();
         googleMapFragment.addMediInfoMarker(MapFragment.this.list);
-
         ((MainActivity)getActivity()).mBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -138,24 +132,28 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     class dataThread extends Thread {
         dataThread() {
         }
-
         public void run() {
             MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
             MapFragment.this.list = db.getMedicalInstitutionDao().getCurrentList(MapFragment.this.latitude, MapFragment.this.longitude);
-            ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
-            for (int idx = 0; idx < list.size(); idx++)
-            {
-                for(int i=0;i<userKeywordList.size();i++)
-                {
-                    if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
-                    {
-                        recommedList.add(MapFragment.this.list.get(idx));
-                        break;
-                    }
-                }
 
+            if(userKeywordList.size()!=0)
+            {
+                ArrayList<MedicalInstitution> recommedList = new ArrayList<>();
+                for (int idx = 0; idx < list.size(); idx++)
+                {
+                    for(int i=0;i<userKeywordList.size();i++)
+                    {
+                        if (MapFragment.this.list.get(idx).keyword1.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword2.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword3.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword4.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword5.equals(MapFragment.this.userKeywordList.get(i)) || MapFragment.this.list.get(idx).keyword6.equals(MapFragment.this.userKeywordList.get(i)))
+                        {
+                            recommedList.add(MapFragment.this.list.get(idx));
+                            break;
+                        }
+                    }
+
+                }
+                MapFragment.this.list = recommedList;
             }
-            MapFragment.this.list = recommedList;
+
             Message msg = handler.obtainMessage();
             handler.sendMessage(msg);
         }
@@ -167,10 +165,11 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
     class bookmarkThread extends Thread {
         bookmarkThread() {
         }
-
         public void run() {
-            MapFragment.this.adapter = new MapListAdapter(MindChargeDB.getInstance(MapFragment.this.getContext()).getBookMarkDao().getBookmarkList());
-            MapFragment.this.recyclerView.setAdapter(MapFragment.this.adapter);
+            MindChargeDB db = MindChargeDB.getInstance(MapFragment.this.getContext());
+            MapFragment.this.list = db.getBookMarkDao().getBookmarkList();
+            Message msg = handler.obtainMessage();
+            handler.sendMessage(msg);
         }
     }
 }
