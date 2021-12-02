@@ -116,18 +116,20 @@
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_home.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_home_base_color.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_home_border.xml" value="0.19375" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_mind_charge_collapsed_0.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_mind_charge_collapsed_100.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_next_32.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_next_36.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_recrod_box.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/icon_skip.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/indicator_guide.xml" value="0.19375" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ripple_image_btn.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ripple_user_guide.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/ripple_user_guide_btn.xml" value="0.19375" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/round_rectangle_keywords.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/drawable/unchecked_custom_check_box.xml" value="0.290625" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_add_record.xml" value="0.24954710144927536" />
-        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_select.xml" value="0.264" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_tutorial.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/oxojj/StudioProjects/MindCareApp/app/src/main/res/layout/activity_user_guide.xml" value="0.264" />
