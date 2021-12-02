@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -56,15 +57,11 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
     private FragmentGraphBinding binding;
     long millSec,millSec2,millSec3,millSec4,millSec5,millSec6,millSec7;
     float mondayData,tuesDayData,wednesdayData,thursdayData,fridayData,saturdayData,sundayData;
-    float density;
-    int standardSize_X;
-    int standardSize_Y;
     LocalDate monday,tuesday,wednesday,thursday,friday,saturday,sunday;
     DatePickerDialog datePickerDialog;
     int Year, Month, Day, Hour, Minute;
     Calendar calendar ;
     Calendar[] disabledDays;
-    Date format1;
     Converters converters;
     int isDataNone;
     ArrayList<LocalDate> datesList;
@@ -138,7 +135,15 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         binding.btnAlyakGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.navigation_records);
+                NavOptions options = new NavOptions.Builder()
+                        .setEnterAnim(R.anim.fade_in)
+                        .setExitAnim(R.anim.fade_out)
+                        .setPopEnterAnim(R.anim.fade_in)
+                        .setPopExitAnim(R.anim.fade_out)
+                        .build();
+
+                Navigation.findNavController(v).navigate(R.id.navigation_records,null,options);
+
             }
         });
     }
@@ -348,6 +353,9 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
         chart.animateX(500);
         chart.getLegend().setEnabled(false); //하단부 없애기
 
+        chart.animate().alpha(0.0f);
+        chart.animate().alpha(1.0f).setDuration(1000);
+
         //!--x축 라벨 설정하기
         ArrayList<String> label_day = new ArrayList<String>(); //x축라벨
 
@@ -477,67 +485,51 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     }
 
+
     //!--control sum
     public void controlSum(){
         sum = ((mondayData+tuesDayData+wednesdayData+thursdayData+fridayData+saturdayData+sundayData)/7);
 
         //getTheme 안되는데 뭐 써야하는지
         if((int)sum >=0 && (int)sum <25){
+
             binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_0);
             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
 
-            binding.tvPercent.setAlpha(0.0f);
-            binding.tvCharge.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+            animation();
         }
         else if((int)sum >=25 && (int)sum <50){
             binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_25);
             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
 
-            binding.tvPercent.setAlpha(0.0f);
-            binding.tvCharge.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+            animation();
 
         }
         else if((int)sum >=50 && (int)sum <75){
+
             binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_50);
             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
 
-            binding.tvWeek.setAlpha(0.0f);
-            binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
-
-            binding.tvPercent.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-
-            binding.tvProgressbar2.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-
-            binding.tvCharge.setAlpha(0.0f);
-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+            animation();
         }
         else if((int)sum >=75 && (int)sum <100){
+
             binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_75);
             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
 
-            binding.tvPercent.setAlpha(0.0f);
-            binding.tvCharge.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+            animation();
         }
         else if((int)sum == 100){
+
+            binding.btnAlyakGraph.setAlpha(0.0f);
             binding.btnAlyakGraph.setImageResource(R.drawable.icon_mind_charge_expanded_100);
             binding.btnAlyakGraph.animate().alpha(1.0f).setDuration(1000);
 
-            binding.tvPercent.setAlpha(0.0f);
-            binding.tvCharge.setAlpha(0.0f);
-            binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
-            binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+            animation();
         }
 
         //기록 없을 때
@@ -561,6 +553,20 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     }
 
+    // !-- animation
+    public void animation(){
+        binding.tvWeek.setAlpha(0.0f);
+        binding.tvWeek.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvPercent.setAlpha(0.0f);
+        binding.tvPercent.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvProgressbar2.setAlpha(0.0f);
+        binding.tvProgressbar2.animate().alpha(1.0f).setDuration(1000);
+
+        binding.tvCharge.setAlpha(0.0f);
+        binding.tvCharge.animate().alpha(1.0f).setDuration(1000);
+    }
 
     //!-- DB
     public void startBackgroundThread(){
@@ -587,40 +593,6 @@ public class GraphFragment extends Fragment implements DatePickerDialog.OnDateSe
 
 
 
-////                                      // !--  가짜 데이터----
-//                    ArrayList<Task> tasks = new ArrayList<>();
-//
-//                    Task task1 = new Task("소주 마시기",true);
-//                    Task task2 = new Task("친구랑 놀기",true);
-//                    Task task3 = new Task("영화보기",true);
-//                    Task task4 = new Task("맛있는 거먹기",true);
-//                    Task task5 = new Task("맛있는 거먹기",true);
-//                    Task task6 = new Task("취미생활 하기",false);
-//                    Task task8 = new Task("하루종일 독서하기",false);
-//
-//
-//                    tasks.add(task1);
-//                    tasks.add(task2);
-//                    tasks.add(task3);
-//                    tasks.add(task4);
-//                    tasks.add(task5);
-//                    tasks.add(task6);
-//
-//                    tasks.add(task8);
-//
-//
-//
-//
-//
-//
-////
-//                    Record record8 = new Record(LocalDate.of(2021,11,28),"kk병원 방문하기",tasks);
-////                    Record record2 = new Record(LocalDate.of(2021,11,02),"ㅇㅇ병원 방문하기",tasks2);
-//
-//
-//
-//
-//                    db.getRecordDao().insert(record8);
 
 
                 }

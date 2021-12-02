@@ -20,6 +20,6 @@
 
     <dimen name="graph_week_text_size">15sp</dimen>
     <dimen name="layout_alyak">275dp</dimen>
-    <dimen name="graph_alyak_img_size">250dp</dimen>
+    <dimen name="graph_alyak_img_size">225dp</dimen>
     <dimen name="graph_bar_height">275dp</dimen>
 </resources>

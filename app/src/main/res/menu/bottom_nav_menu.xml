@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/icon_home"
+        android:icon="@drawable/ic_home"
         android:title="홈" />
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/icon_map"
+        android:icon="@drawable/ic_map"
         android:title="위치" />
 
     <item
         android:id="@+id/navigation_records"
-        android:icon="@drawable/icon_record"
+        android:icon="@drawable/ic_record"
         android:title="작성" />
     <item
         android:id="@+id/navigation_graph"
-        android:icon="@drawable/icon_graph"
+        android:icon="@drawable/ic_graph"
         android:title="그래프" />
 
 </menu>

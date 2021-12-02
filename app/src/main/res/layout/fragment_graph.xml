@@ -178,8 +178,6 @@
                         android:id="@+id/layout_alyak"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/layout_alyak"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
                         android:background="@drawable/achievementrate_graph">
 
 
