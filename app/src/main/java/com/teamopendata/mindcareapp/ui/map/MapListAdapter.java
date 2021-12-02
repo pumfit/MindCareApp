@@ -2,6 +2,7 @@ package com.teamopendata.mindcareapp.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +58,13 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         String name = this.medicalList.get(position).name;
         String type = this.medicalList.get(position).type;
         String address = this.medicalList.get(position).address;
+        String grade = this.medicalList.get(position).grade.equals("0등급")?"등급없음":this.medicalList.get(position).grade;
 
         holder.tvName.setText(name);
         holder.tvType.setText(type);
         holder.tvAddress.setText(address);
+        holder.tvGrade.setText(grade);
+
         holder.ivIcon.setImageResource(colormap.get(this.medicalList.get(position).type).intValue());
         if (this.bookmarkStatus[position]) {
             buttonClicked(holder.btnBookmark);
@@ -72,13 +76,13 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
                     MapListAdapter.this.buttonClicked(holder.btnBookmark);
                     MapListAdapter mapListAdapter = MapListAdapter.this;
                     new bookmarkInsertThread((MedicalInstitution) mapListAdapter.medicalList.get(position)).start();
-                    Toast.makeText(v.getContext(), "즐겨찾기에 추가되었습니다.",1).show();
+                    customToast("즐겨찾기가 추가되었습니다.");
                     MapListAdapter.this.bookmarkStatus[position] = true;
                 } else if (MapListAdapter.this.bookmarkStatus[position]) {
                     MapListAdapter.this.buttonDefault(holder.btnBookmark);
                     MapListAdapter mapListAdapter2 = MapListAdapter.this;
                     new bookmarkDeleteThread((MedicalInstitution) mapListAdapter2.medicalList.get(position)).start();
-                    Toast.makeText(v.getContext(), "즐겨찾기가 취소되었습니다.", 1).show();
+                    customToast("즐겨찾기가 취소되었습니다.");
                     MapListAdapter.this.bookmarkStatus[position] = false;
                 }
             }
@@ -89,13 +93,14 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         return this.medicalList.size();
     }
 
-    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListAdapter$ViewHolder */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageButton btnBookmark;
         public ImageView ivIcon;
         public TextView tvAddress;
         public TextView tvName;
         public TextView tvType;
+        public TextView tvGrade;
+        public TextView tvKeyword;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,10 +109,12 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
             this.tvAddress = (TextView) itemView.findViewById(R.id.tv_map_address);
             this.btnBookmark = (ImageButton) itemView.findViewById(R.id.ib_map_bookmark_star);
             this.ivIcon = (ImageView) itemView.findViewById(R.id.iv_map_marker);
+            this.tvGrade = itemView.findViewById(R.id.tv_map_grade);
+            this.tvKeyword = itemView.findViewById(R.id.tv_map_keyword);
 
             itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
-                MapListSubInfoDialog subInfoDialog = new MapListSubInfoDialog(context,medicalList.get(pos),bookmarkStatus[pos]);
+                MapListSubInfoDialog subInfoDialog = new MapListSubInfoDialog(context,medicalList.get(pos),bookmarkStatus[pos],btnBookmark);
                 subInfoDialog.callFunction();
             });
         }
@@ -123,6 +130,18 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         }
     }
 
+    public void customToast(String message){
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.toast_map_bookmark, null);
+        TextView toast_textview  = layout.findViewById(R.id.tv_toast_message);
+        toast_textview.setText(String.valueOf(message));
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT); //메시지 표시 시간
+        toast.setView(layout);
+        toast.show();
+    }
+
     /* access modifiers changed from: private */
     public void buttonClicked(ImageButton button) {
         button.setImageDrawable(button.getResources().getDrawable(R.drawable.starfilled));
@@ -133,7 +152,6 @@ public class MapListAdapter extends RecyclerView.Adapter<MapListAdapter.ViewHold
         button.setImageDrawable(button.getResources().getDrawable(R.drawable.star));
     }
 
-    /* renamed from: com.teamopendata.mindcareapp.ui.map.MapListAdapter$bookmarkInsertThread */
     class bookmarkInsertThread extends Thread {
         private MedicalInstitution medi;
 

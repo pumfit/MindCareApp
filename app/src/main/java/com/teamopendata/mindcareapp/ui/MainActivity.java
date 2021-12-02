@@ -1,18 +1,12 @@
-package com.teamopendata.mindcareapp.ui;
+package com.teamopendata.mindcareapp;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -22,8 +16,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.teamopendata.mindcareapp.R;
-import com.teamopendata.mindcareapp.ui.keyword.KeywordDialogFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -36,7 +28,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인
@@ -47,11 +38,16 @@ public class MainActivity extends BaseActivity {
             checkRunTimePermission();
         }
 
+        bottomSheetParentLayout = findViewById(R.id.bottom_sheet_parent);
+        mBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetParentLayout);
+        mBottomSheetBehaviour.setPeekHeight(100);
+        bottomSheetParentLayout.setVisibility(View.GONE);
+
         //!-- fragment 네이게이션 만드는 코드
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_map, R.id.navigation_records, R.id.navigation_graph)
+                R.id.navigation_home, R.id.navigation_map, R.id.navigation_graph, R.id.navigation_records)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -59,11 +55,16 @@ public class MainActivity extends BaseActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "itemSelected: " + destination);
-            displayHomeAsUpEnabled(destination.getId() != R.id.navigation_home);
-            if (destination.getId() == R.id.navigation_home || destination.getId() == R.id.navigation_map) {
+            if (destination.getId() == R.id.navigation_home) {
                 hideActionBar();
-            } else {
+                bottomSheetParentLayout.setVisibility(View.GONE);
+            } else if(destination.getId() == R.id.navigation_map)
+            {
+                hideActionBar();
+            }else{
                 new Handler().postDelayed(this::showActionBar, 100);
+                displayHomeAsUpEnabled(true);
+                bottomSheetParentLayout.setVisibility(View.GONE);
             }
         });
 
@@ -74,7 +75,6 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
-
     public boolean checkLocationServicesStatus() { //GPS기능 사용가능한지 판단
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
