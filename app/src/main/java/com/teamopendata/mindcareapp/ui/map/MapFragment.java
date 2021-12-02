@@ -1,5 +1,6 @@
 package com.teamopendata.mindcareapp.ui.map;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,7 +23,6 @@ import com.teamopendata.mindcareapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class MapFragment extends Fragment implements GoogleMapFragment.CustomMapListener {
@@ -75,7 +76,10 @@ public class MapFragment extends Fragment implements GoogleMapFragment.CustomMap
             }
         });
         ((ImageButton) root.findViewById(R.id.btn_map_back)).setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             public void onClick(View view) {
+                Navigation.findNavController(view).navigate(
+                        Navigation.findNavController(view).getPreviousBackStackEntry().getDestination().getId());
             }
         });
         return root;
