@@ -132,7 +132,6 @@ public class AddEditRecordFragment extends Fragment {
         binding.btnRecordSave.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         binding.btnRecordDelete.setOnClickListener(v -> deleteRecord());
 
-        binding.tvRecordPickDate.setText(Utils.LocalDateToString(mNewRecord.getDate()));
         binding.etRecordTitle.setText(mNewRecord.getTitle());
 
         binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());

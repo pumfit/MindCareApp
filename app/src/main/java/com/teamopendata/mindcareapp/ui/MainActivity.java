@@ -1,6 +1,7 @@
 package com.teamopendata.mindcareapp.ui;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,7 +41,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-
         if (!checkLocationServicesStatus()) {//GPS 기능 사용가능한지 확인
             Intent callGPSSettingIntent
                     = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);//아닌경우 Dialog 생성
