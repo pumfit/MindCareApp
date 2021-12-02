@@ -1,6 +1,8 @@
 package com.teamopendata.mindcareapp.ui.intro;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,7 +40,7 @@ public class UserGuideActivity extends AppCompatActivity implements View.OnClick
 
         binding = ActivityUserGuideBinding.inflate(getLayoutInflater());
 
-        if (SharedPreferencesManager.isFirstTimeLaunch(this)) showKeywordDialog();
+        if (!SharedPreferencesManager.isFirstTimeLaunch(this)) showKeywordDialog();
         setContentView(binding.getRoot());
 
         adapter = new UserGuideAdapter();

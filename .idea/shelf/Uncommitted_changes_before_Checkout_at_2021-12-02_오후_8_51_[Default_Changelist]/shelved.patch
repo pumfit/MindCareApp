@@ -1,0 +1,35 @@
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetDropDown\">\r\n    <runningDeviceTargetSelectedWithDropDown>\r\n      <Target>\r\n        <type value=\"RUNNING_DEVICE_TARGET\" />\r\n        <deviceKey>\r\n          <Key>\r\n            <type value=\"SERIAL_NUMBER\" />\r\n            <value value=\"LGMV300Lbae86eb0\" />\r\n          </Key>\r\n        </deviceKey>\r\n      </Target>\r\n    </runningDeviceTargetSelectedWithDropDown>\r\n    <timeTargetWasSelectedWithDropDown value=\"2021-11-30T04:12:57.145550100Z\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+--- a/.idea/deploymentTargetDropDown.xml	(revision 0942555a77af1855078fb58e6384aec5ec922262)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1638445756590)
+@@ -1,17 +1,17 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="deploymentTargetDropDown">
+-    <runningDeviceTargetSelectedWithDropDown>
++    <targetSelectedWithDropDown>
+       <Target>
+-        <type value="RUNNING_DEVICE_TARGET" />
++        <type value="QUICK_BOOT_TARGET" />
+         <deviceKey>
+           <Key>
+-            <type value="SERIAL_NUMBER" />
+-            <value value="LGMV300Lbae86eb0" />
++            <type value="VIRTUAL_DEVICE_PATH" />
++            <value value="C:\Users\oxojj\.android\avd\Nexus_5_API_30.avd" />
+           </Key>
+         </deviceKey>
+       </Target>
+-    </runningDeviceTargetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2021-11-30T04:12:57.145550100Z" />
++    </targetSelectedWithDropDown>
++    <timeTargetWasSelectedWithDropDown value="2021-12-02T11:49:11.958495300Z" />
+   </component>
+ </project>
+\ No newline at end of file
