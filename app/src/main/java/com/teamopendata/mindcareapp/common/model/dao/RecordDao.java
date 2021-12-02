@@ -31,4 +31,6 @@ public interface RecordDao {
     @Query("SELECT * FROM record_table WHERE date <= :today AND date > :yesterday")
     Record getTasks(LocalDate today, LocalDate yesterday);
 
+    @Query("SELECT date FROM record_table")
+    List<LocalDate> getAllRecordDate();
 }

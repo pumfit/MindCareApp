@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.Calendar;
 import java.util.Locale;
 
 public final class Utils {
@@ -59,5 +60,28 @@ public final class Utils {
         char[] arr = s.toCharArray();
         arr[0] = Character.toUpperCase(arr[0]);
         return new String(arr);
+    }
+
+    public static int progressToPercent(float number) {
+        if (number >= 0f && number < 25f) {
+            number = 0;
+        } else if (number >= 25f && number < 50f) {
+            number = 25;
+        } else if (number >= 50f && number < 75f) {
+            number = 50;
+        } else if (number >= 75f && number < 100f) {
+            number = 75;
+        } else {
+            number = 100;
+        }
+        return (int) number;
+    }
+
+    public static Calendar LocalDateToCalender(LocalDate localDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, localDate.getYear());
+        calendar.set(Calendar.MONTH, localDate.getMonthValue() - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, localDate.getDayOfMonth());
+        return calendar;
     }
 }

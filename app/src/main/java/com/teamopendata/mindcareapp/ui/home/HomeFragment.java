@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.teamopendata.mindcareapp.common.MindChargeDB;
 import com.teamopendata.mindcareapp.common.SharedPreferencesManager;
+import com.teamopendata.mindcareapp.common.Utils;
 import com.teamopendata.mindcareapp.common.model.entity.Record;
 import com.teamopendata.mindcareapp.common.model.entity.Task;
 import com.teamopendata.mindcareapp.databinding.FragmentHomeBinding;
@@ -28,6 +29,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -38,7 +40,7 @@ public class HomeFragment extends Fragment {
 
     private final String TAG = "HomeFragment";
 
-    private int mindChargeFlag = -1;
+    private float mindChargeFlag = -1;
 
     private Record cachedRecord;
 
@@ -108,7 +110,7 @@ public class HomeFragment extends Fragment {
 
     private void updateViews(float offset) {
         if (mindChargeFlag != taskAdapter.getMindCharge()) {
-            int mindCharge = taskAdapter.getMindCharge();
+            float mindCharge = taskAdapter.getMindCharge();
             mindChargeFlag = mindCharge;
             updateMindChargeView(mindCharge);
         }
@@ -123,19 +125,30 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void updateMindChargeView(int progress) {
-
-        int collapseBitmapId = getResources().getIdentifier("icon_mind_charge_collapsed_" + progress, "drawable", requireContext().getPackageName());
-        int expandedBitmapId = getResources().getIdentifier("icon_mind_charge_expanded_" + progress, "drawable", requireContext().getPackageName());
+    public void updateMindChargeView(float progress) {
+        Log.d(TAG, "updateMindChargeView: "+progress);
+        int intProgress = Utils.progressToPercent(progress);
+        int collapseBitmapId = getResources().getIdentifier("icon_mind_charge_collapsed_" + intProgress, "drawable", requireContext().getPackageName());
+        int expandedBitmapId = getResources().getIdentifier("icon_mind_charge_expanded_" + intProgress, "drawable", requireContext().getPackageName());
 
         binding.ivHomeMindChargeExpanded.setImageDrawable(AppCompatResources.getDrawable(requireContext(), expandedBitmapId));
         binding.ivHomeMindChargeCollapsed.setImageDrawable(AppCompatResources.getDrawable(requireContext(), collapseBitmapId));
 
-        int collapseTextId = getResources().getIdentifier("mind_charge_home_collapsed_" + progress, "string", requireContext().getPackageName());
-        int expandedTextId = getResources().getIdentifier("mind_charge_home_expanded_" + progress, "string", requireContext().getPackageName());
+        int collapseTextId, expandedTextId;
+        String expendedText, collapseText;
+        if (progress == 0 || progress == 100) {
+            collapseTextId = getResources().getIdentifier("mind_charge_home_collapsed_" + (int) progress, "string", requireContext().getPackageName());
+            expandedTextId = getResources().getIdentifier("mind_charge_home_expanded_" + (int) progress, "string", requireContext().getPackageName());
 
-        binding.tvHomeMindChargeExpended.setText(getResources().getString(expandedTextId));
-        binding.tvHomeMindChargeCollapsed.setText(getResources().getString(collapseTextId));
+            expendedText = getResources().getString(expandedTextId);
+            collapseText = getResources().getString(collapseTextId);
+        } else {
+            expendedText = String.format(Locale.KOREA, "오늘은 %d%% 마음충전되었습니다.", (int) progress);
+            collapseText = String.format(Locale.KOREA, "마음충전률 %d%%", (int) progress);
+        }
+        binding.tvHomeMindChargeExpended.setText(expendedText);
+        binding.tvHomeMindChargeCollapsed.setText(collapseText);
+
     }
 
     @Override
