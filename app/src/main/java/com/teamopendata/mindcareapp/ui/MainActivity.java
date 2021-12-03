@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,6 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.ui.records.fragment.AddEditRecordFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -69,10 +71,9 @@ public class MainActivity extends BaseActivity {
             if (destination.getId() == R.id.navigation_home) {
                 hideActionBar();
                 bottomSheetParentLayout.setVisibility(View.GONE);
-            } else if(destination.getId() == R.id.navigation_map)
-            {
+            } else if (destination.getId() == R.id.navigation_map) {
                 hideActionBar();
-            }else{
+            } else {
                 new Handler().postDelayed(this::showActionBar, 100);
                 displayHomeAsUpEnabled(true);
                 bottomSheetParentLayout.setVisibility(View.GONE);
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
+
     public boolean checkLocationServicesStatus() { //GPS기능 사용가능한지 판단
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -138,5 +140,4 @@ public class MainActivity extends BaseActivity {
         }
         return super.dispatchTouchEvent(event);
     }
-
 }

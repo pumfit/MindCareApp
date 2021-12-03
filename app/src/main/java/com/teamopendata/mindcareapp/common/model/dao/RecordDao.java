@@ -22,6 +22,9 @@ public interface RecordDao {
     @Update
     void update(Record record);
 
+    @Update()
+    void updateAll(List<Record> records);
+
     @Query("SELECT * FROM record_table")
     List<Record> getAll();
 
@@ -32,7 +35,7 @@ public interface RecordDao {
     Record getDateRecord(LocalDate localdate);
 
     @Query("SELECT * FROM record_table WHERE date <= :today AND date > :yesterday")
-    Record getTasks(LocalDate today, LocalDate yesterday);
+    List<Record> getTasks(LocalDate today, LocalDate yesterday);
 
     @Query("SELECT date FROM record_table")
     List<LocalDate> getAllRecordDate();
