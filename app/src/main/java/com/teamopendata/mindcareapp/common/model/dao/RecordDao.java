@@ -25,7 +25,7 @@ public interface RecordDao {
     @Update()
     void updateAll(List<Record> records);
 
-    @Query("SELECT * FROM record_table")
+    @Query("SELECT * FROM record_table ORDER BY date")
     List<Record> getAll();
 
     @Query("Select * FROM record_table WHERE record_table.date LIKE :localdate")
