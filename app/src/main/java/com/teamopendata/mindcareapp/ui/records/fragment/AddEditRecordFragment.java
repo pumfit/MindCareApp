@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +41,6 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -68,6 +70,8 @@ public class AddEditRecordFragment extends Fragment {
     private final Record mCachedRecord;
     private List<LocalDate> mRegisteredDate = null;
 
+    private OnBackPressedCallback backPressedCallback;
+
     /**
      * @see HomeRecordsFragment called after being saved record
      */
@@ -96,6 +100,15 @@ public class AddEditRecordFragment extends Fragment {
         super.onCreate(savedInstanceState);
         new Thread(() -> mRegisteredDate = MindChargeDB.getInstance(requireContext()).getRecordDao().getAllRecordDate()).start();
 
+        backPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                performEvent();
+                Log.d(TAG, "handleOnBackPressed: 제발");
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, backPressedCallback);
         Log.d(TAG, "onCreate: ");
     }
 
@@ -129,10 +142,14 @@ public class AddEditRecordFragment extends Fragment {
             taskAdapter.notifyItemChanged(taskAdapter.getItemCount());
         });
 
-        binding.btnRecordSave.setOnClickListener(v -> getParentFragmentManager().popBackStack());
-        binding.btnRecordDelete.setOnClickListener(v -> deleteRecord());
+        binding.btnRecordSave.setOnClickListener(v -> performEvent());
+        binding.btnRecordDelete.setOnClickListener(v -> {
+            mEventType = EventType.EVENT_DELETE;
+            performEvent();
+        });
 
         binding.etRecordTitle.setText(mNewRecord.getTitle());
+        binding.tvRecordPickDate.setText(Utils.LocalDateToString(mNewRecord.getDate()));
 
         binding.cvRecordDate.setOnClickListener(v -> showDatePickerDialog());
     }
@@ -189,32 +206,35 @@ public class AddEditRecordFragment extends Fragment {
 
 
     private void addRecord() {
-        if (newRecord()) {
-            showToast();
+        if (validationData()) {
+            newRecord();
             new Thread(() -> {
                 Log.d(TAG, "addRecord: " + mNewRecord.toString());
+
                 mNewRecord.setId(RecordsAdapter.getCachedRecordId());
                 MindChargeDB.getInstance(requireContext()).getRecordDao().insert(mNewRecord);
+                new Handler(Looper.getMainLooper()).post(this::showToastAndFinish);
                 mSaveListener.onPerformEvent(mNewRecord);
             }).start();
         }
     }
 
     private void updateRecord() {
-        if (newRecord() && !mNewRecord.equals(mCachedRecord)) {
-            Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
-            new Thread(() -> {
-                Log.d(TAG, "updateRecord: " + mNewRecord.toString());
+        if (validationData()) {
+            newRecord();
+            if (!mNewRecord.equals(mCachedRecord)) {
+                Toast.makeText(requireContext(), "수정되었습니다.", Toast.LENGTH_SHORT).show();
+                new Thread(() -> {
+                    Log.d(TAG, "updateRecord: " + mNewRecord.toString());
 
-                MindChargeDB.getInstance(requireContext()).getRecordDao().update(mNewRecord);
-                mSaveListener.onPerformEvent(mNewRecord);
-            }).start();
+                    MindChargeDB.getInstance(requireContext()).getRecordDao().update(mNewRecord);
+                    mSaveListener.onPerformEvent(mNewRecord);
+                }).start();
+            }
         }
     }
 
     private void deleteRecord() {
-        mEventType = EventType.EVENT_DELETE;
-        getParentFragmentManager().popBackStack();
         Toast.makeText(requireContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
         new Thread(() -> {
             Log.d(TAG, "deleteRecord: " + mNewRecord.toString());
@@ -224,7 +244,33 @@ public class AddEditRecordFragment extends Fragment {
         }).start();
     }
 
-    private void showToast() {
+    private void newRecord() {
+        mNewRecord.setTitle(binding.etRecordTitle.getText().toString());
+        mNewRecord.setDate(Utils.StringToLocalDate(binding.tvRecordPickDate.getText().toString()));
+        mNewRecord.setTasks(taskAdapter.removeBlankItem());
+        Log.d(TAG, "newTask:" + taskAdapter.getItem());
+        Log.d(TAG, "newRecord: " + mNewRecord.toString());
+    }
+
+
+    private boolean validationData() {
+        if (binding.tvRecordPickDate.getText().toString().length() == 0) {
+            Toast.makeText(requireContext(), "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
+            binding.tvRecordPickDate.requestFocus();
+            return false;
+        } else if (binding.etRecordTitle.getText().toString().length() == 0) {
+            Toast.makeText(requireContext(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            binding.etRecordTitle.requestFocus();
+            return false;
+        } else if (!taskAdapter.validationItem() || !taskAdapter.hasItem()) {
+            //todo requestFocus or 입력안한 task는 전부 삭제 후 저장?
+            Toast.makeText(requireContext(), "할 일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void showToastAndFinish() {
         new CountDownTimer(500, 100) {
             public void onTick(long millisUntilFinished) {
                 toastEvent.show();
@@ -232,6 +278,7 @@ public class AddEditRecordFragment extends Fragment {
 
             public void onFinish() {
                 toastEvent.cancel();
+                getParentFragmentManager().popBackStack();
             }
         }.start();
     }
@@ -255,21 +302,19 @@ public class AddEditRecordFragment extends Fragment {
         DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(mDateSetListener, date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
         datePickerDialog.setLocale(Locale.KOREA);
         datePickerDialog.setMaxDate(Calendar.getInstance());
-
-
         datePickerDialog.show(getParentFragmentManager(), "DatePickerDialog");
     }
 
-    private boolean newRecord() {
-        if (!(binding.etRecordTitle.getText().toString().equals("")) && taskAdapter.hasItem()) {
-            mNewRecord.setTitle(binding.etRecordTitle.getText().toString());
-            mNewRecord.setDate(Utils.StringToLocalDate(binding.tvRecordPickDate.getText().toString()));
-            mNewRecord.setTasks(taskAdapter.removeBlankItem());
-            Log.d(TAG, "newTask:" + taskAdapter.getItem());
-            Log.d(TAG, "newRecord: " + mNewRecord.toString());
-            return true;
+    private void performEvent() {
+        if (mEventType == EventType.EVENT_ADD) {
+            addRecord();
+            return;
+        } else if (mEventType == EventType.EVENT_EDIT) {
+            updateRecord();
+        } else {
+            deleteRecord();
         }
-        return false;
+        getParentFragmentManager().popBackStack();
     }
 
     @Override
@@ -286,11 +331,10 @@ public class AddEditRecordFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (mEventType == EventType.EVENT_ADD) addRecord();
-        else if (mEventType == EventType.EVENT_EDIT) updateRecord();
         super.onPause();
         Log.d(TAG, "onPause: ");
     }
+
 
     @Override
     public void onStop() {
@@ -302,6 +346,7 @@ public class AddEditRecordFragment extends Fragment {
     @Override
     public void onDestroyView() {
         Log.d(TAG, "onDestroyView: ");
+        backPressedCallback.remove();
         super.onDestroyView();
     }
 
@@ -316,4 +361,5 @@ public class AddEditRecordFragment extends Fragment {
         Log.d(TAG, "onDetach: ");
         super.onDetach();
     }
+
 }

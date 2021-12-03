@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
 
     private float mindChargeFlag = -1;
 
-    private Record cachedRecord;
+    private List<Record> cachedRecord;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,9 @@ public class HomeFragment extends Fragment {
 
             if (cachedRecord != null) {
                 Log.d(TAG, "getTodayTasks: " + cachedRecord.toString());
-                tasks.addAll(cachedRecord.getTasks());
+                for (Record record : cachedRecord) {
+                    tasks.addAll(record.getTasks());
+                }
 
                 new Handler(Looper.getMainLooper()).post(() -> taskAdapter.initItems(tasks));
             }
@@ -126,7 +128,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateMindChargeView(float progress) {
-        Log.d(TAG, "updateMindChargeView: "+progress);
+        Log.d(TAG, "updateMindChargeView: " + progress);
         int intProgress = Utils.progressToPercent(progress);
         int collapseBitmapId = getResources().getIdentifier("icon_mind_charge_collapsed_" + intProgress, "drawable", requireContext().getPackageName());
         int expandedBitmapId = getResources().getIdentifier("icon_mind_charge_expanded_" + intProgress, "drawable", requireContext().getPackageName());
@@ -155,7 +157,7 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         Log.d(TAG, "onPause: ");
         if (cachedRecord != null) {
-            new Thread(() -> MindChargeDB.getInstance(requireContext()).getRecordDao().update(cachedRecord)).start();
+            new Thread(() -> MindChargeDB.getInstance(requireContext()).getRecordDao().updateAll(cachedRecord)).start();
         }
         super.onPause();
     }

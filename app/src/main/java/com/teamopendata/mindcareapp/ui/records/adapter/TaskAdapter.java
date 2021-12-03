@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private final OnChangedTaskCompleteListener mListener;
     private float mindCharge = 0;
+
+    public int validationFocus = -1;
 
     public TaskAdapter(List<Task> item) {
         mItems = item;
@@ -144,6 +147,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         } else {
             mindCharge = charge;
         }
+    }
+
+    public boolean validationItem() {
+        for (Task item : mItems) {
+            if (item.getContents() == null || item.getContents().length() == 0) {
+                // validationFocus = mItems.indexOf(item);
+                return false;
+            }
+        }
+        // validationFocus = -1;
+        return true;
     }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder {
