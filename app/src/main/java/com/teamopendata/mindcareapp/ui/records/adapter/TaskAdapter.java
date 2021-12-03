@@ -122,9 +122,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @SuppressLint("NotifyDataSetChanged")
     public void initItems(List<Task> tasks) {
         mItems = tasks;
-        setMindCharge();
-        if (!mItems.isEmpty())
+        if (!mItems.isEmpty()) {
+            setMindCharge();
             notifyDataSetChanged();
+        }
     }
 
     public void setMindCharge() {
