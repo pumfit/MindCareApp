@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.teamopendata.mindcareapp.R;
+import com.teamopendata.mindcareapp.ui.keyword.CenterDescriptionDialogFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -26,12 +27,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(int layoutResID) {
-            LinearLayout baseLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
-            FrameLayout layoutContainer = baseLayout.findViewById(R.id.container_base);
-            getLayoutInflater().inflate(layoutResID, layoutContainer, true);
-            super.setContentView(baseLayout);
+        LinearLayout baseLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
+        FrameLayout layoutContainer = baseLayout.findViewById(R.id.container_base);
+        getLayoutInflater().inflate(layoutResID, layoutContainer, true);
+        super.setContentView(baseLayout);
 
-            initToolbar();
+        initToolbar();
     }
 
     protected boolean useToolbar() {
@@ -85,9 +86,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.menu_setting:
-                Toast.makeText(this, "setting clicked", Toast.LENGTH_SHORT).show();
+            case R.id.menu_setting: {
+                new CenterDescriptionDialogFragment().show(getSupportFragmentManager(), "CenterDescription");
                 break;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
